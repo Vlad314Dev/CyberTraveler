@@ -1,21 +1,5 @@
-import Phaser from 'phaser';
-import './styles/index/style.scss';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './game/ui/react/components/App/App.component.js'
 
-const config = {
-  width: 800,
-  height: 600,
-  type: Phaser.AUTO,
-  audio: {
-    disableWebAudio: true
-  },
-  physics: {
-    default: 'arcade',
-    arcade: {
-      fps: 60,
-      gravity: {y : 0},
-    }
-  },
-};
-
-new Phaser.Game(config);
-
+ReactDOM.render(<App />, document.getElementById('root'));
