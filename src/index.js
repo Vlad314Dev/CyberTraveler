@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import './styles/index/style.scss';
 
 const config = {
   width: 800,
@@ -16,5 +17,5 @@ const config = {
   },
 };
 
-const Game = new Phaser.Game(config);
+new Phaser.Game(config);
 

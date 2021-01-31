@@ -1,6 +1,8 @@
-const path = require('path')
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('@kooneko/livereload-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+const StylelintPlugin = require('stylelint-webpack-plugin');
 
 
 module.exports = {
@@ -18,7 +20,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader'
@@ -27,25 +29,21 @@ module.exports = {
             {
                 test: /\.html$/,
                 use: [{
-                    loader: 'html-loader',
-                    options: { 
-                        minimize: false
-                    }
+                    loader: 'html-loader'
                 }]
             },
             {
-                test: /\.css$/,
+                test: /\.s[ac]ss$/,
                 use: [
                     'style-loader', 
-                    'css-loader' 
+                    'css-loader',
+                    'sass-loader'
                 ]
-              },
-              {
-               test: /\.(png|svg|jpg|gif)$/,
-               use: [
-                   'file-loader'
-                ]
-              }
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: ['file-loader']
+            }
         ]
     },
     watch: true,
@@ -54,6 +52,15 @@ module.exports = {
             template: './src/html/index.html',
             filename: './index.html'
         }),
-        new LiveReloadPlugin()
+        new LiveReloadPlugin(),
+        new ESLintPlugin({
+            exclude: [
+                'node_modules',
+                'build'
+            ],
+            fix: false,
+            emitError: true
+        }),
+        new StylelintPlugin()
     ]
 };
