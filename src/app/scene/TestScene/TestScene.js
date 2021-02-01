@@ -1,6 +1,11 @@
 import Phaser, { Scene } from 'phaser';
-import TestEmitter from '../../emmiter/TestEmitter';
 import phaserImg from '../../assets/sprites/phaser2.png';
+import { store } from '../../ui/redux';
+import { addToScore } from '../../ui/redux/Score/Score.action';
+import TestEmitter from '../../emitter/TestEmitter';
+import {
+    TEST_EVENT
+} from '../../emitter/TestEmitter/TestEmitter.config';
 
 class TestScene extends Scene
 {
@@ -27,9 +32,9 @@ class TestScene extends Scene
         //  For example this will set the position of the image to 400 x 300
         Phaser.Actions.SetXY(group.getChildren(), 400, 300);
         
-        image.on('pointerdown', function () {
-            TestEmitter.emit('TEST_EVENT');
-        });
+        image.on('pointerdown', () => store.dispatch(addToScore(1)));
+
+        TestEmitter.on(TEST_EVENT, () => { image.rotation += 0.01; });
     }
 }
 

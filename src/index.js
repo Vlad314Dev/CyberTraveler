@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import ReduxStore from './app/ui/store/ReduxStore';
-import ReactDOM from 'react-dom'; 
+import store from './app/ui/redux';
+
+import UI from './app/ui/component/UI';
+
 import Phaser from 'phaser';
 import { IonPhaser } from '@ion-phaser/react';
-import TestSceneComponent from './app/scene/TestScene';
-import UITest from './app/ui/component/UITest';
+import TestScene from './app/scene/TestScene';
 
 class App extends PureComponent
 {
@@ -21,7 +23,7 @@ class App extends PureComponent
                 audio: {
                     disableWebAudio: true
                 },
-                scene: [TestSceneComponent]
+                scene: [TestScene]
             }
         }
     }
@@ -34,12 +36,12 @@ class App extends PureComponent
         } = this.state;
 
         return (
-            <Provider store={ ReduxStore }>
+            <Provider store={ store }>
                 <IonPhaser 
                     game = { game }
                     initialize = { initialize }
                 >
-                    <UITest />
+                    <UI />
                 </IonPhaser>
             </Provider>
         );
