@@ -17,6 +17,15 @@ module.exports = {
     },
     target: 'web',
     devtool: 'source-map',
+    resolve: {
+        alias: {
+            Assets: path.resolve(__dirname, 'src/app/assets'),
+            Emitter: path.resolve(__dirname, 'src/app/emitter'),
+            Scene: path.resolve(__dirname, 'src/app/scene'),
+            Component: path.resolve(__dirname, 'src/app/ui/component'),
+            Store: path.resolve(__dirname, 'src/app/ui/store')
+        }
+    },
     module: {
         rules: [
             {

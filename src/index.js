@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import store from './app/ui/redux';
+import store from 'Store';
 
-import UI from './app/ui/component/UI';
+import UI from 'Component/UI';
 
 import Phaser from 'phaser';
 import { IonPhaser } from '@ion-phaser/react';
-import TestScene from './app/scene/TestScene';
+import TestScene from 'Scene/TestScene';
 
 class App extends PureComponent
 {

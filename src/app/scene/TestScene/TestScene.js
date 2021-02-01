@@ -1,11 +1,13 @@
 import Phaser, { Scene } from 'phaser';
-import phaserImg from '../../assets/sprites/phaser2.png';
-import { store } from '../../ui/redux';
-import { addToScore } from '../../ui/redux/Score/Score.action';
-import TestEmitter from '../../emitter/TestEmitter';
+import phaserImg from 'Assets/sprites/phaser2.png';
+
+import { store } from 'Store';
+import { addToScore } from 'Store/Score/Score.action';
+
+import TestEmitter from 'Emitter/TestEmitter';
 import {
     TEST_EVENT
-} from '../../emitter/TestEmitter/TestEmitter.config';
+} from 'Emitter/TestEmitter/TestEmitter.config';
 
 class TestScene extends Scene
 {

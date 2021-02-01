@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import TestEmitter from '../../../emitter/TestEmitter';
+import TestEmitter from 'Emitter/TestEmitter';
 import {
     TEST_EVENT
-} from '../../../emitter/TestEmitter/TestEmitter.config';
+} from 'Emitter/TestEmitter/TestEmitter.config';
 
 import './UIStyle.scss';
 
