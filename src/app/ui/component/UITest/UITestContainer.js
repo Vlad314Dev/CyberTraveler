@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import UITest from './UITest.component.js';
-import { TestEmitter } from '../../../../emmiters/TestEmitter.js';
+import UITestComponent from './UITestComponent.js';
+import TestEmitter from '../../../emmiter/TestEmitter';
 
 class UITestContainer extends PureComponent
 {
@@ -30,7 +30,7 @@ class UITestContainer extends PureComponent
     render()
     {
         return (
-            <UITest 
+            <UITestComponent 
                 { ...this.props }
                 { ...this.state }
             />

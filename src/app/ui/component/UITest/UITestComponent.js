@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import './UITest.style.scss';
+import './UITestStyle.scss';
 
-class UITest extends PureComponent
+class UITestComponent extends PureComponent
 {
     static propTypes = {
         counter: PropTypes.number.isRequired
@@ -19,4 +19,4 @@ class UITest extends PureComponent
     }
 }
 
-export default UITest;
+export default UITestComponent;

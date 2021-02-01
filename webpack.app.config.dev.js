@@ -49,7 +49,7 @@ module.exports = {
     watch: true,
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/html/index.html',
+            template: './src/index.html',
             filename: './index.html'
         }),
         new LiveReloadPlugin(),

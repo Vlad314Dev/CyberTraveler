@@ -1,8 +1,8 @@
 import Phaser, { Scene } from 'phaser';
-import { TestEmitter } from '../emmiters/TestEmitter.js';
-import phaserImg from '../assets/sprites/phaser2.png';
+import TestEmitter from '../../emmiter/TestEmitter';
+import phaserImg from '../../assets/sprites/phaser2.png';
 
-class TestSceneComponent extends Scene
+class TestScene extends Scene
 {
     constructor()
     {
@@ -33,4 +33,4 @@ class TestSceneComponent extends Scene
     }
 }
 
-export default TestSceneComponent;
+export default TestScene;

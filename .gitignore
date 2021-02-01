@@ -104,6 +104,7 @@ dist
 .tern-port
 
 # Project specific
-.vscode
 .DS_Store
+.vscode/
+.history/
 build/
