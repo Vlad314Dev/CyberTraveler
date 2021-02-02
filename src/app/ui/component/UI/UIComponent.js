@@ -6,9 +6,11 @@ import {
     TEST_EVENT
 } from 'Emitter/TestEmitter/TestEmitter.config';
 
+import GetUsers from '../../graphql/GetUsers';
+
 import './UIStyle.scss';
 
-class UITestComponent extends PureComponent
+class UIComponent extends PureComponent
 {
     static propTypes = {
         score: PropTypes.number.isRequired
@@ -21,10 +23,11 @@ class UITestComponent extends PureComponent
         return(
             <div block="UI">
                 UI Score: { score }
+                User data: { <GetUsers/> }
                 <button onClick={ () => TestEmitter.emit(TEST_EVENT) }>Click Me To Test Emitter</button>
             </div>
         );
     }
 }
 
-export default UITestComponent;
+export default UIComponent;

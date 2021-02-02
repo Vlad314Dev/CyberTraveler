@@ -3,17 +3,25 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from 'Store';
 
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
+
 import UI from 'Component/UI';
 
 import Phaser from 'phaser';
 import { IonPhaser } from '@ion-phaser/react';
 import TestScene from 'Scene/TestScene';
 
+const graphQlClient = new ApolloClient({
+    uri: 'http://localhost:5314/graphql'
+});
+
 class App extends PureComponent
 {
-    constructor() 
+    constructor(props) 
     {
-        super();
+        super(props);
+
         this.state = {
             initialize: true,
             game: {
@@ -41,7 +49,9 @@ class App extends PureComponent
                     game = { game }
                     initialize = { initialize }
                 >
-                    <UI />
+                    <ApolloProvider client = { graphQlClient }>
+                        <UI />
+                    </ApolloProvider>
                 </IonPhaser>
             </Provider>
         );
