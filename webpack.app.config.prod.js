@@ -23,7 +23,8 @@ module.exports = {
             Emitter: path.resolve(__dirname, 'src/app/emitter'),
             Scene: path.resolve(__dirname, 'src/app/scene'),
             Component: path.resolve(__dirname, 'src/app/ui/component'),
-            Store: path.resolve(__dirname, 'src/app/ui/store')
+            Store: path.resolve(__dirname, 'src/app/ui/store'),
+            Query: path.resolve(__dirname, 'src/app/ui/query')
         }
     },
     module: {

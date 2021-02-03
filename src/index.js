@@ -12,7 +12,7 @@ import Phaser from 'phaser';
 import { IonPhaser } from '@ion-phaser/react';
 import TestScene from 'Scene/TestScene';
 
-const graphQlClient = new ApolloClient({
+const apolloClient = new ApolloClient({
     uri: 'http://localhost:5314/graphql'
 });
 
@@ -49,7 +49,7 @@ class App extends PureComponent
                     game = { game }
                     initialize = { initialize }
                 >
-                    <ApolloProvider client = { graphQlClient }>
+                    <ApolloProvider client = { apolloClient }>
                         <UI />
                     </ApolloProvider>
                 </IonPhaser>

@@ -6,7 +6,7 @@ import {
     TEST_EVENT
 } from 'Emitter/TestEmitter/TestEmitter.config';
 
-import GetUsers from '../../graphql/GetUsers';
+import LeaderboardList from 'Component/LeaderboardList';
 
 import './UIStyle.scss';
 
@@ -23,7 +23,7 @@ class UIComponent extends PureComponent
         return(
             <div block="UI">
                 UI Score: { score }
-                User data: { <GetUsers/> }
+                { <LeaderboardList /> }
                 <button onClick={ () => TestEmitter.emit(TEST_EVENT) }>Click Me To Test Emitter</button>
             </div>
         );
