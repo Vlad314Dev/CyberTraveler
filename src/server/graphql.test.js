@@ -1,10 +1,11 @@
-import { buildSchema } from 'graphql';
 import {
     getUsers,
     getUserInfo
 } from './mysql.test.js';
+import { gql } from '@apollo/client';
 
-export const testSchema = buildSchema(`
+// getUsers: [User] @cacheControl(maxAge: 45),
+export const typeDefs = gql`
     type User {
         id: Int
         nickname: String
@@ -17,10 +18,12 @@ export const testSchema = buildSchema(`
         getUsers: [User],
         getUserInfo(id: Int): User
     }
-`);
+`;
 
 export const resolvers = {
-    test: () => "Test Root Value",
-    getUsers: getUsers,
-    getUserInfo: getUserInfo
+    Query: {
+        test: () => "Test Root Value",
+        getUsers: getUsers,
+        getUserInfo: getUserInfo
+    }
 };

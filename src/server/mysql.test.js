@@ -1,7 +1,16 @@
+/* eslint-disable no-unused-vars */
 import Promise from 'promise';
+import mysql from 'mysql';
 
-const queryDB = (req, sql, args) => new Promise((resolve, reject) => {
-    req.db.query(sql, args, (err, rows) => {
+export const DBConnection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '4321',
+    database: 'cybertraveler'
+});
+
+const queryDB = (context, sql, args) => new Promise((resolve, reject) => {
+    context.db.query(sql, args, (err, rows) => {
         if (err) {
             return reject(err);
         }
@@ -10,5 +19,12 @@ const queryDB = (req, sql, args) => new Promise((resolve, reject) => {
     });
 });
 
-export const getUsers = (args, req) => queryDB(req, "SELECT id, nickname, created_at, updated_at FROM user;").then((data) => data);
-export const getUserInfo = (args, req) => queryDB(req, "SELECT id, nickname, created_at, updated_at FROM user WHERE id = ?;", args.id).then((data) => data[0]);
+export const getUsers = (parent, args, context, info) => {
+    return queryDB(context, "SELECT id, nickname, created_at, updated_at FROM user;")
+        .then((data) => data);
+};
+
+export const getUserInfo = (parent, args, context, info) => {
+    return queryDB(context, "SELECT id, nickname, created_at, updated_at FROM user WHERE id = ?;", args.id)
+        .then((data) => data[0]);
+};

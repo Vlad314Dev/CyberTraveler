@@ -1,15 +1,13 @@
 import express from 'express';
 import path from 'path';
-
-import { graphqlHTTP } from 'express-graphql';
+import { ApolloServer } from 'apollo-server-express';
+import { RedisCache } from 'apollo-server-cache-redis';
+import { DBConnection } from './mysql.test.js';
 import { 
-    testSchema,
+    typeDefs,
     resolvers
- } from './graphql.test.js';
+} from './graphql.test.js';
 
- import mysql from 'mysql';
-
-const app = express();
 const BUILD_SRC = __dirname; 
 const INDEX_HTML = path.join(BUILD_SRC, 'index.html');
 const PORT = 5314;
@@ -18,23 +16,28 @@ if (process.env.NODE_ENV !== 'production') {
     console.log('------========Development mode========-----');
 }
 
+const app = express();
+const server = new ApolloServer({
+    typeDefs, 
+    resolvers,
+    context: () => ({ 
+        db: DBConnection
+    }),
+    cache: new RedisCache({
+        host: '127.0.0.1',
+        port: 6379
+    }),
+    cacheControl: {
+        defaultMaxAge: 5
+    },
+    introspection: process.env.NODE_ENV !== 'production',
+    playground: process.env.NODE_ENV !== 'production',
+    debug: process.env.NODE_ENV !== 'production'
+});
+
 // The sequence of use middlewares is necessary
 app.use(express.static(BUILD_SRC));
-app.use((req, res, next) => {
-    req.db = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '4321',
-        database: 'cybertraveler'
-    });
-    req.db.connect();
-    next();
-});
-app.use('/graphql', graphqlHTTP({
-    schema: testSchema,
-    rootValue: resolvers,
-    graphiql: true // Interactive mode for browser
-}));
+server.applyMiddleware({ app });
 
 app.get('*', function (req, res) {
     res.sendFile(INDEX_HTML);
@@ -42,4 +45,5 @@ app.get('*', function (req, res) {
 
 app.listen(PORT, () => {
     console.log(`Server listening on http://localhost:${ PORT }`);
+    console.log(`GraphQL path ${ server.graphqlPath }`);
 });

@@ -24,17 +24,21 @@ class LeaderboardListContainer extends PureComponent
     }
 
     async getUsers() {
-        await GqlClient.query({
-            query: GET_USERS
-        }).then(
-            ({ loading, error, data  }) => {
-                this.setState({
-                        loading,
-                        error,
-                        data
-                    });
-            }
-        );
+        try {
+            await GqlClient.query({
+                query: GET_USERS
+            }).then(
+                ({ loading, error, data  }) => {
+                    this.setState({
+                            loading,
+                            error,
+                            data
+                        });
+                }
+            );
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     render()
