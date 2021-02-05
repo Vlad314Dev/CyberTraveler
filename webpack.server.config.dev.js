@@ -6,7 +6,7 @@ const path = require('path');
 module.exports = {
     mode: 'development',
     entry: {
-        app: './src/server/server.dev.js',
+        app: './server/express.dev.js',
     },
     output: {
         path: path.resolve(__dirname, 'build'),

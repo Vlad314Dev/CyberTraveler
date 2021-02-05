@@ -1,9 +1,9 @@
 /**
  * @todo add minimization configurations
  */
+const webpack = require('webpack');
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-
 
 module.exports = {
     mode: 'production',
@@ -19,12 +19,12 @@ module.exports = {
     devtool: 'source-map',
     resolve: {
         alias: {
-            Assets: path.resolve(__dirname, 'src/app/assets'),
-            Emitter: path.resolve(__dirname, 'src/app/emitter'),
-            Scene: path.resolve(__dirname, 'src/app/scene'),
-            Component: path.resolve(__dirname, 'src/app/ui/component'),
-            Store: path.resolve(__dirname, 'src/app/ui/store'),
-            Query: path.resolve(__dirname, 'src/app/ui/query')
+            GameAssets: path.resolve(__dirname, 'src/app/game/assets'),
+            GameScene: path.resolve(__dirname, 'src/app/game/scene'),
+            UIComponent: path.resolve(__dirname, 'src/app/ui/component'),
+            UIStore: path.resolve(__dirname, 'src/app/ui/store'),
+            UIQuery: path.resolve(__dirname, 'src/app/ui/query'),
+            GameUIBridge: path.resolve(__dirname, 'src/app/game-ui-bridge')
         }
     },
     module: {
@@ -57,6 +57,13 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+                REBEM_MOD_DELIM: JSON.stringify('_'),
+                REBEM_ELEM_DELIM: JSON.stringify('-')
+            }
+        }),
         new HtmlWebpackPlugin({
             template: './src/index.html',
             filename: './index.html',

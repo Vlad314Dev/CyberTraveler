@@ -2,10 +2,9 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import LeaderboardListComponent from './LeaderboardListComponent.js';
-import {
-    GqlClient,
+import GqlClient, {
     GET_USERS
-} from 'Query';
+} from 'UIQuery';
 
 class LeaderboardListContainer extends PureComponent
 {

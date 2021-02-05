@@ -1,13 +1,10 @@
 import Phaser, { Scene } from 'phaser';
-import phaserImg from 'Assets/sprites/phaser2.png';
+import phaserImg from 'GameAssets/sprites/phaser2.png';
 
-import { store } from 'Store';
-import { addToScore } from 'Store/Score/Score.action';
-
-import TestEmitter from 'Emitter/TestEmitter';
-import {
-    TEST_EVENT
-} from 'Emitter/TestEmitter/TestEmitter.config';
+import TestSceneEmitter, {
+    TEST_EVENT,
+    TEST_POINTERDOWN_EVENT
+} from 'GameUIBridge/TestSceneEmitter';
 
 class TestScene extends Scene
 {
@@ -34,9 +31,9 @@ class TestScene extends Scene
         //  For example this will set the position of the image to 400 x 300
         Phaser.Actions.SetXY(group.getChildren(), 400, 300);
         
-        image.on('pointerdown', () => store.dispatch(addToScore(1)));
+        image.on('pointerdown', () => TestSceneEmitter.emit(TEST_POINTERDOWN_EVENT));
 
-        TestEmitter.on(TEST_EVENT, () => { image.rotation += 0.01; });
+        TestSceneEmitter.on(TEST_EVENT, () => { image.rotation += 0.01; });
     }
 }
 

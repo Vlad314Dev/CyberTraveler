@@ -2,14 +2,12 @@ import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 
 import { Provider } from 'react-redux';
-import store from 'Store';
-
-import UI from 'Component/UI';
+import store from 'UIStore';
+import UIWrapper from 'UIComponent/UIWrapper';
 
 import Phaser from 'phaser';
 import { IonPhaser } from '@ion-phaser/react';
-import TestScene from 'Scene/TestScene';
-
+import TestScene from 'GameScene/TestScene';
 
 class App extends PureComponent
 {
@@ -44,7 +42,7 @@ class App extends PureComponent
                     game = { game }
                     initialize = { initialize }
                 >
-                    <UI />
+                    <UIWrapper />
                 </IonPhaser>
             </Provider>
         );
