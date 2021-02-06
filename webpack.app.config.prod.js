@@ -2,18 +2,20 @@
  * @todo add minimization configurations
  */
 const webpack = require('webpack');
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+const StylelintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
     mode: 'production',
     entry: {
-        app: './src/index.js',
+        app: './src/public/index.js',
     },
     output: {
         path: path.resolve(__dirname, 'build'),
         publicPath: '/',
-        filename: '[name].bundle.js'
+        filename: 'app.js'
     },
     target: 'web',
     devtool: 'source-map',
@@ -24,6 +26,7 @@ module.exports = {
             UIComponent: path.resolve(__dirname, 'src/app/ui/component'),
             UIStore: path.resolve(__dirname, 'src/app/ui/store'),
             UIQuery: path.resolve(__dirname, 'src/app/ui/query'),
+            UIAssets: path.resolve(__dirname, 'src/app/ui/assets'),
             GUIBridgeComponent: path.resolve(__dirname, 'src/app/gui-bridge/component'),
             GUIBridgeEmitter: path.resolve(__dirname, 'src/app/gui-bridge/emitter')
         }
@@ -66,9 +69,18 @@ module.exports = {
             }
         }),
         new HtmlWebpackPlugin({
-            template: './src/index.html',
-            filename: './index.html',
-            excludeChunks: ['server.bundle']
-        })
+            title: 'CyberTraveler PWA Game',
+            template: './src/public/index.html',
+            filename: './index.html'
+        }),
+        new ESLintPlugin({
+            exclude: [
+                'node_modules',
+                'build'
+            ],
+            fix: false,
+            emitError: true
+        }),
+        new StylelintPlugin()
     ]
 };

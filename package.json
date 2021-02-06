@@ -1,4 +1,13 @@
 {
+    "scripts": {
+        "clean": "rm -rf build",
+        "build": "npm run build-clean && npm run build-sw && webpack --config webpack.app.config.prod.js",
+        "build-sw": "webpack --config webpack.sw.config.js",
+        "start": "npm run build && node ./build/server.bundle.js",
+        "start-dev-be": "webpack --config webpack.server.config.dev.js",
+        "start-dev-fe": "npm run build-sw && webpack --config webpack.app.config.dev.js",
+        "start-dev-sw": "webpack --config webpack.sw.config.js --watch"
+    },
     "dependencies": {
         "@apollo/client": "^3.3.7",
         "apollo-server-cache-redis": "^1.2.3",
@@ -14,7 +23,13 @@
         "react-apollo": "^3.1.5",
         "react-dom": "^17.0.1",
         "react-redux": "^7.2.2",
-        "redux": "^4.0.5"
+        "redux": "^4.0.5",
+        "workbox-core": "^6.1.0",
+        "workbox-expiration": "^6.1.0",
+        "workbox-precaching": "^6.1.0",
+        "workbox-routing": "^6.1.0",
+        "workbox-strategies": "^6.1.0",
+        "workbox-sw": "^6.1.0"
     },
     "devDependencies": {
         "@babel/core": "^7.12.10",
@@ -55,13 +70,6 @@
         "webpack-cli": "^4.4.0",
         "webpack-livereload-plugin": "^2.3.0",
         "webpack-node-externals": "^2.5.2",
-        "workbox-webpack-plugin": "^6.1.0"
-    },
-    "scripts": {
-        "clean": "rm -rf build",
-        "build": "npm run build-clean && webpack --config webpack.config.prod.js && webpack --config webpack.app.config.prod.js",
-        "start": "npm run build && node ./build/server.bundle.js",
-        "start-dev-be": "webpack --config webpack.server.config.dev.js",
-        "start-dev-fe": "webpack --config webpack.app.config.dev.js"
+        "webpack-pwa-manifest": "^4.3.0"
     }
 }

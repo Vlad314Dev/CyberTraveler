@@ -4,16 +4,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('@kooneko/livereload-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest')
 
 module.exports = {
     mode: 'development',
     entry: {
-        app: './src/index.js',
+        app: './src/public/index.js',
     },
     output: {
         path: path.resolve(__dirname, 'build'),
         publicPath: '/',
-        filename: '[name].js'
+        filename: 'app.js'
     },
     target: 'web',
     devtool: 'source-map',
@@ -61,6 +62,7 @@ module.exports = {
     },
     watch: true,
     plugins: [
+        new LiveReloadPlugin(),
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV),
@@ -69,7 +71,8 @@ module.exports = {
             }
         }),
         new HtmlWebpackPlugin({
-            template: './src/index.html',
+            title: 'CyberTraveler PWA Game',
+            template: './src/public/index.html',
             filename: './index.html'
         }),
         new ESLintPlugin({
@@ -81,6 +84,27 @@ module.exports = {
             emitError: true
         }),
         new StylelintPlugin(),
-        new LiveReloadPlugin()
+        new WebpackPwaManifest({
+            name: 'CyberTraveler PWA',
+            short_name: 'CyberTraveler',
+            description: 'CyberTraveler Progressive Web Game',
+            background_color: '#ffffff',
+            crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
+            icons: [
+              {
+                src: path.resolve(__dirname, 'src/public/assets/icon.png'),
+                sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
+              },
+              {
+                src: path.resolve(__dirname, 'src/public/assets/icon.png'),
+                size: '1024x1024' // you can also use the specifications pattern
+              },
+              {
+                src: path.resolve(__dirname, 'src/public/assets/icon.png'),
+                size: '1024x1024',
+                purpose: 'maskable'
+              }
+            ]
+          })
     ]
 };

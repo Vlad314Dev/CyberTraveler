@@ -5,11 +5,11 @@ const path = require('path');
 module.exports = {
     mode: 'production',
     entry: {
-        app: './server/express.prod.js',
+        app: './server/src/express.prod.js',
     },
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: '[name].bundle.js',
+        filename: 'server.js',
         publicPath: '/'
     },
     target: 'node',
@@ -37,7 +37,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/index.html',
+            template: './src/public/index.html',
             filename: './index.html',
             excludeChunks: ['app']
         })
