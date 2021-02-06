@@ -18,13 +18,16 @@ module.exports = {
     target: 'web',
     devtool: 'source-map',
     resolve: {
+        extensions: ['.js', '.jsx', '.scss', '*'],
         alias: {
             GameAssets: path.resolve(__dirname, 'src/app/game/assets'),
             GameScene: path.resolve(__dirname, 'src/app/game/scene'),
             UIComponent: path.resolve(__dirname, 'src/app/ui/component'),
             UIStore: path.resolve(__dirname, 'src/app/ui/store'),
             UIQuery: path.resolve(__dirname, 'src/app/ui/query'),
-            GameUIBridge: path.resolve(__dirname, 'src/app/game-ui-bridge')
+            UIAssets: path.resolve(__dirname, 'src/app/ui/assets'),
+            GUIBridgeComponent: path.resolve(__dirname, 'src/app/gui-bridge/component'),
+            GUIBridgeEmitter: path.resolve(__dirname, 'src/app/gui-bridge/emitter')
         }
     },
     module: {
@@ -69,7 +72,6 @@ module.exports = {
             template: './src/index.html',
             filename: './index.html'
         }),
-        new LiveReloadPlugin(),
         new ESLintPlugin({
             exclude: [
                 'node_modules',
@@ -78,6 +80,7 @@ module.exports = {
             fix: false,
             emitError: true
         }),
-        new StylelintPlugin()
+        new StylelintPlugin(),
+        new LiveReloadPlugin()
     ]
 };

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import UIWrapperComponent from './UIWrapperComponent.js';
+
+import UIWrapperComponent from './UIWrapperComponent';
 
 export const mapStateToProps = (state) => ({
     score: state.ScoreReducer.score 

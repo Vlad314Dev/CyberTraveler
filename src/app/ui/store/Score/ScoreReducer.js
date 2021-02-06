@@ -1,6 +1,6 @@
 import {
     ADD_TO_SCORE
-} from './Score.action';
+} from './ScoreAction';
 
 export const addToScore = (action, state) => {
     const { score } = action;

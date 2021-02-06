@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
-
 import { store } from 'UIStore';
-import { addToScore } from 'UIStore/Score/Score.action';
+import { addToScore } from 'UIStore/Score/ScoreAction';
+
 import {
     TEST_POINTERDOWN_EVENT
-} from './TestSceneEmitterConfig.js';
+} from './TestSceneEmitterConfig';
 
 export const TestSceneEmitter = new Phaser.Events.EventEmitter();
 

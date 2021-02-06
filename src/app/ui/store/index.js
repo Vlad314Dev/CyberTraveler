@@ -2,11 +2,14 @@ import {
     combineReducers,
     createStore
 } from 'redux';
-import ScoreReducer from './Score/Score.reducer';
+
+import GameSettingsReducer from './GameSettings/GameSettingsReducer';
+import ScoreReducer from './Score/ScoreReducer';
 
 export const createReducer = () => {
     return combineReducers({
-        ScoreReducer
+        ScoreReducer,
+        GameSettingsReducer
     });
 }
 

@@ -1,10 +1,9 @@
-import Phaser, { Scene } from 'phaser';
 import phaserImg from 'GameAssets/sprites/phaser2.png';
-
 import TestSceneEmitter, {
     TEST_EVENT,
     TEST_POINTERDOWN_EVENT
-} from 'GameUIBridge/TestSceneEmitter';
+} from 'GUIBridgeEmitter/TestSceneEmitter';
+import Phaser, { Scene } from 'phaser';
 
 class TestScene extends Scene
 {

@@ -1,13 +1,12 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import './UIWrapperStyle';
 
 import TestSceneEmitter, {
     TEST_EVENT
-} from 'GameUIBridge/TestSceneEmitter';
-
+} from 'GUIBridgeEmitter/TestSceneEmitter';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import LeaderboardList from 'UIComponent/LeaderboardList';
 
-import './UIWrapperStyle.scss';
 
 class UIWrapperComponent extends PureComponent
 {

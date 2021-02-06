@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import Promise from 'promise';
 import mysql from 'mysql';
+import Promise from 'promise';
 
 const DBConnection = mysql.createConnection({
     host: 'localhost',

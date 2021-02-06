@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import './LeaderboardListStyle';
 
-import './LeaderboardListStyle.scss';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 
 class LeaderboardListComponent extends PureComponent
 {

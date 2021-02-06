@@ -1,1 +1,1 @@
-export { default } from './LeaderboardListContainer.js';
+export { default } from './LeaderboardListContainer';

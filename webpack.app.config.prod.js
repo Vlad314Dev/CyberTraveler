@@ -13,7 +13,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'build'),
         publicPath: '/',
-        filename: '[name].js'
+        filename: '[name].bundle.js'
     },
     target: 'web',
     devtool: 'source-map',
@@ -24,7 +24,8 @@ module.exports = {
             UIComponent: path.resolve(__dirname, 'src/app/ui/component'),
             UIStore: path.resolve(__dirname, 'src/app/ui/store'),
             UIQuery: path.resolve(__dirname, 'src/app/ui/query'),
-            GameUIBridge: path.resolve(__dirname, 'src/app/game-ui-bridge')
+            GUIBridgeComponent: path.resolve(__dirname, 'src/app/gui-bridge/component'),
+            GUIBridgeEmitter: path.resolve(__dirname, 'src/app/gui-bridge/emitter')
         }
     },
     module: {

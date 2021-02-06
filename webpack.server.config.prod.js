@@ -9,7 +9,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: 'server.bundle.js',
+        filename: '[name].bundle.js',
         publicPath: '/'
     },
     target: 'node',
