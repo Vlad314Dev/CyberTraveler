@@ -1,5 +1,5 @@
+/* eslint-disable no-undef */
 import { ExpirationPlugin } from 'workbox-expiration';
-// import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { 
     CacheFirst,
@@ -8,19 +8,32 @@ import {
 
 self.CACHE_NAME = 'offline-cache';
 
-// @todo either add all files from the build that are served to browser
-// @todo either look for a solution via install/fetch
-// precacheAndRoute([
-//     { url: '/app.js', revision: null }
-// ]);
-
-self.addEventListener('install', () => {
+self.addEventListener('install', (event) => {
     // Skip the waiting step and activate now
     self.skipWaiting();
+
+    // Get file list required for the offline mode
+    const preCache = async () => {
+        return fetch('/precache-files', {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => {
+            return response.json();
+        }).then((urlPathToCache) => {
+            urlPathToCache.push('/');
+            urlPathToCache.push('/favicon.ico');
+            caches.open(self.CACHE_NAME).then((cache) => {
+                cache.addAll(urlPathToCache);
+            });
+        })
+    };
+
+    event.waitUntil(preCache());
 });
 
 self.addEventListener('activate', (event) => {
-    // Clean caches when SW installation is completed
+    // Clean old service worker caches when SW installation is completed
     event.waitUntil(() => {
         caches.keys().then((cacheNames) => {
             cacheNames.forEach((cacheName) => {
@@ -39,16 +52,15 @@ self.addEventListener('fetch', (event) => {
     return async (event) => {
         const response = await caches.match(event.request);
         
+        // If found in caches
         if (response) {
             return response;
         }
 
-        // If no cached response then return 
         if (!navigator.onLine) {
-            const cache = await caches.open(self.CACHE_NAME);
-            const responseCache = await cache.match('/');
-
-            return responseCache;
+            // Root page cached response
+            const offlineResponse = await caches.match('/');
+            return offlineResponse;
         }
         
         // Request to a server
@@ -60,7 +72,7 @@ self.addEventListener('fetch', (event) => {
 registerRoute(
     new RegExp(/\/graphql/), 
     new StaleWhileRevalidate({
-        cacheName: 'graphql-requests',
+        cacheName: self.CACHE_NAME,
         plugins: [
             new ExpirationPlugin({
                 maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
@@ -69,26 +81,14 @@ registerRoute(
     })
 );
 
-// Cache all scripts/styles
+// Cache all assets
 registerRoute(
     ({ request }) => request.destination === 'document' 
         || request.destination === 'script' 
-        || request.destination === 'style',
+        || request.destination === 'style'
+        || new RegExp(/.*\.(gif|jpe?g|bmp|png|ico)/),
     new CacheFirst({
-        cacheName: 'static-resources',
-        plugins: [
-            new ExpirationPlugin({
-                maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
-            })
-        ]
-    })
-);
-
-// Cache assets
-registerRoute(
-    new RegExp(/.*\.(gif|jpe?g|bmp|png|ico)/),
-    new CacheFirst({
-        cacheName: 'static-resources',
+        cacheName: self.CACHE_NAME,
         plugins: [
             new ExpirationPlugin({
                 maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days

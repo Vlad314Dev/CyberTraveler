@@ -1,11 +1,13 @@
 import express from 'express';
+import fs from 'fs';
 import path from 'path';
 
 import GqlServer from './graphql.js';
 
-const BUILD_SRC = __dirname; 
-const INDEX_HTML_PATH = path.join(BUILD_SRC, 'index.html');
-const SW_PATH = path.join(BUILD_SRC, 'sw.js');
+const BUILD_DIR = __dirname; 
+const PUBLIC_DIR = path.join(__dirname, '/../src/public/');
+const INDEX_HTML_PATH = path.join(BUILD_DIR, 'index.html');
+const SW_PATH = path.join(BUILD_DIR, 'sw.js');
 const PORT = 5314;
 
 if (process.env.NODE_ENV !== 'production') {
@@ -15,14 +17,30 @@ if (process.env.NODE_ENV !== 'production') {
 const app = express();
 
 // The sequence of use middlewares is necessary
-app.use(express.static(BUILD_SRC));
+app.use(express.static(BUILD_DIR));
 GqlServer.applyMiddleware({ app });
 
-app.get('/sw.js', function (req, res) {
+app.get('/sw.js', (req, res) => {
     res.sendFile(SW_PATH);
 });
 
-app.get('*', function (req, res) {
+app.get('/precache-files', (req, res) => {
+    const filesToInstall = fs.readdirSync(BUILD_DIR);
+
+    // Remove unnecessary files
+    if (filesToInstall.includes('server.js')) {
+        filesToInstall.splice(filesToInstall.indexOf('server.js'), 1);
+    }
+
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(filesToInstall));
+});
+
+app.get('/favicon.ico', (req, res) => {
+    res.sendFile(`${ PUBLIC_DIR }assets/favicon/favicon.ico`);
+});
+
+app.get('*', (req, res) => {
     res.sendFile(INDEX_HTML_PATH);
 });
 
