@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import LeaderboardList from 'UIComponent/LeaderboardList';
 
-
 class UIWrapperComponent extends PureComponent
 {
     static propTypes = {

@@ -1,6 +1,8 @@
 import express from 'express';
 import fs from 'fs';
+import http from 'http';
 import path from 'path';
+import { Server as IOServer }  from 'socket.io';
 
 import GqlServer from './graphql.js';
 
@@ -10,16 +12,25 @@ const INDEX_HTML_PATH = path.join(BUILD_DIR, 'index.html');
 const SW_PATH = path.join(BUILD_DIR, 'sw.js');
 const PORT = 5314;
 
+const app = express();
+const webServer = http.Server(app);
+const ioServer = new IOServer(webServer);
+
 if (process.env.NODE_ENV !== 'production') {
     console.log('------========Development mode========-----');
 }
 
-const app = express();
-
-// The sequence of use middlewares is necessary
+/**
+ * Middlewares
+ * 
+ * The sequence of middlewares use is necessary
+ */
 app.use(express.static(BUILD_DIR));
 GqlServer.applyMiddleware({ app });
 
+/**
+ * Routes
+ */
 app.get('/sw.js', (req, res) => {
     res.sendFile(SW_PATH);
 });
@@ -44,7 +55,24 @@ app.get('*', (req, res) => {
     res.sendFile(INDEX_HTML_PATH);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server listening on http://localhost:${ PORT }`);
+/**
+ * WEB server
+ */
+webServer.listen(PORT, () => {
+    console.log(`Server listening on http://localhost:${ webServer.address().port }`);
     console.log(`GraphQL path ${ GqlServer.graphqlPath }`);
+});
+
+/**
+ * socket.io server
+ */
+ioServer.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+
+    socket.on('SOCKET_TEST', (data) => {
+        console.log('SOCKET_TEST: ' + data);
+    });
 });

@@ -4,6 +4,7 @@ import TestSceneEmitter, {
     TEST_POINTERDOWN_EVENT
 } from 'GUIBridgeEmitter/TestSceneEmitter';
 import Phaser, { Scene } from 'phaser';
+import io from 'socket.io-client';
 
 class TestScene extends Scene
 {
@@ -19,6 +20,11 @@ class TestScene extends Scene
 
     create()
     {
+        if (navigator.onLine) {
+            const socket = io();
+            socket.emit('SOCKET_TEST', 'Call server from a client from TestScene.');
+        }
+
         const group = this.add.group();
 
         //  Add an existing Image into the group:
