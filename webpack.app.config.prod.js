@@ -28,7 +28,8 @@ module.exports = {
             UIQuery: path.resolve(__dirname, 'src/app/ui/query'),
             UIAssets: path.resolve(__dirname, 'src/app/ui/assets'),
             GUIBridgeComponent: path.resolve(__dirname, 'src/app/gui-bridge/component'),
-            GUIBridgeEmitter: path.resolve(__dirname, 'src/app/gui-bridge/emitter')
+            GUIBridgeEmitter: path.resolve(__dirname, 'src/app/gui-bridge/emitter'),
+            IOWrapper: path.resolve(__dirname, 'src/app/io/IOWrapper')
         }
     },
     module: {

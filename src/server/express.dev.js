@@ -35,16 +35,26 @@ app.get('/sw.js', (req, res) => {
     res.sendFile(SW_PATH);
 });
 
-app.get('/precache-files', (req, res) => {
-    const filesToInstall = fs.readdirSync(BUILD_DIR);
+app.get('/precache-paths', (req, res) => {
+    const filesToCache = fs.readdirSync(BUILD_DIR);
 
     // Remove unnecessary files
-    if (filesToInstall.includes('server.js')) {
-        filesToInstall.splice(filesToInstall.indexOf('server.js'), 1);
+    if (filesToCache.includes('server.js')) {
+        filesToCache.splice(filesToCache.indexOf('server.js'), 1);
     }
 
+    // Transform to the request path
+    filesToCache.forEach((file) => {
+        return `/${ file }`;
+    });
+
+    // File paths that are not included to the build
+    filesToCache.push('/');
+    filesToCache.push('/favicon.ico');
+    filesToCache.push('/socket.io.js');
+
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(filesToInstall));
+    res.end(JSON.stringify(filesToCache));
 });
 
 app.get('/favicon.ico', (req, res) => {

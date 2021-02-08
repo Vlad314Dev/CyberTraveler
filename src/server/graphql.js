@@ -1,11 +1,10 @@
 import { gql } from '@apollo/client';
-import { ApolloServer } from 'apollo-server-express';
 import { RedisCache } from 'apollo-server-cache-redis';
+import { ApolloServer } from 'apollo-server-express';
 
 import DBConnection, {
-    getUsers,
-    getUserInfo
-} from './mysql.js';
+    getUserInfo,
+    getUsers} from './mysql.js';
 
 // getUsers: [User] @cacheControl(maxAge: 45),
 const typeDefs = gql`

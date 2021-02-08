@@ -3,8 +3,8 @@ import TestSceneEmitter, {
     TEST_EVENT,
     TEST_POINTERDOWN_EVENT
 } from 'GUIBridgeEmitter/TestSceneEmitter';
+import IOWrapper from 'IOWrapper';
 import Phaser, { Scene } from 'phaser';
-import io from 'socket.io-client';
 
 class TestScene extends Scene
 {
@@ -21,7 +21,7 @@ class TestScene extends Scene
     create()
     {
         if (navigator.onLine) {
-            const socket = io();
+            const socket = new IOWrapper();
             socket.emit('SOCKET_TEST', 'Call server from a client from TestScene.');
         }
 

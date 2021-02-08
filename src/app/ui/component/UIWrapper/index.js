@@ -1,1 +1,1 @@
-export { default } from './UIWrapperContainer.js';
+export { default } from './UIWrapperContainer';

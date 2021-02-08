@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import { ExpirationPlugin } from 'workbox-expiration';
+import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { 
     CacheFirst,
@@ -14,15 +15,13 @@ self.addEventListener('install', (event) => {
 
     // Get file list required for the offline mode
     const preCache = async () => {
-        return fetch('/precache-files', {
+        return fetch('/precache-paths', {
             headers: {
                 'Content-Type': 'application/json'
             }
         }).then((response) => {
             return response.json();
         }).then((urlPathToCache) => {
-            urlPathToCache.push('/');
-            urlPathToCache.push('/favicon.ico');
             caches.open(self.CACHE_NAME).then((cache) => {
                 cache.addAll(urlPathToCache);
             });
@@ -43,31 +42,6 @@ self.addEventListener('activate', (event) => {
     });
 });
 
-self.addEventListener('fetch', (event) => {
-    if (event.request.method !== 'GET') {
-        return;
-    }
-    
-    // Respond with async function response
-    return async (event) => {
-        const response = await caches.match(event.request);
-        
-        // If found in caches
-        if (response) {
-            return response;
-        }
-
-        if (!navigator.onLine) {
-            // Root page cached response
-            const offlineResponse = await caches.match('/');
-            return offlineResponse;
-        }
-        
-        // Request to a server
-        return fetch(event.request);
-    }
-});
-
 // Use cached GQL data while revalidating
 registerRoute(
     new RegExp(/\/graphql/), 
@@ -81,12 +55,9 @@ registerRoute(
     })
 );
 
-// Cache all assets
+// Retrieve cache via CacheFirst strategy for precache/cached files
 registerRoute(
-    ({ request }) => request.destination === 'document' 
-        || request.destination === 'script' 
-        || request.destination === 'style'
-        || new RegExp(/.*\.(gif|jpe?g|bmp|png|ico)/),
+    new RegExp(/.*\.(gif|jpe?g|bmp|png|ico|css|js|map)/),
     new CacheFirst({
         cacheName: self.CACHE_NAME,
         plugins: [
@@ -96,3 +67,8 @@ registerRoute(
         ]
     })
 );
+
+// Precache and add route for root
+precacheAndRoute([
+    { revision: null, url: '/' }
+]);
