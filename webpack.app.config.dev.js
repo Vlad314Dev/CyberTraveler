@@ -23,6 +23,7 @@ module.exports = {
         alias: {
             GameAssets: path.resolve(__dirname, 'src/app/game/assets'),
             GameScene: path.resolve(__dirname, 'src/app/game/scene'),
+            GameObject: path.resolve(__dirname, 'src/app/game/object'),
             UIComponent: path.resolve(__dirname, 'src/app/ui/component'),
             UIStore: path.resolve(__dirname, 'src/app/ui/store'),
             UIQuery: path.resolve(__dirname, 'src/app/ui/query'),

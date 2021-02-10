@@ -8,11 +8,6 @@ import Phaser, { Scene } from 'phaser';
 
 class TestScene extends Scene
 {
-    constructor()
-    {
-        super();
-    }
-
     preload()
     {
         this.load.image('phaser', phaserImg);

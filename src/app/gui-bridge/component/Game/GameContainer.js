@@ -1,4 +1,5 @@
-import TestScene from 'GameScene/TestScene';
+import BootScene from 'GameScene/BootScene';
+import GameScene from 'GameScene/GameScene';
 import Phaser from 'phaser';
 import { PropTypes } from 'prop-types';
 import React, { PureComponent } from 'react';
@@ -30,10 +31,19 @@ class GameContainer extends PureComponent
                 width: 800,
                 height: 600,
                 type: Phaser.AUTO,
-                audio: {
-                    disableWebAudio: true
+                physics: {
+                    default: 'arcade',
+                    arcade: {
+                        gravity: {
+                            y: 800
+                        },
+                        debug: true
+                    }
                 },
-                scene: [TestScene]
+                scene: [
+                    BootScene,
+                    GameScene
+                ]
             }
         }
     }

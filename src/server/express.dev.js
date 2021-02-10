@@ -8,6 +8,7 @@ import GqlServer from './graphql.js';
 
 const BUILD_DIR = __dirname; 
 const PUBLIC_DIR = path.join(__dirname, '/../src/public/');
+const GAME_ASSETS = path.join(__dirname, '/../src/app/game/assets');
 const INDEX_HTML_PATH = path.join(BUILD_DIR, 'index.html');
 const SW_PATH = path.join(BUILD_DIR, 'sw.js');
 const PORT = 5314;
@@ -15,6 +16,7 @@ const PORT = 5314;
 const app = express();
 const webServer = http.Server(app);
 const ioServer = new IOServer(webServer);
+
 
 if (process.env.NODE_ENV !== 'production') {
     console.log('------========Development mode========-----');
@@ -25,6 +27,7 @@ if (process.env.NODE_ENV !== 'production') {
  * 
  * The sequence of middlewares use is necessary
  */
+app.use('/game/assets', express.static(GAME_ASSETS));
 app.use(express.static(BUILD_DIR));
 GqlServer.applyMiddleware({ app });
 

@@ -7,7 +7,7 @@ export const saveSettings = (action, state) => {
 
     return {
         ...state,
-        ...userSettings
+        userSettings
     }
 };
 
