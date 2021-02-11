@@ -17,7 +17,7 @@ class GameScene extends Phaser.Scene
 
     create()
     {
-        this.player1 = new Player1({scene: this, x: 20, y: 100}).get();
+        this.player1 = new Player1({scene: this, x: 20, y: 100, key: 'player1'}).get();
         // this.cameras.main.startFollow(this.player1);
     }
 

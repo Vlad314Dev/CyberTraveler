@@ -1,78 +1,154 @@
 import Phaser from 'phaser';
 
-class Player1
+import Abstract from './Abstract';
+
+class Player1 extends Abstract
 {
+    /**
+     * Player1 constructor
+     * 
+     * @param {object} config 
+     */
     constructor(config)
     {
-        this.scene = config.scene;
-        this.player1 = this.scene.add.sprite(config.x, config.y, 'player1'); // Create sprite from scene
-        
-        this.state = {
-            jump: false
+        super(config);
+
+        this._states = {
+            init: 'init',
+            runLeft: 'runLeft',
+            runRight: 'runRight',
+            idle: 'idle',
+            crouch: 'crouch',
+            jump: 'jump'
+        }
+        this._defaultHitbox = {
+            size: {
+                w: 35, 
+                h: 40
+            },
+            offset: {
+                x: 20, 
+                y: 10
+            }
         };
 
-        this.init();
-        this.bind();
+        this._init();
+        this._bindEvents();
+        this._bindMethods();
     }
 
-    // Initialize object data
-    init()
+    /**
+     * Initialize object data
+     */
+    _init()
     {
-        this.scene.physics.world.enable(this.player1); // Enable physics for sprite
+        this._addAnimations();
+        this._object.play('idle', true);
 
-        this.addAnimations();
+        this._scene.physics.world.enable(this._object); // Enable physics for sprite
+        this._resetHitbox();
         
-        this.player1.scale = 2; // Icrease size
-        this.player1.body.setSize(35,40); // Change hitbox size
-        this.player1.body.setOffset(20, 10); // Change hitbox position
-        this.player1.body.setVelocityY(200);
-        this.player1.body.setCollideWorldBounds(true); // Make screen borders to collide
+        this._object.scale = 3; // Icrease size
+        this._object.body.setVelocityY(200);
+        this._object.body.setCollideWorldBounds(true); // Make screen borders to collide
 
         // Keyboard controls
-        this.keyboard = {
-            left: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
-            right: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
-            jump: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
+        this._keyboard = {
+            left: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+            right: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+            crouch: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+            jump: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         };
     }
 
-    // Bind custom methods to use outside of the object
-    bind()
+    /**
+     * Bind events to use outside of the object
+     */
+    _bindEvents()
     {
-        this.player1.update = () => {
-            const { 
-                jump 
-            } = this.state;
-            const isPlayerOnGroud = this.player1.body.blocked.down;
-            
-            if (this.keyboard.right.isDown) { // Move right
-                this.player1.flipX = false;
-                this.player1.play('run', true); // true ignores animation if already playing
-                this.player1.x += 3;
-            } else if (this.keyboard.left.isDown) { // Move left
-                this.player1.flipX = true;
-                this.player1.play('run', true);
-                this.player1.x -= 3;
-            } else {
-                this.player1.play('idle', true);
+        /**
+         * Actions triggered on state change
+         * State is changed once per setState call if not forced
+         */
+        this._object.on('changedata-state', (obj, state) => {
+            const isPlayerOnGroud = this._object.body.blocked.down;
+
+            switch (state) {
+                case this._states.runLeft:
+                    this._resetHitbox();
+                    this._object.flipX = true;
+                    if (isPlayerOnGroud) {
+                        this._object.play('run', true);
+                    }
+                    break;
+                case this._states.runRight:
+                    this._resetHitbox();
+                    this._object.flipX = false;
+                    if (isPlayerOnGroud) {
+                        this._object.play('run', true);
+                    }
+                    break;
+                case this._states.crouch:
+                    this._object.play('crouch', true);
+                    this._setHitbox({
+                        size: { w: 35, h: 30 },
+                        offset: { x: 20, y: 20 }
+                    });
+                    break;
+                case this._states.idle:
+                    this._resetHitbox();
+                    this._object.play('idle', true);
+                    break;
+                case this._states.jump:
+                    this._resetHitbox();
+                    this._object.play('jump', true);
+                    this._object.body.setVelocityY(-300);
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    /**
+     * Bind methods to use outside of the object
+     */
+    _bindMethods()
+    {
+        this._object.update = () => {
+            const state = this._object.getData('state');
+            const isPlayerOnGroud = this._object.body.blocked.down;
+
+            if (this._keyboard.right.isDown) { // Move right
+                this._setState('runRight', true);
+                this._object.x += 3;
+            } else if (this._keyboard.left.isDown) { // Move left
+                this._setState('runLeft', true);
+                this._object.x -= 3;
+            } else if (this._keyboard.crouch.isDown && state != this._states.crouch && isPlayerOnGroud) { // Crouch
+                this._setState('crouch');
+            } else if (!this._keyboard.crouch.isDown && state == this._states.crouch) {
+                this._setState('idle');
+            } else if (state != this._states.idle && isPlayerOnGroud && (state != this._states.crouch || state == this._states.jump)) { // Idle
+                this._setState('idle');
             }
             
-            if (this.keyboard.jump.isDown && isPlayerOnGroud && !jump) { // Jump
-                this.player1.play('jump', true);
-                this.player1.body.setVelocityY(-300);
-                this.state.jump = true;
-            } else if (!this.keyboard.jump.isDown && isPlayerOnGroud && jump) { // Allow jump
-                this.state.jump = false;
+            if (this._keyboard.jump.isDown && isPlayerOnGroud && state != this._states.jump) { // Jump
+                this._setState('jump');
+            } else if (isPlayerOnGroud && state == this._states.jump) {
+                this._setState('idle');
             }
         }
     }
 
-    addAnimations()
-    {
-        // Create animations
-        this.scene.anims.create({
+    /**
+     * Create animations
+     */
+    _addAnimations()
+    { 
+        this._scene.anims.create({
             key: 'idle',
-            frames: this.scene.anims.generateFrameNames('player1-atlas', {
+            frames: this._scene.anims.generateFrameNames('player1-atlas', {
                 prefix: 'idle-gun',
                 start: 1,
                 end: 4
@@ -80,9 +156,9 @@ class Player1
             frameRate: 10,
             repeat: -1
         });
-        this.scene.anims.create({
+        this._scene.anims.create({
             key: 'run',
-            frames: this.scene.anims.generateFrameNames('player1-atlas', {
+            frames: this._scene.anims.generateFrameNames('player1-atlas', {
                 prefix: 'run-with-gun',
                 start: 1,
                 end: 10
@@ -90,22 +166,26 @@ class Player1
             frameRate: 10,
             repeat: -1
         });
-        this.scene.anims.create({
+        this._scene.anims.create({
             key: 'jump',
-            frames: this.scene.anims.generateFrameNames('player1-atlas', {
+            frames: this._scene.anims.generateFrameNames('player1-atlas', {
                 prefix: 'jump-with-gun',
                 start: 1,
                 end: 5
             }),
             frameRate: 10,
-            repeat: -1
+            repeat: 0
         });
-    }
-
-    // Use this method to retrieve the main object
-    get()
-    {
-        return this.player1;
+        this._scene.anims.create({
+            key: 'crouch',
+            frames: this._scene.anims.generateFrameNames('player1-atlas', {
+                prefix: 'crouch-gun',
+                start: 1,
+                end: 3
+            }),
+            frameRate: 15,
+            repeat: 0
+        });
     }
 }
 
