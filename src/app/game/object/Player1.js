@@ -1,8 +1,9 @@
 import Phaser from 'phaser';
 
-import Abstract from './Abstract';
+import AbstractObject from './AbstractObject';
+import Bullet from './Bullet';
 
-class Player1 extends Abstract
+class Player1 extends AbstractObject
 {
     /**
      * Player1 constructor
@@ -20,7 +21,7 @@ class Player1 extends Abstract
             idle: 'idle',
             crouch: 'crouch',
             jump: 'jump'
-        }
+        };
         this._defaultHitbox = {
             size: {
                 w: 35, 
@@ -34,7 +35,6 @@ class Player1 extends Abstract
 
         this._init();
         this._bindEvents();
-        this._bindMethods();
     }
 
     /**
@@ -43,22 +43,32 @@ class Player1 extends Abstract
     _init()
     {
         this._addAnimations();
-        this._object.play('idle', true);
+        this.play('idle', true);
 
-        this._scene.physics.world.enable(this._object); // Enable physics for sprite
+        this._scene.physics.world.enable(this); // Enable physics for sprite
         this._resetHitbox();
-        
-        this._object.scale = 3; // Icrease size
-        this._object.body.setVelocityY(200);
-        this._object.body.setCollideWorldBounds(true); // Make screen borders to collide
+
+        this.scale = 3; // Icrease size
+        this.body.setCollideWorldBounds(true); // Make screen borders to collide
 
         // Keyboard controls
         this._keyboard = {
             left: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
             right: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
             crouch: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
-            jump: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
+            jump: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
+            fire: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
         };
+
+        this.bullets = this._scene.add.group();
+        this.bullets.createMultiple({
+            frameQuantity: 50,
+            key: 'guns-and-shots-atlas',
+            frame: ['shot-10-01'],
+            active: false,
+            visible: false,
+            classType: Bullet
+        });
     }
 
     /**
@@ -70,26 +80,26 @@ class Player1 extends Abstract
          * Actions triggered on state change
          * State is changed once per setState call if not forced
          */
-        this._object.on('changedata-state', (obj, state) => {
-            const isPlayerOnGroud = this._object.body.blocked.down;
+        this.on('changedata-state', (obj, state) => {
+            const isPlayerOnGroud = this.body.blocked.down;
 
             switch (state) {
                 case this._states.runLeft:
                     this._resetHitbox();
-                    this._object.flipX = true;
+                    this.flipX = true;
                     if (isPlayerOnGroud) {
-                        this._object.play('run', true);
+                        this.play('run', true);
                     }
                     break;
                 case this._states.runRight:
                     this._resetHitbox();
-                    this._object.flipX = false;
+                    this.flipX = false;
                     if (isPlayerOnGroud) {
-                        this._object.play('run', true);
+                        this.play('run', true);
                     }
                     break;
                 case this._states.crouch:
-                    this._object.play('crouch', true);
+                    this.play('crouch', true);
                     this._setHitbox({
                         size: { w: 35, h: 30 },
                         offset: { x: 20, y: 20 }
@@ -97,12 +107,12 @@ class Player1 extends Abstract
                     break;
                 case this._states.idle:
                     this._resetHitbox();
-                    this._object.play('idle', true);
+                    this.play('idle', true);
                     break;
                 case this._states.jump:
                     this._resetHitbox();
-                    this._object.play('jump', true);
-                    this._object.body.setVelocityY(-300);
+                    this.play('jump', true);
+                    this.body.setVelocityY(-300);
                     break;
                 default:
                     break;
@@ -111,41 +121,10 @@ class Player1 extends Abstract
     }
 
     /**
-     * Bind methods to use outside of the object
-     */
-    _bindMethods()
-    {
-        this._object.update = () => {
-            const state = this._object.getData('state');
-            const isPlayerOnGroud = this._object.body.blocked.down;
-
-            if (this._keyboard.right.isDown) { // Move right
-                this._setState('runRight', true);
-                this._object.x += 3;
-            } else if (this._keyboard.left.isDown) { // Move left
-                this._setState('runLeft', true);
-                this._object.x -= 3;
-            } else if (this._keyboard.crouch.isDown && state != this._states.crouch && isPlayerOnGroud) { // Crouch
-                this._setState('crouch');
-            } else if (!this._keyboard.crouch.isDown && state == this._states.crouch) {
-                this._setState('idle');
-            } else if (state != this._states.idle && isPlayerOnGroud && (state != this._states.crouch || state == this._states.jump)) { // Idle
-                this._setState('idle');
-            }
-            
-            if (this._keyboard.jump.isDown && isPlayerOnGroud && state != this._states.jump) { // Jump
-                this._setState('jump');
-            } else if (isPlayerOnGroud && state == this._states.jump) {
-                this._setState('idle');
-            }
-        }
-    }
-
-    /**
      * Create animations
      */
     _addAnimations()
-    { 
+    {
         this._scene.anims.create({
             key: 'idle',
             frames: this._scene.anims.generateFrameNames('player1-atlas', {
@@ -186,6 +165,46 @@ class Player1 extends Abstract
             frameRate: 15,
             repeat: 0
         });
+    }
+
+    _fire()
+    {
+        const bullet = this.bullets.getFirst();
+        const side = this.getData('state') === 'runLeft' ? -1 : 1;
+        
+        if (bullet) {
+            bullet.fire(this.x, this.y, side);
+        }
+    }
+
+    update()
+    {
+        const state = this.getData('state');
+        const isPlayerOnGroud = this.body.blocked.down;
+
+        if (this._keyboard.right.isDown) { // Move right
+            this._setState('runRight', true);
+            this.x += 3;
+        } else if (this._keyboard.left.isDown) { // Move left
+            this._setState('runLeft', true);
+            this.x -= 3;
+        } else if (this._keyboard.crouch.isDown && state != this._states.crouch && isPlayerOnGroud) { // Crouch
+            this._setState('crouch');
+        } else if (!this._keyboard.crouch.isDown && state == this._states.crouch) {
+            this._setState('idle');
+        } else if (state != this._states.idle && isPlayerOnGroud && (state != this._states.crouch || state == this._states.jump)) { // Idle
+            this._setState('idle');
+        }
+
+        if (this._keyboard.jump.isDown && isPlayerOnGroud && state != this._states.jump) { // Jump
+            this._setState('jump');
+        } else if (isPlayerOnGroud && state == this._states.jump) {
+            this._setState('idle');
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(this._keyboard.fire)) {
+            this._fire();
+        }
     }
 }
 

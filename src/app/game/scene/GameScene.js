@@ -12,12 +12,13 @@ class GameScene extends Phaser.Scene
 
     preload()
     {
-        this.load.atlas('player1-atlas', '/game/assets/player1/atlas/player1.png', '/game/assets/player1/atlas/player1.json');
+        this.load.atlas('player1-atlas', '/game/assets/atlas/player1.png', '/game/assets/atlas/player1.json');
+        this.load.atlas('guns-and-shots-atlas', '/game/assets/atlas/guns-and-shots.png', '/game/assets/atlas/guns-and-shots.json');
     }
 
     create()
     {
-        this.player1 = new Player1({scene: this, x: 20, y: 100, key: 'player1'}).get();
+        this.player1 = new Player1({scene: this, x: 20, y: 100, key: 'player1'});
         // this.cameras.main.startFollow(this.player1);
     }
 

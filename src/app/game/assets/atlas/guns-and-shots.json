@@ -1,0 +1,628 @@
+{
+	"textures": [
+		{
+			"image": "guns-and-shots.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 284,
+				"h": 73
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "gun-08",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 59,
+						"h": 18
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 59,
+						"h": 18
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 59,
+						"h": 18
+					}
+				},
+				{
+					"filename": "gun-09",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 54,
+						"h": 21
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 54,
+						"h": 21
+					},
+					"frame": {
+						"x": 59,
+						"y": 0,
+						"w": 54,
+						"h": 21
+					}
+				},
+				{
+					"filename": "shot-07-01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 48,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 48,
+						"h": 12
+					},
+					"frame": {
+						"x": 0,
+						"y": 18,
+						"w": 48,
+						"h": 12
+					}
+				},
+				{
+					"filename": "shot-10-01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 4
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 4
+					},
+					"frame": {
+						"x": 48,
+						"y": 18,
+						"w": 10,
+						"h": 4
+					}
+				},
+				{
+					"filename": "shot-07-02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 48,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 48,
+						"h": 12
+					},
+					"frame": {
+						"x": 113,
+						"y": 0,
+						"w": 48,
+						"h": 12
+					}
+				},
+				{
+					"filename": "gun-06",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 42,
+						"h": 17
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 42,
+						"h": 17
+					},
+					"frame": {
+						"x": 161,
+						"y": 0,
+						"w": 42,
+						"h": 17
+					}
+				},
+				{
+					"filename": "gun-02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 39,
+						"h": 19
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 39,
+						"h": 19
+					},
+					"frame": {
+						"x": 113,
+						"y": 12,
+						"w": 39,
+						"h": 19
+					}
+				},
+				{
+					"filename": "gun-04",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 35,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 35,
+						"h": 12
+					},
+					"frame": {
+						"x": 58,
+						"y": 21,
+						"w": 35,
+						"h": 12
+					}
+				},
+				{
+					"filename": "shot-10-02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 4
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 4
+					},
+					"frame": {
+						"x": 48,
+						"y": 22,
+						"w": 10,
+						"h": 4
+					}
+				},
+				{
+					"filename": "shot-01-01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 19
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 19
+					},
+					"frame": {
+						"x": 93,
+						"y": 21,
+						"w": 17,
+						"h": 19
+					}
+				},
+				{
+					"filename": "shot-03-01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 34,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 34,
+						"h": 10
+					},
+					"frame": {
+						"x": 0,
+						"y": 30,
+						"w": 34,
+						"h": 10
+					}
+				},
+				{
+					"filename": "gun-05",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 24,
+						"h": 11
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 24,
+						"h": 11
+					},
+					"frame": {
+						"x": 34,
+						"y": 30,
+						"w": 24,
+						"h": 11
+					}
+				},
+				{
+					"filename": "shot-03-02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 34,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 34,
+						"h": 10
+					},
+					"frame": {
+						"x": 0,
+						"y": 40,
+						"w": 34,
+						"h": 10
+					}
+				},
+				{
+					"filename": "gun-03",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 13
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 13
+					},
+					"frame": {
+						"x": 58,
+						"y": 33,
+						"w": 32,
+						"h": 13
+					}
+				},
+				{
+					"filename": "shot-09-01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 22,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 22,
+						"h": 12
+					},
+					"frame": {
+						"x": 34,
+						"y": 41,
+						"w": 22,
+						"h": 12
+					}
+				},
+				{
+					"filename": "gun-07",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 23
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 23
+					},
+					"frame": {
+						"x": 0,
+						"y": 50,
+						"w": 28,
+						"h": 23
+					}
+				},
+				{
+					"filename": "shot-08-01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 5
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 5
+					},
+					"frame": {
+						"x": 203,
+						"y": 0,
+						"w": 28,
+						"h": 5
+					}
+				},
+				{
+					"filename": "shot-08-02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 5
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 5
+					},
+					"frame": {
+						"x": 231,
+						"y": 0,
+						"w": 28,
+						"h": 5
+					}
+				},
+				{
+					"filename": "gun-01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 25,
+						"h": 22
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 25,
+						"h": 22
+					},
+					"frame": {
+						"x": 259,
+						"y": 0,
+						"w": 25,
+						"h": 22
+					}
+				},
+				{
+					"filename": "shot-09-02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 22,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 22,
+						"h": 12
+					},
+					"frame": {
+						"x": 203,
+						"y": 5,
+						"w": 22,
+						"h": 12
+					}
+				},
+				{
+					"filename": "shot-02-01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 22,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 22,
+						"h": 10
+					},
+					"frame": {
+						"x": 225,
+						"y": 5,
+						"w": 22,
+						"h": 10
+					}
+				},
+				{
+					"filename": "shot-02-02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 22,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 22,
+						"h": 10
+					},
+					"frame": {
+						"x": 225,
+						"y": 15,
+						"w": 22,
+						"h": 10
+					}
+				},
+				{
+					"filename": "shot-04-01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 21,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 21,
+						"h": 10
+					},
+					"frame": {
+						"x": 152,
+						"y": 17,
+						"w": 21,
+						"h": 10
+					}
+				},
+				{
+					"filename": "shot-04-02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 21,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 21,
+						"h": 10
+					},
+					"frame": {
+						"x": 173,
+						"y": 17,
+						"w": 21,
+						"h": 10
+					}
+				},
+				{
+					"filename": "shot-01-02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 19
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 19
+					},
+					"frame": {
+						"x": 194,
+						"y": 17,
+						"w": 17,
+						"h": 19
+					}
+				},
+				{
+					"filename": "shot-06-01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 13,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 13,
+						"h": 10
+					},
+					"frame": {
+						"x": 211,
+						"y": 17,
+						"w": 13,
+						"h": 10
+					}
+				},
+				{
+					"filename": "shot-06-02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 13,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 13,
+						"h": 10
+					},
+					"frame": {
+						"x": 152,
+						"y": 27,
+						"w": 13,
+						"h": 10
+					}
+				},
+				{
+					"filename": "shot-05-01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 13,
+						"h": 5
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 13,
+						"h": 5
+					},
+					"frame": {
+						"x": 165,
+						"y": 27,
+						"w": 13,
+						"h": 5
+					}
+				},
+				{
+					"filename": "shot-05-02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 13,
+						"h": 5
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 13,
+						"h": 5
+					},
+					"frame": {
+						"x": 178,
+						"y": 27,
+						"w": 13,
+						"h": 5
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.6"
+	}
+}

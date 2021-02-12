@@ -1,4 +1,6 @@
-class Abstract
+import Phaser from 'phaser';
+
+class AbstractObject extends Phaser.GameObjects.Sprite
 {
     /**
      * Object constructor
@@ -7,8 +9,11 @@ class Abstract
      */
     constructor(config)
     {
+        super(config.scene, config.x, config.y)
+        
         this._scene = config.scene;
-        this._object = this._scene.add.sprite(config.x, config.y, config.key); // Create sprite from scene
+        this._scene.add.existing(this);
+        // this._object = this._scene.add.sprite(config.x, config.y, config.key); // Create sprite from scene
         this._defaultHitbox = {
             size: {
                 w: 35, 
@@ -31,10 +36,10 @@ class Abstract
      */
     _setState(value, force = false)
     {
-        const oldValue = this._object.getData('state');
+        const oldValue = this.getData('state');
 
         if (value !== oldValue || force) {
-            this._object.setData('state', this._states[value]);
+            this.setData('state', this._states[value]);
         }
     }
 
@@ -45,8 +50,8 @@ class Abstract
      */
     _setHitbox({ size, offset })
     {
-        this._object.body.setSize(size.w, size.h); // Change hitbox size
-        this._object.body.setOffset(offset.x, offset.y); // Change hitbox position
+        this.body.setSize(size.w, size.h); // Change hitbox size
+        this.body.setOffset(offset.x, offset.y); // Change hitbox position
     }
 
     /**
@@ -56,22 +61,6 @@ class Abstract
     {
         this._setHitbox(this._defaultHitbox);
     }
-
-    /**
-     * Bind methods to use outside of the object
-     */
-    _bindMethods()
-    {
-        this._object.update = () => {};
-    }
-
-    /**
-     * Use this method to retrieve the main sprite object
-     */
-    get()
-    {
-        return this._object;
-    }
 }
 
-export default Abstract;
+export default AbstractObject;
