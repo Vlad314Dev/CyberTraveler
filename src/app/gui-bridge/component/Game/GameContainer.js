@@ -28,8 +28,8 @@ class GameContainer extends PureComponent
         this.state = {
             initialize: true,
             game: {
-                width: 800,
-                height: 600,
+                width: window.innerWidth,
+                height: window.innerHeight,
                 type: Phaser.AUTO,
                 physics: {
                     default: 'arcade',

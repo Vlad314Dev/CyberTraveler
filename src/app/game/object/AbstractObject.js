@@ -2,6 +2,20 @@ import Phaser from 'phaser';
 
 class AbstractObject extends Phaser.GameObjects.Sprite
 {
+
+    _states = {};
+    
+    _defaultHitbox = {
+        size: {
+            w: 35, 
+            h: 40
+        },
+        offset: {
+            x: 20, 
+            y: 10
+        }
+    };
+
     /**
      * Object constructor
      * 
@@ -13,17 +27,22 @@ class AbstractObject extends Phaser.GameObjects.Sprite
         
         this._scene = config.scene;
         this._scene.add.existing(this);
-        // this._object = this._scene.add.sprite(config.x, config.y, config.key); // Create sprite from scene
-        this._defaultHitbox = {
-            size: {
-                w: 35, 
-                h: 40
-            },
-            offset: {
-                x: 20, 
-                y: 10
-            }
-        };
+    }
+
+    /**
+     * Set data to the data manager
+     * 
+     * @param {string} key 
+     * @param {any} value 
+     * @param {boolean} force 
+     */
+    _setData(key, value, force = false)
+    {
+        const oldValue = this.getData(key);
+
+        if (value !== oldValue || force) {
+            this.setData(key, value);
+        }
     }
 
     /**
@@ -36,17 +55,13 @@ class AbstractObject extends Phaser.GameObjects.Sprite
      */
     _setState(value, force = false)
     {
-        const oldValue = this.getData('state');
-
-        if (value !== oldValue || force) {
-            this.setData('state', this._states[value]);
-        }
+        this._setData('state', this._states[value], force);
     }
 
     /**
      * Set hitbox by adjusting physics body size and offset
      * 
-     * @param {{size: { w: Number, h: Number }, offset: { x: Number, y: Number }}} param0 
+     * @param {{size: { w: number, h: number }, offset: { x: number, y: number }}} param0 
      */
     _setHitbox({ size, offset })
     {
