@@ -6,50 +6,6 @@ import Bullet from './Bullet';
 
 class Player1 extends AbstractObject
 {
-    // Object states
-    _states = {
-        init: 'init',
-        runLeft: 'runLeft',
-        runRight: 'runRight',
-        idle: 'idle',
-        crouch: 'crouch',
-        jump: 'jump'
-    };
-
-    // Object default hitbox data
-    _defaultHitbox = {
-        size: {
-            w: 35, 
-            h: 40
-        },
-        offset: {
-            x: 20, 
-            y: 10
-        }
-    };
-
-    // Object direction on X axis
-    _directionX = 1;
-
-    // Weapon data
-    _weapons = {
-        default: {
-            bullet: {
-                classType: Bullet,
-                key: 'guns-and-shots-atlas',
-                frame: 'shot-10-01',
-                frameQuantity: 50,
-                active: false,
-                visible: false
-            },
-            fireRate: 300, // ms
-            nextFireTime: 0
-        }
-    };
-
-    // Selected weapon
-    _selectedWeapon;
-
     /**
      * Player1 constructor
      * 
@@ -64,18 +20,53 @@ class Player1 extends AbstractObject
     }
 
     /**
-     * Initialize object data
+     * Set properties
      */
-    _init()
+    _setProperties()
     {
-        this._addAnimations();
-        this.play('idle', true);
+        // Object states
+        this._states = {
+            idle: 'idle',
+            runLeft: 'runLeft',
+            runRight: 'runRight',
+            crouch: 'crouch',
+            jump: 'jump'
+        };
 
-        this._scene.physics.world.enable(this); // Enable physics for sprite
-        this._resetHitbox();
+        // Object default hitbox data
+        this._defaultHitbox = {
+            size: {
+                w: 35, 
+                h: 40
+            },
+            offset: {
+                x: 20, 
+                y: 10
+            }
+        };
 
-        this.scale = 3; // Icrease size
-        this.body.setCollideWorldBounds(true); // Make screen borders to collide
+        // Object direction on X axis
+        this._directionX = 1;
+
+        // Weapon data
+        this._weapons = {
+            default: {
+                bullet: {
+                    classType: Bullet,
+                    key: 'guns-and-shots-atlas',
+                    frame: 'shot-00-01',
+                    frameQuantity: 50,
+                    active: false,
+                    visible: false
+                },
+                fireRate: 300, // ms
+                nextFireTime: 0
+            }
+        };
+
+        // Selected weapon
+        this._selectedWeapon = this._weapons.default;
+        this._selectedWeapon.bullets = this._scene.add.group({ ...this._selectedWeapon.bullet });
 
         // Keyboard controls
         this._keyboard = {
@@ -85,10 +76,20 @@ class Player1 extends AbstractObject
             jump: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
             fire: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
         };
+    }
 
-        this._selectedWeapon = this._weapons.default;
-        this.bullets = this._scene.add.group();
-        this.bullets.createMultiple({...this._selectedWeapon.bullet});
+    /**
+     * Init options
+     */
+    _init()
+    {
+        this._addAnimations();
+        this.play('player1/idle', true);
+
+        this.body.setCollideWorldBounds(true); // Make screen borders to collide
+        this.body.setGravityY(400);
+        this._resetHitbox();
+        this.scale = 3; // Icrease size
     }
 
     /**
@@ -110,7 +111,7 @@ class Player1 extends AbstractObject
                     this.flipX = true;
                     this._directionX = -1;
                     if (isPlayerOnGroud) {
-                        this.play('run', true);
+                        this.play('player1/run', true);
                     }
                     break;
                 case states.runRight:
@@ -118,11 +119,11 @@ class Player1 extends AbstractObject
                     this.flipX = false;
                     this._directionX = 1;
                     if (isPlayerOnGroud) {
-                        this.play('run', true);
+                        this.play('player1/run', true);
                     }
                     break;
                 case states.crouch:
-                    this.play('crouch', true);
+                    this.play('player1/crouch', true);
                     this._setHitbox({
                         size: { w: 35, h: 30 },
                         offset: { x: 20, y: 20 }
@@ -130,12 +131,12 @@ class Player1 extends AbstractObject
                     break;
                 case states.idle:
                     this._resetHitbox();
-                    this.play('idle', true);
+                    this.play('player1/idle', true);
                     break;
                 case states.jump:
                     this._resetHitbox();
-                    this.play('jump', true);
-                    this.body.setVelocityY(-300);
+                    this.play('player1/jump', true);
+                    this.body.setVelocityY(-500);
                     break;
                 default:
                     break;
@@ -149,7 +150,7 @@ class Player1 extends AbstractObject
     _addAnimations()
     {
         this._scene.anims.create({
-            key: 'idle',
+            key: 'player1/idle',
             frames: this._scene.anims.generateFrameNames('player1-atlas', {
                 prefix: 'idle-gun',
                 start: 1,
@@ -159,7 +160,7 @@ class Player1 extends AbstractObject
             repeat: -1
         });
         this._scene.anims.create({
-            key: 'run',
+            key: 'player1/run',
             frames: this._scene.anims.generateFrameNames('player1-atlas', {
                 prefix: 'run-with-gun',
                 start: 1,
@@ -169,7 +170,7 @@ class Player1 extends AbstractObject
             repeat: -1
         });
         this._scene.anims.create({
-            key: 'jump',
+            key: 'player1/jump',
             frames: this._scene.anims.generateFrameNames('player1-atlas', {
                 prefix: 'jump-with-gun',
                 start: 1,
@@ -179,7 +180,7 @@ class Player1 extends AbstractObject
             repeat: 0
         });
         this._scene.anims.create({
-            key: 'crouch',
+            key: 'player1/crouch',
             frames: this._scene.anims.generateFrameNames('player1-atlas', {
                 prefix: 'crouch-gun',
                 start: 1,
@@ -195,7 +196,7 @@ class Player1 extends AbstractObject
         const timeNow = this._scene.time.now;
 
         if (timeNow > this._selectedWeapon.nextFireTime) {
-            const bullet = this.bullets.getFirst();
+            const bullet = this._selectedWeapon.bullets.getFirst();
         
             if (bullet) {
                 const state = this.getData('state');
@@ -204,7 +205,7 @@ class Player1 extends AbstractObject
                 const offsetX = (this.width / 2 + 10) * this._directionX;
                 const offsetY = isCrouch ? this.height / 2 : 5 + (isRunning ? 10 : 0);
 
-                bullet.fire(this.x, this.y, offsetX, offsetY, this._directionX);
+                bullet._fire(this.x, this.y, offsetX, offsetY, this._directionX);
             }
 
             this._selectedWeapon.nextFireTime = timeNow + this._selectedWeapon.fireRate;
@@ -214,8 +215,13 @@ class Player1 extends AbstractObject
         }
     }
 
-    update()
+    /**
+     * @inheritdoc
+     */
+    preUpdate(time, delta)
     {
+        super.preUpdate(time, delta);
+
         const states = this._states
         const stateDataKey = 'state';
         const state = this.getData(stateDataKey);
@@ -244,6 +250,14 @@ class Player1 extends AbstractObject
         if (this._keyboard.fire.isDown) {
             this._fire();
         }
+    }
+
+    /**
+     * Getter
+     */
+    _getBullets()
+    {
+        return this._selectedWeapon.bullets;
     }
 }
 

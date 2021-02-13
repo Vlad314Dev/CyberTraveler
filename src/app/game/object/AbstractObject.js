@@ -2,31 +2,40 @@ import Phaser from 'phaser';
 
 class AbstractObject extends Phaser.GameObjects.Sprite
 {
-
-    _states = {};
-    
-    _defaultHitbox = {
-        size: {
-            w: 35, 
-            h: 40
-        },
-        offset: {
-            x: 20, 
-            y: 10
-        }
-    };
-
     /**
      * Object constructor
      * 
-     * @param {object} config 
+     * @param {{ scene, x, y, key }} config 
      */
     constructor(config)
     {
-        super(config.scene, config.x, config.y)
+        super(config.scene, config.x, config.y, config.key)
         
         this._scene = config.scene;
         this._scene.add.existing(this);
+        this._scene.physics.world.enable(this); // Enable physics for sprite
+
+        this._setProperties();
+    }
+
+    /**
+     * Set properties
+     */
+    _setProperties()
+    {
+        // Object states
+        this._states = {};
+        // Object default hitbox data
+        this._defaultHitbox = {
+            size: {
+                w: 35, 
+                h: 40
+            },
+            offset: {
+                x: 20, 
+                y: 10
+            }
+        };
     }
 
     /**

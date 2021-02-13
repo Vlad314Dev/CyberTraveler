@@ -4,8 +4,8 @@
 			"image": "guns-and-shots.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 284,
-				"h": 73
+				"w": 302,
+				"h": 67
 			},
 			"scale": 1,
 			"frames": [
@@ -54,64 +54,43 @@
 				{
 					"filename": "shot-07-01",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
 						"w": 48,
 						"h": 12
 					},
 					"spriteSourceSize": {
-						"x": 0,
+						"x": 1,
 						"y": 0,
-						"w": 48,
-						"h": 12
+						"w": 45,
+						"h": 11
 					},
 					"frame": {
 						"x": 0,
 						"y": 18,
-						"w": 48,
-						"h": 12
+						"w": 45,
+						"h": 11
 					}
 				},
 				{
-					"filename": "shot-10-01",
+					"filename": "shot-05-01",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
-						"w": 10,
-						"h": 4
+						"w": 13,
+						"h": 5
 					},
 					"spriteSourceSize": {
 						"x": 0,
-						"y": 0,
-						"w": 10,
-						"h": 4
+						"y": 1,
+						"w": 12,
+						"h": 3
 					},
 					"frame": {
-						"x": 48,
+						"x": 45,
 						"y": 18,
-						"w": 10,
-						"h": 4
-					}
-				},
-				{
-					"filename": "shot-07-02",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 48,
-						"h": 12
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 48,
-						"h": 12
-					},
-					"frame": {
-						"x": 113,
-						"y": 0,
-						"w": 48,
-						"h": 12
+						"w": 12,
+						"h": 3
 					}
 				},
 				{
@@ -129,7 +108,7 @@
 						"h": 17
 					},
 					"frame": {
-						"x": 161,
+						"x": 113,
 						"y": 0,
 						"w": 42,
 						"h": 17
@@ -138,7 +117,7 @@
 				{
 					"filename": "gun-02",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
 						"w": 39,
 						"h": 19
@@ -147,13 +126,34 @@
 						"x": 0,
 						"y": 0,
 						"w": 39,
-						"h": 19
+						"h": 18
+					},
+					"frame": {
+						"x": 155,
+						"y": 0,
+						"w": 39,
+						"h": 18
+					}
+				},
+				{
+					"filename": "shot-07-02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 3,
+						"w": 38,
+						"h": 8
 					},
 					"frame": {
 						"x": 113,
-						"y": 12,
-						"w": 39,
-						"h": 19
+						"y": 17,
+						"w": 38,
+						"h": 8
 					}
 				},
 				{
@@ -171,115 +171,10 @@
 						"h": 12
 					},
 					"frame": {
-						"x": 58,
+						"x": 45,
 						"y": 21,
 						"w": 35,
 						"h": 12
-					}
-				},
-				{
-					"filename": "shot-10-02",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 10,
-						"h": 4
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 10,
-						"h": 4
-					},
-					"frame": {
-						"x": 48,
-						"y": 22,
-						"w": 10,
-						"h": 4
-					}
-				},
-				{
-					"filename": "shot-01-01",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 17,
-						"h": 19
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 17,
-						"h": 19
-					},
-					"frame": {
-						"x": 93,
-						"y": 21,
-						"w": 17,
-						"h": 19
-					}
-				},
-				{
-					"filename": "shot-03-01",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 34,
-						"h": 10
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 34,
-						"h": 10
-					},
-					"frame": {
-						"x": 0,
-						"y": 30,
-						"w": 34,
-						"h": 10
-					}
-				},
-				{
-					"filename": "gun-05",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 24,
-						"h": 11
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 24,
-						"h": 11
-					},
-					"frame": {
-						"x": 34,
-						"y": 30,
-						"w": 24,
-						"h": 11
-					}
-				},
-				{
-					"filename": "shot-03-02",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 34,
-						"h": 10
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 34,
-						"h": 10
-					},
-					"frame": {
-						"x": 0,
-						"y": 40,
-						"w": 34,
-						"h": 10
 					}
 				},
 				{
@@ -297,31 +192,52 @@
 						"h": 13
 					},
 					"frame": {
-						"x": 58,
-						"y": 33,
+						"x": 80,
+						"y": 21,
 						"w": 32,
 						"h": 13
 					}
 				},
 				{
-					"filename": "shot-09-01",
+					"filename": "shot-03-01",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
-						"w": 22,
-						"h": 12
+						"w": 34,
+						"h": 10
 					},
 					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 22,
-						"h": 12
+						"x": 1,
+						"y": 1,
+						"w": 32,
+						"h": 8
 					},
 					"frame": {
-						"x": 34,
-						"y": 41,
-						"w": 22,
-						"h": 12
+						"x": 0,
+						"y": 29,
+						"w": 32,
+						"h": 8
+					}
+				},
+				{
+					"filename": "shot-06-02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 13,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 1,
+						"w": 11,
+						"h": 8
+					},
+					"frame": {
+						"x": 32,
+						"y": 29,
+						"w": 11,
+						"h": 8
 					}
 				},
 				{
@@ -339,52 +255,73 @@
 						"h": 23
 					},
 					"frame": {
-						"x": 0,
-						"y": 50,
+						"x": 43,
+						"y": 33,
 						"w": 28,
 						"h": 23
 					}
 				},
 				{
-					"filename": "shot-08-01",
+					"filename": "shot-00-01",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
-						"w": 28,
-						"h": 5
+						"w": 10,
+						"h": 4
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 28,
-						"h": 5
+						"w": 9,
+						"h": 4
 					},
 					"frame": {
-						"x": 203,
-						"y": 0,
-						"w": 28,
-						"h": 5
+						"x": 71,
+						"y": 33,
+						"w": 9,
+						"h": 4
 					}
 				},
 				{
-					"filename": "shot-08-02",
+					"filename": "shot-03-02",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
-						"w": 28,
-						"h": 5
+						"w": 34,
+						"h": 10
 					},
 					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 28,
-						"h": 5
+						"x": 5,
+						"y": 1,
+						"w": 26,
+						"h": 8
 					},
 					"frame": {
-						"x": 231,
+						"x": 0,
+						"y": 37,
+						"w": 26,
+						"h": 8
+					}
+				},
+				{
+					"filename": "shot-01-02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 17,
+						"h": 19
+					},
+					"spriteSourceSize": {
+						"x": 1,
 						"y": 0,
-						"w": 28,
-						"h": 5
+						"w": 16,
+						"h": 19
+					},
+					"frame": {
+						"x": 26,
+						"y": 37,
+						"w": 16,
+						"h": 19
 					}
 				},
 				{
@@ -402,220 +339,283 @@
 						"h": 22
 					},
 					"frame": {
-						"x": 259,
-						"y": 0,
+						"x": 0,
+						"y": 45,
 						"w": 25,
 						"h": 22
 					}
 				},
 				{
-					"filename": "shot-09-02",
+					"filename": "shot-08-02",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
-						"w": 22,
-						"h": 12
+						"w": 28,
+						"h": 5
 					},
 					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 22,
-						"h": 12
+						"x": 2,
+						"y": 1,
+						"w": 25,
+						"h": 3
 					},
 					"frame": {
-						"x": 203,
-						"y": 5,
-						"w": 22,
-						"h": 12
+						"x": 194,
+						"y": 0,
+						"w": 25,
+						"h": 3
 					}
 				},
 				{
-					"filename": "shot-02-01",
+					"filename": "gun-05",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 22,
-						"h": 10
+						"w": 24,
+						"h": 11
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
+						"w": 24,
+						"h": 11
+					},
+					"frame": {
+						"x": 219,
+						"y": 0,
+						"w": 24,
+						"h": 11
+					}
+				},
+				{
+					"filename": "shot-09-01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
 						"w": 22,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 1,
+						"w": 20,
 						"h": 10
 					},
 					"frame": {
-						"x": 225,
-						"y": 5,
-						"w": 22,
+						"x": 194,
+						"y": 3,
+						"w": 20,
 						"h": 10
 					}
 				},
 				{
 					"filename": "shot-02-02",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
 						"w": 22,
 						"h": 10
 					},
 					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 22,
-						"h": 10
+						"x": 1,
+						"y": 2,
+						"w": 20,
+						"h": 6
 					},
 					"frame": {
-						"x": 225,
-						"y": 15,
-						"w": 22,
-						"h": 10
+						"x": 243,
+						"y": 0,
+						"w": 20,
+						"h": 6
 					}
 				},
 				{
-					"filename": "shot-04-01",
+					"filename": "shot-08-01",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
-						"w": 21,
-						"h": 10
+						"w": 28,
+						"h": 5
 					},
 					"spriteSourceSize": {
-						"x": 0,
+						"x": 7,
+						"y": 1,
+						"w": 20,
+						"h": 3
+					},
+					"frame": {
+						"x": 263,
 						"y": 0,
-						"w": 21,
+						"w": 20,
+						"h": 3
+					}
+				},
+				{
+					"filename": "shot-09-02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 22,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 1,
+						"w": 19,
 						"h": 10
 					},
 					"frame": {
-						"x": 152,
-						"y": 17,
-						"w": 21,
+						"x": 283,
+						"y": 0,
+						"w": 19,
 						"h": 10
 					}
 				},
 				{
 					"filename": "shot-04-02",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
 						"w": 21,
 						"h": 10
 					},
 					"spriteSourceSize": {
 						"x": 0,
-						"y": 0,
-						"w": 21,
-						"h": 10
+						"y": 1,
+						"w": 19,
+						"h": 8
 					},
 					"frame": {
-						"x": 173,
-						"y": 17,
-						"w": 21,
-						"h": 10
+						"x": 263,
+						"y": 3,
+						"w": 19,
+						"h": 8
 					}
 				},
 				{
-					"filename": "shot-01-02",
+					"filename": "shot-04-01",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
-						"w": 17,
-						"h": 19
+						"w": 21,
+						"h": 10
 					},
 					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 17,
-						"h": 19
+						"x": 2,
+						"y": 1,
+						"w": 18,
+						"h": 8
 					},
 					"frame": {
-						"x": 194,
-						"y": 17,
-						"w": 17,
-						"h": 19
+						"x": 243,
+						"y": 6,
+						"w": 18,
+						"h": 8
+					}
+				},
+				{
+					"filename": "shot-02-01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 22,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 2,
+						"w": 18,
+						"h": 6
+					},
+					"frame": {
+						"x": 214,
+						"y": 11,
+						"w": 18,
+						"h": 6
 					}
 				},
 				{
 					"filename": "shot-06-01",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
 						"w": 13,
 						"h": 10
 					},
 					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 13,
-						"h": 10
+						"x": 1,
+						"y": 1,
+						"w": 10,
+						"h": 8
 					},
 					"frame": {
-						"x": 211,
-						"y": 17,
-						"w": 13,
-						"h": 10
+						"x": 232,
+						"y": 11,
+						"w": 10,
+						"h": 8
 					}
 				},
 				{
-					"filename": "shot-06-02",
+					"filename": "shot-01-01",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
-						"w": 13,
-						"h": 10
+						"w": 17,
+						"h": 19
 					},
 					"spriteSourceSize": {
-						"x": 0,
+						"x": 1,
 						"y": 0,
-						"w": 13,
-						"h": 10
+						"w": 15,
+						"h": 19
 					},
 					"frame": {
-						"x": 152,
-						"y": 27,
-						"w": 13,
-						"h": 10
-					}
-				},
-				{
-					"filename": "shot-05-01",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 13,
-						"h": 5
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 13,
-						"h": 5
-					},
-					"frame": {
-						"x": 165,
-						"y": 27,
-						"w": 13,
-						"h": 5
+						"x": 194,
+						"y": 13,
+						"w": 15,
+						"h": 19
 					}
 				},
 				{
 					"filename": "shot-05-02",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
 						"w": 13,
 						"h": 5
 					},
 					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 13,
-						"h": 5
+						"x": 2,
+						"y": 1,
+						"w": 10,
+						"h": 3
 					},
 					"frame": {
-						"x": 178,
-						"y": 27,
-						"w": 13,
-						"h": 5
+						"x": 209,
+						"y": 17,
+						"w": 10,
+						"h": 3
+					}
+				},
+				{
+					"filename": "shot-00-02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 10,
+						"h": 4
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 9,
+						"h": 4
+					},
+					"frame": {
+						"x": 219,
+						"y": 17,
+						"w": 9,
+						"h": 4
 					}
 				}
 			]

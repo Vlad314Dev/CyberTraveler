@@ -3,23 +3,38 @@ import Phaser from 'phaser';
 class Bullet extends Phaser.Physics.Arcade.Sprite
 {
     /**
-     * Bullet constructor
-     * 
-     * @param {object} config 
+     * @inheritdoc
      */
     constructor(scene, x, y, key, frame)
     {
         super(scene, x, y, key, frame);
 
         scene.physics.world.enable(this);
+        
+        this._setProperties();
+        this._init();
+        this._bindEvents();
+    }
 
+    /**
+     * Set properties
+     */
+    _setProperties()
+    {
+        // Time when an object will dissapear from the world
+        this._lifeTime;
+    }
+
+    /**
+     * Init options
+     */
+    _init()
+    {
         this.body.checkWorldBounds(true);
         this.body.setAllowGravity(false);
 
-        this.body.collideWorldBounds= true;
+        this.body.collideWorldBounds = true;
         this.body.onWorldBounds = true;
-
-        this._bindEvents();
     }
 
     /**
@@ -32,13 +47,9 @@ class Bullet extends Phaser.Physics.Arcade.Sprite
             if (body.gameObject === this) {
                 this.setActive(false);
                 this.setVisible(false);
+                this.body.reset();
             }
         });
-    }
-
-    preUpdate(time, delta)
-    {
-        super.preUpdate(time, delta);
     }
 
     /**
@@ -49,15 +60,41 @@ class Bullet extends Phaser.Physics.Arcade.Sprite
      * @param {number} offsetX 
      * @param {number} offsetY 
      * @param {number 1 or -1} directionX 
+     * @param {number} velocityX 
      */
-    fire(x, y, offsetX, offsetY, directionX)
+    _fire(x, y, offsetX, offsetY, directionX, velocityX = 800)
     {   
+        this._lifeTime = this.scene.time.now + 5000; // 5 sec
+
         this.body.reset(x + offsetX, y + offsetY);
-        this.body.setVelocity(800 * directionX, 0);
+        this.body.setVelocity(velocityX * directionX, 0);
 
         this.setScale(2);
         this.setActive(true);
         this.setVisible(true);
+    }
+
+    /**
+     * Hide object from scene on collide
+     */
+    _onCollision()
+    {
+        this.setActive(false);
+        this.setVisible(false);
+        this.body.reset(); // Without reset the body will be still in scene
+    }
+
+    /**
+     * @inheritdoc
+     */
+    preUpdate(time, delta)
+    {
+        super.preUpdate(time, delta);
+
+        // Trigger collision if object is alive for too long
+        if (time > this._lifeTime) {
+            this._onCollision();
+        }
     }
 }
 
