@@ -30,6 +30,8 @@ class GameScene extends Phaser.Scene
             active: false,
             visible: false
         });
+        this._enemySpawnDelay = 2000;
+        this._nextEnemySpawnTime = 0;
 
         // this._enemies.getFirst()._spawn();
 
@@ -38,11 +40,14 @@ class GameScene extends Phaser.Scene
         this.cameras.main.startFollow(this._player1);
     }
 
-    update()
+    update(time, delta)
     {
+        super.update(time, delta);
+
         const enemy = this._enemies.getFirst();
-        if (enemy) {
+        if (enemy && time > this._nextEnemySpawnTime) {
             enemy._spawn();
+            this._nextEnemySpawnTime = time + this._enemySpawnDelay;
         }
     }
 

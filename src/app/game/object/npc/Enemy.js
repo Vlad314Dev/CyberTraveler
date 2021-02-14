@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 import AbstractObject from '../AbstractObject';
 import Bullet from '../Bullet';
 
@@ -9,9 +11,6 @@ class Enemy extends AbstractObject
     constructor(scene, x, y, key)
     {
         super({ scene, x, y, key });
-
-        this._setProperties();
-        this._init();
     }
 
     /**
@@ -21,9 +20,9 @@ class Enemy extends AbstractObject
     {
         // Object states
         this._states = {
-            idle: 'idle',
-            runLeft: 'runLeft',
-            runRight: 'runRight'
+            patrol: 'patrol',
+            chase: 'chase',
+            attack: 'attack'
         };
         // Object default hitbox data
         this._defaultHitbox = {
@@ -63,6 +62,8 @@ class Enemy extends AbstractObject
         // Selected weapon
         this._selectedWeapon = this._weapons.default;
         this._selectedWeapon.bullets = this._scene.add.group({ ...this._selectedWeapon.bullet });
+        // The distance that is used by npc to chase/attack player
+        this._activeDistance = 800;
     }
 
     /**
@@ -73,13 +74,14 @@ class Enemy extends AbstractObject
         this.setActive(false);
         this.setVisible(false);
 
-        this._addAnimations();
-        this.play('enemy/robo-solder-run', true);
-
         this.body.setCollideWorldBounds(true);
         this.body.setImmovable(true);
 
         this._resetHitbox();
+        this._setState(this._states.patrol);
+
+        this._addAnimations();
+        this.play('enemy/robo-solder-run', true);
     }
 
     /**
@@ -87,6 +89,23 @@ class Enemy extends AbstractObject
      */
     _bindEvents()
     {
+        /**
+         * Actions triggered on state change
+         * State is changed once per setState call if not forced
+         */
+        this.on('changedata-state', (obj, state) => {
+            const states = this._states;
+
+            switch (state) {
+                case states.patrol:
+                case states.chase:
+                    break;
+                case states.attack:
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     /**
@@ -103,11 +122,6 @@ class Enemy extends AbstractObject
             }),
             frameRate: 10,
             repeat: -1
-        });
-
-        this._scene.anims.create({
-            key: 'enemy/robo-solder-idle',
-            frames: this._scene.anims.generateFrameNames('enemies-atlas', 'robo-soldier-run3')
         });
     }
 
@@ -140,10 +154,14 @@ class Enemy extends AbstractObject
     {
         this._health = this._defaultHealth;
         
-        this.setRandomPosition(0, this._scene.height, this._scene.width, this._scene.height);
+        const spawnSideCoef = Phaser.Math.Between(1, 100);
+        const spawnSide = spawnSideCoef >= 50 ? 1 : -1;
+        this.setPosition(this._scene._player1.x + 1200 * spawnSide, 1000);
         this.setScale(3);
         this.setActive(true);
         this.setVisible(true);
+        // @todo
+        this.setY(1000);
 
         this._lifeTime = this._scene.time.now + 20000;
     }
@@ -175,13 +193,29 @@ class Enemy extends AbstractObject
     {
         super.preUpdate(time, delta);
 
-        if (this._scene.time.now > this._lifeTime) {
-            this._kill();
+        // if (this._scene.time.now > this._lifeTime) {
+        //     this._deactivate();
+        // }
+        // The code below will not be executed if the object is not active
+
+        const p1DistanceX = this._scene._player1.x - this.x;
+
+        if ((p1DistanceX >= 0 && p1DistanceX <= this._activeDistance && this._directionX === 1) // Player at right and NPC is turned right
+            || (p1DistanceX <= 0 && p1DistanceX >= -this._activeDistance && this._directionX === -1) // Player at left and NPC is turned left
+        ) {
+            this._fire();
+        }
+        
+        if ((p1DistanceX >= 0 && p1DistanceX >= this._activeDistance && this._directionX === -1) // NPC went far away to left
+            || (p1DistanceX <= 0 && p1DistanceX <= -this._activeDistance && this._directionX === 1) // NPC went far away to right
+            || (this.body.blocked.left || this.body.blocked.right) // World bounds collision
+        ) {
+            // Turn around
+            this.flipX = !this.flipX;
+            this._directionX = -this._directionX;
         }
 
-        // This will not be executed if the object is not active
-        this._fire();
-        this.x += 2;
+        this.x += 3 * this._directionX;
     }
 }
 

@@ -16,6 +16,8 @@ class AbstractObject extends Phaser.GameObjects.Sprite
         this._scene.physics.world.enable(this); // Enable physics for sprite
 
         this._setProperties();
+        this._bindEvents();
+        this._init();
     }
 
     /**
@@ -36,6 +38,20 @@ class AbstractObject extends Phaser.GameObjects.Sprite
                 y: 10
             }
         };
+    }
+
+    /**
+     * Bind events for this object
+     */
+    _bindEvents()
+    {
+    }
+
+    /**
+     * Init options
+     */
+    _init()
+    {
     }
 
     /**

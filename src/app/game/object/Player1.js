@@ -14,13 +14,10 @@ class Player1 extends AbstractObject
     constructor(config)
     {
         super(config);
-
-        this._init();
-        this._bindEvents();
     }
 
     /**
-     * Set properties
+     * @inheritdoc
      */
     _setProperties()
     {
@@ -79,21 +76,26 @@ class Player1 extends AbstractObject
     }
 
     /**
-     * Init options
+     * @inheritdoc
      */
     _init()
     {
-        this._addAnimations();
-        this.play('player1/idle', true);
-
         this.body.setCollideWorldBounds(true); // Make screen borders to collide
         this.body.setGravityY(400);
+        
+        this.setScale(3); // Icrease size
+        // @todo
+        this.setY(1000);
+
         this._resetHitbox();
-        this.scale = 3; // Icrease size
+        this._setState(this._states.idle);
+
+        this._addAnimations();
+        this.play('player1/idle', true);
     }
 
     /**
-     * Bind events to use outside of the object
+     * @inheritdoc
      */
     _bindEvents()
     {
