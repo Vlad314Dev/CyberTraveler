@@ -169,9 +169,11 @@ class Enemy extends AbstractObject
     /**
      * When enemy is hitted
      */
-    _onHit()
+    _onHit(damage = 1)
     {
-        if (--this._health <= 0) {
+        this._health -= damage;
+        
+        if (this._health <= 0) {
             this._deactivate();
         }
     }
@@ -184,6 +186,14 @@ class Enemy extends AbstractObject
         this.setActive(false);
         this.setVisible(false);
         this.body.reset();
+    }
+
+    /**
+     * Getter
+     */
+    _getBullets()
+    {
+        return this._selectedWeapon.bullets;
     }
 
     /**

@@ -1,5 +1,7 @@
+import P1Emitter from 'GUIBridgeEmitter/P1Emitter';
 import TestSceneEmitter from 'GUIBridgeEmitter/TestSceneEmitter';
 import Phaser from 'phaser';
+import { REDUCE_HEALTH } from 'UIStore/P1Health/P1HealthAction';
 
 import AbstractObject from './AbstractObject';
 import Bullet from './Bullet';
@@ -29,7 +31,6 @@ class Player1 extends AbstractObject
             crouch: 'crouch',
             jump: 'jump'
         };
-
         // Object default hitbox data
         this._defaultHitbox = {
             size: {
@@ -41,10 +42,8 @@ class Player1 extends AbstractObject
                 y: 10
             }
         };
-
         // Object direction on X axis
         this._directionX = 1;
-
         // Weapon data
         this._weapons = {
             default: {
@@ -60,11 +59,9 @@ class Player1 extends AbstractObject
                 nextFireTime: 0
             }
         };
-
         // Selected weapon
         this._selectedWeapon = this._weapons.default;
         this._selectedWeapon.bullets = this._scene.add.group({ ...this._selectedWeapon.bullet });
-
         // Keyboard controls
         this._keyboard = {
             left: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
@@ -73,6 +70,8 @@ class Player1 extends AbstractObject
             jump: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
             fire: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
         };
+        // Player1 health
+        this._health = 5;
     }
 
     /**
@@ -260,6 +259,21 @@ class Player1 extends AbstractObject
     _getBullets()
     {
         return this._selectedWeapon.bullets;
+    }
+
+    /**
+     * On player1 hit
+     */
+    _onHit(damage = 1)
+    {
+        this.body.setVelocityX(0);
+        this._health -= damage;
+
+        P1Emitter.emit(REDUCE_HEALTH, damage);
+
+        if (this._health <= 0) {
+            // @todo die
+        }
     }
 }
 

@@ -26,7 +26,7 @@ class GameScene extends Phaser.Scene
         this._enemies = this.add.group({
             classType: Enemy,
             key: 'enemy',
-            frameQuantity: 5,
+            frameQuantity: 2,
             active: false,
             visible: false
         });
@@ -36,6 +36,9 @@ class GameScene extends Phaser.Scene
         // this._enemies.getFirst()._spawn();
 
         this.physics.add.collider(this._player1._getBullets(), this._enemies, this._enemyHit, null, this);
+        this._enemies.children.each((enemy) => {
+            this.physics.add.collider(enemy._getBullets(), this._player1, this._player1Hit, null, this);
+        });
 
         this.cameras.main.startFollow(this._player1);
     }
@@ -54,7 +57,13 @@ class GameScene extends Phaser.Scene
     _enemyHit(bullet, enemy)
     {
         bullet._onCollision();
-        enemy._onHit();
+        enemy._onHit(bullet._damage);
+    }
+
+    _player1Hit(bullet, player1)
+    {
+        bullet._onCollision();
+        player1._onHit(bullet._damage);
     }
 }
 

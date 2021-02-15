@@ -23,6 +23,8 @@ class Bullet extends Phaser.Physics.Arcade.Sprite
     {
         // Time when an object will dissapear from the world
         this._lifeTime;
+        // Bullet damage used to reduce health
+        this._damage = 1;
     }
 
     /**

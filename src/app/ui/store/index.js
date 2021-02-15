@@ -4,12 +4,14 @@ import {
 } from 'redux';
 
 import GameSettingsReducer from './GameSettings/GameSettingsReducer';
+import P1HealthReducer from './P1Health/P1HealthReducer';
 import ScoreReducer from './Score/ScoreReducer';
 
 export const createReducer = () => {
     return combineReducers({
         ScoreReducer,
-        GameSettingsReducer
+        GameSettingsReducer,
+        P1HealthReducer
     });
 }
 

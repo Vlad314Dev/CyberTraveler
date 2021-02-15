@@ -3,7 +3,26 @@ body {
 }
 
 .UIWrapper {
-    background-color: #999;
     position: absolute;
+    width: 100%;
+    height: 100%;
     color: #fff;
+}
+
+.UI {
+    &-P1HealthBar {
+        position: absolute;
+        left: 50%;
+        top: 0;
+    }
+}
+
+.P1HealthBar {
+    &-HealthElem {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        border: 1px solid #fff;
+    }
 }
