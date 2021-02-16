@@ -1,7 +1,6 @@
+import Enemy from 'GameObject/Npc/Enemy';
 import Player1 from 'GameObject/Player1';
 import Phaser from 'phaser';
-
-import Enemy from '../object/npc/Enemy';
 
 class GameScene extends Phaser.Scene
 {

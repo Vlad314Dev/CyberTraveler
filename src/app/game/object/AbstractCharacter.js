@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-class AbstractObject extends Phaser.GameObjects.Sprite
+class AbstractCharacter extends Phaser.GameObjects.Sprite
 {
     /**
      * Object constructor
@@ -29,13 +29,13 @@ class AbstractObject extends Phaser.GameObjects.Sprite
         this._states = {};
         // Object default hitbox data
         this._defaultHitbox = {
-            size: {
-                w: 35, 
-                h: 40
+            _size: {
+                _w: 35, 
+                _h: 40
             },
-            offset: {
-                x: 20, 
-                y: 10
+            _offset: {
+                _x: 20, 
+                _y: 10
             }
         };
     }
@@ -88,10 +88,10 @@ class AbstractObject extends Phaser.GameObjects.Sprite
      * 
      * @param {{size: { w: number, h: number }, offset: { x: number, y: number }}} param0 
      */
-    _setHitbox({ size, offset })
+    _setHitbox({ _size, _offset })
     {
-        this.body.setSize(size.w, size.h); // Change hitbox size
-        this.body.setOffset(offset.x, offset.y); // Change hitbox position
+        this.body.setSize(_size._w, _size._h); // Change hitbox size
+        this.body.setOffset(_offset._x, _offset._y); // Change hitbox position
     }
 
     /**
@@ -103,4 +103,4 @@ class AbstractObject extends Phaser.GameObjects.Sprite
     }
 }
 
-export default AbstractObject;
+export default AbstractCharacter;

@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-class Bullet extends Phaser.Physics.Arcade.Sprite
+class DefaultBullet extends Phaser.Physics.Arcade.Sprite
 {
     /**
      * @inheritdoc
@@ -11,20 +11,13 @@ class Bullet extends Phaser.Physics.Arcade.Sprite
 
         scene.physics.world.enable(this);
         
-        this._setProperties();
-        this._init();
-        this._bindEvents();
-    }
-
-    /**
-     * Set properties
-     */
-    _setProperties()
-    {
         // Time when an object will dissapear from the world
         this._lifeTime;
         // Bullet damage used to reduce health
         this._damage = 1;
+
+        this._init();
+        this._bindEvents();
     }
 
     /**
@@ -100,4 +93,4 @@ class Bullet extends Phaser.Physics.Arcade.Sprite
     }
 }
 
-export default Bullet;
+export default DefaultBullet;

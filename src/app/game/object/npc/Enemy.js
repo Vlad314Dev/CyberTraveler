@@ -1,9 +1,8 @@
+import AbstractCharacter from 'GameObject/AbstractCharacter';
+import DefaultWeapon from 'GameObject/Weapon/DefaultWeapon';
 import Phaser from 'phaser';
 
-import AbstractObject from '../AbstractObject';
-import Bullet from '../Bullet';
-
-class Enemy extends AbstractObject
+class Enemy extends AbstractCharacter
 {
     /**
      * @inheritdoc
@@ -11,57 +10,36 @@ class Enemy extends AbstractObject
     constructor(scene, x, y, key)
     {
         super({ scene, x, y, key });
-    }
-
-    /**
-     * Set properties
-     */
-    _setProperties()
-    {
         // Object states
         this._states = {
-            patrol: 'patrol',
-            chase: 'chase',
-            attack: 'attack'
+            _patrol: 'patrol',
+            _chase: 'chase',
+            _attack: 'attack'
         };
         // Object default hitbox data
         this._defaultHitbox = {
-            size: {
-                w: 30, 
-                h: 40
+            _size: {
+                _w: 30, 
+                _h: 40
             },
-            offset: {
-                x: 10, 
-                y: 10
+            _offset: {
+                _x: 10, 
+                _y: 10
             }
         };
         // Object direction on X axis
-        this._directionX = 1;
+        this._directionX = 1; 
         // Weapon data
         this._weapons = {
-            default: {
-                bullet: {
-                    classType: Bullet,
-                    key: 'guns-and-shots-atlas',
-                    frame: 'shot-00-01',
-                    frameQuantity: 5,
-                    active: false,
-                    visible: false
-                },
-                fireRate: 2000, // ms
-                nextFireTime: 0
-            }
+            _default: new DefaultWeapon(this._scene, this, 2000)
         };
+        // Selected weapon
+        this._selectedWeapon = this._weapons._default;
         // Health
         this._defaultHealth = 2;
         this._health = this._defaultHealth;
-        // Selected weapon
-        this._selectedWeapon;
         // Time when an object will dissapear from the world
         this._lifeTime;
-        // Selected weapon
-        this._selectedWeapon = this._weapons.default;
-        this._selectedWeapon.bullets = this._scene.add.group({ ...this._selectedWeapon.bullet });
         // The distance that is used by npc to chase/attack player
         this._activeDistance = 800;
     }
@@ -78,7 +56,7 @@ class Enemy extends AbstractObject
         this.body.setImmovable(true);
 
         this._resetHitbox();
-        this._setState(this._states.patrol);
+        this._setState(this._states._patrol);
 
         this._addAnimations();
         this.play('enemy/robo-solder-run', true);
@@ -97,10 +75,10 @@ class Enemy extends AbstractObject
             const states = this._states;
 
             switch (state) {
-                case states.patrol:
-                case states.chase:
+                case states._patrol:
+                case states._chase:
                     break;
-                case states.attack:
+                case states._attack:
                     break;
                 default:
                     break;
@@ -130,21 +108,10 @@ class Enemy extends AbstractObject
      */
     _fire()
     {
-        const timeNow = this._scene.time.now;
-
-        if (timeNow > this._selectedWeapon.nextFireTime) {
-            const bullet = this._selectedWeapon.bullets.getFirst();
-        
-            if (bullet) {
-                const offsetX = (this.width / 2 + 10) * this._directionX;
-                const offsetY = 10;
-                const velocityX = 400;
-
-                bullet._fire(this.x, this.y, offsetX, offsetY, this._directionX, velocityX);
-            }
-
-            this._selectedWeapon.nextFireTime = timeNow + this._selectedWeapon.fireRate;
-        }
+        const offsetX = (this.width / 2 + 10) * this._directionX;
+        const offsetY = 10;
+        const velocityX = 400;
+        this._selectedWeapon._fire(this.x, this.y, offsetX, offsetY, this._directionX, velocityX);
     }
 
     /**
@@ -193,7 +160,7 @@ class Enemy extends AbstractObject
      */
     _getBullets()
     {
-        return this._selectedWeapon.bullets;
+        return this._selectedWeapon._bullets;
     }
 
     /**

@@ -1,12 +1,12 @@
+import DefaultWeapon from 'GameObject/Weapon/DefaultWeapon';
 import P1Emitter from 'GUIBridgeEmitter/P1Emitter';
 import TestSceneEmitter from 'GUIBridgeEmitter/TestSceneEmitter';
 import Phaser from 'phaser';
 import { REDUCE_HEALTH } from 'UIStore/P1Health/P1HealthAction';
 
-import AbstractObject from './AbstractObject';
-import Bullet from './Bullet';
+import AbstractCharacter from './AbstractCharacter';
 
-class Player1 extends AbstractObject
+class Player1 extends AbstractCharacter
 {
     /**
      * Player1 constructor
@@ -25,50 +25,38 @@ class Player1 extends AbstractObject
     {
         // Object states
         this._states = {
-            idle: 'idle',
-            runLeft: 'runLeft',
-            runRight: 'runRight',
-            crouch: 'crouch',
-            jump: 'jump'
+            _idle: 'idle',
+            _runLeft: 'runLeft',
+            _runRight: 'runRight',
+            _crouch: 'crouch',
+            _jump: 'jump'
         };
         // Object default hitbox data
         this._defaultHitbox = {
-            size: {
-                w: 35, 
-                h: 40
+            _size: {
+                _w: 35, 
+                _h: 40
             },
-            offset: {
-                x: 20, 
-                y: 10
+            _offset: {
+                _x: 20, 
+                _y: 10
             }
         };
         // Object direction on X axis
         this._directionX = 1;
         // Weapon data
         this._weapons = {
-            default: {
-                bullet: {
-                    classType: Bullet,
-                    key: 'guns-and-shots-atlas',
-                    frame: 'shot-00-01',
-                    frameQuantity: 50,
-                    active: false,
-                    visible: false
-                },
-                fireRate: 300, // ms
-                nextFireTime: 0
-            }
+            _default: new DefaultWeapon(this._scene, this, 300)
         };
         // Selected weapon
-        this._selectedWeapon = this._weapons.default;
-        this._selectedWeapon.bullets = this._scene.add.group({ ...this._selectedWeapon.bullet });
+        this._selectedWeapon = this._weapons._default;
         // Keyboard controls
         this._keyboard = {
-            left: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
-            right: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
-            crouch: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
-            jump: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
-            fire: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
+            _left: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+            _right: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+            _crouch: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+            _jump: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
+            _fire: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
         };
         // Player1 health
         this._health = 5;
@@ -87,7 +75,7 @@ class Player1 extends AbstractObject
         this.setY(1000);
 
         this._resetHitbox();
-        this._setState(this._states.idle);
+        this._setState(this._states._idle);
 
         this._addAnimations();
         this.play('player1/idle', true);
@@ -107,7 +95,7 @@ class Player1 extends AbstractObject
             const states = this._states;
 
             switch (state) {
-                case states.runLeft:
+                case states._runLeft:
                     this._resetHitbox();
                     this.flipX = true;
                     this._directionX = -1;
@@ -115,7 +103,7 @@ class Player1 extends AbstractObject
                         this.play('player1/run', true);
                     }
                     break;
-                case states.runRight:
+                case states._runRight:
                     this._resetHitbox();
                     this.flipX = false;
                     this._directionX = 1;
@@ -123,18 +111,18 @@ class Player1 extends AbstractObject
                         this.play('player1/run', true);
                     }
                     break;
-                case states.crouch:
+                case states._crouch:
                     this.play('player1/crouch', true);
                     this._setHitbox({
-                        size: { w: 35, h: 30 },
-                        offset: { x: 20, y: 20 }
+                        _size: { _w: 35, _h: 30 },
+                        _offset: { _x: 20, _y: 20 }
                     });
                     break;
-                case states.idle:
+                case states._idle:
                     this._resetHitbox();
                     this.play('player1/idle', true);
                     break;
-                case states.jump:
+                case states._jump:
                     this._resetHitbox();
                     this.play('player1/jump', true);
                     this.body.setVelocityY(-500);
@@ -194,26 +182,16 @@ class Player1 extends AbstractObject
 
     _fire()
     {
-        const timeNow = this._scene.time.now;
+        const state = this.getData('state');
+        const isCrouch = state === this._states._crouch;
+        const isRunning = state === this._states._runLeft || state === this._states._runRight;
+        const offsetX = (this.width / 2 + 10) * this._directionX;
+        const offsetY = isCrouch ? this.height / 2 : 5 + (isRunning ? 10 : 0);
 
-        if (timeNow > this._selectedWeapon.nextFireTime) {
-            const bullet = this._selectedWeapon.bullets.getFirst();
-        
-            if (bullet) {
-                const state = this.getData('state');
-                const isCrouch = state === this._states.crouch;
-                const isRunning = state === this._states.runLeft || state === this._states.runRight;
-                const offsetX = (this.width / 2 + 10) * this._directionX;
-                const offsetY = isCrouch ? this.height / 2 : 5 + (isRunning ? 10 : 0);
+        this._selectedWeapon._fire(this.x, this.y, offsetX, offsetY, this._directionX);
 
-                bullet._fire(this.x, this.y, offsetX, offsetY, this._directionX);
-            }
-
-            this._selectedWeapon.nextFireTime = timeNow + this._selectedWeapon.fireRate;
-            
-            // Testing GUIBrigde
-            TestSceneEmitter.emit('TEST_POINTERDOWN_EVENT');
-        }
+        // Testing GUIBrigde
+        TestSceneEmitter.emit('TEST_POINTERDOWN_EVENT');
     }
 
     /**
@@ -228,27 +206,27 @@ class Player1 extends AbstractObject
         const state = this.getData(stateDataKey);
         const isPlayerOnGroud = this.body.blocked.down;
 
-        if (this._keyboard.right.isDown) { // Move right
-            this._setData(stateDataKey, states.runRight, true);
+        if (this._keyboard._right.isDown) { // Move right
+            this._setData(stateDataKey, states._runRight, true);
             this.x += 3;
-        } else if (this._keyboard.left.isDown) { // Move left
-            this._setData(stateDataKey, states.runLeft, true);
+        } else if (this._keyboard._left.isDown) { // Move left
+            this._setData(stateDataKey, states._runLeft, true);
             this.x -= 3;
-        } else if (this._keyboard.crouch.isDown && state != states.crouch && isPlayerOnGroud) { // Crouch
-            this._setData(stateDataKey, states.crouch);
-        } else if (!this._keyboard.crouch.isDown && state == states.crouch) {
-            this._setData(stateDataKey, states.idle);
-        } else if (state != states.idle && isPlayerOnGroud && (state != states.crouch || state == states.jump)) { // Idle
-            this._setData(stateDataKey, states.idle);
+        } else if (this._keyboard._crouch.isDown && state != states._crouch && isPlayerOnGroud) { // Crouch
+            this._setData(stateDataKey, states._crouch);
+        } else if (!this._keyboard._crouch.isDown && state == states._crouch) {
+            this._setData(stateDataKey, states._idle);
+        } else if (state != states._idle && isPlayerOnGroud && (state != states._crouch || state == states._jump)) { // Idle
+            this._setData(stateDataKey, states._idle);
         }
 
-        if (this._keyboard.jump.isDown && isPlayerOnGroud && state != states.jump) { // Jump
-            this._setData(stateDataKey, states.jump);
-        } else if (isPlayerOnGroud && state == states.jump) {
-            this._setData(stateDataKey, states.idle);
+        if (this._keyboard._jump.isDown && isPlayerOnGroud && state != states._jump) { // Jump
+            this._setData(stateDataKey, states._jump);
+        } else if (isPlayerOnGroud && state == states._jump) {
+            this._setData(stateDataKey, states._idle);
         }
 
-        if (this._keyboard.fire.isDown) {
+        if (this._keyboard._fire.isDown) {
             this._fire();
         }
     }
@@ -258,7 +236,7 @@ class Player1 extends AbstractObject
      */
     _getBullets()
     {
-        return this._selectedWeapon.bullets;
+        return this._selectedWeapon._bullets;
     }
 
     /**
