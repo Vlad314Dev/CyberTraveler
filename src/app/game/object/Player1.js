@@ -1,4 +1,5 @@
 import DefaultWeapon from 'GameObject/Weapon/DefaultWeapon';
+import RocketWeapon from 'GameObject/Weapon/RocketWeapon';
 import P1Emitter from 'GUIBridgeEmitter/P1Emitter';
 import TestSceneEmitter from 'GUIBridgeEmitter/TestSceneEmitter';
 import Phaser from 'phaser';
@@ -46,10 +47,11 @@ class Player1 extends AbstractCharacter
         this._directionX = 1;
         // Weapon data
         this._weapons = {
-            _default: new DefaultWeapon(this._scene, this, 300)
+            _default: new DefaultWeapon(this, 300),
+            _rocket: new RocketWeapon(this, 200)
         };
         // Selected weapon
-        this._selectedWeapon = this._weapons._default;
+        this._selectedWeapon = this._weapons._rocket;
         // Keyboard controls
         this._keyboard = {
             _left: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),

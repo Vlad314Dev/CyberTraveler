@@ -21,7 +21,7 @@ class GameScene extends Phaser.Scene
         // Set the world size
         this.physics.world.setBounds(0, 0, 2000, 600);
 
-        this._player1 = new Player1({ scene: this, x: 20, y: 100, key: 'player1' });
+        this._player1 = new Player1({ scene: this, x: 20, y: 0, key: 'player1' });
         this._enemies = this.add.group({
             classType: Enemy,
             key: 'enemy',

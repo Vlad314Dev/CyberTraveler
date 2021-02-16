@@ -28,13 +28,9 @@ class Enemy extends AbstractCharacter
             }
         };
         // Object direction on X axis
-        this._directionX = 1; 
-        // Weapon data
-        this._weapons = {
-            _default: new DefaultWeapon(this._scene, this, 2000)
-        };
+        this._directionX = 1;
         // Selected weapon
-        this._selectedWeapon = this._weapons._default;
+        this._selectedWeapon = new DefaultWeapon(this, 2000);
         // Health
         this._defaultHealth = 2;
         this._health = this._defaultHealth;

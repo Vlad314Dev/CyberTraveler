@@ -2,10 +2,10 @@ import DefaultBullet from 'GameObject/Bullet/DefaultBullet';
 
 class DefaultWeapon
 {
-    constructor(scene, abstractObject, fireRate)
+    constructor(abstractCharacter, fireRate)
     {
-        this._scene = scene;
-        this._abstractObject = abstractObject;
+        this._scene = abstractCharacter._scene;
+        this._character = abstractCharacter;
         this._fireRate = fireRate;
         this._setBullet({
             classType: DefaultBullet,
