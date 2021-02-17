@@ -1,14 +1,14 @@
-import RocketBullet from 'GameObject/Bullet/RocketBullet';
+import MissileBullet from 'GameObject/Bullet/MissileBullet';
 import DefaultWeapon from 'GameObject/Weapon/DefaultWeapon';
 
-class RocketWeapon extends DefaultWeapon
+class MissileWeapon extends DefaultWeapon
 {
     constructor(abstractCharacter, fireRate)
     {
         super(abstractCharacter, fireRate);
         
         this._setBullet({
-            classType: RocketBullet,
+            classType: MissileBullet,
             key: 'guns-and-shots-atlas',
             frame: 'shot-09-01',
             frameQuantity: 50,
@@ -18,4 +18,4 @@ class RocketWeapon extends DefaultWeapon
     }
 }
 
-export default RocketWeapon;
+export default MissileWeapon;

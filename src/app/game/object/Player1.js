@@ -1,5 +1,5 @@
 import DefaultWeapon from 'GameObject/Weapon/DefaultWeapon';
-import RocketWeapon from 'GameObject/Weapon/RocketWeapon';
+import MissileWeapon from 'GameObject/Weapon/MissileWeapon';
 import P1Emitter from 'GUIBridgeEmitter/P1Emitter';
 import TestSceneEmitter from 'GUIBridgeEmitter/TestSceneEmitter';
 import Phaser from 'phaser';
@@ -48,7 +48,7 @@ class Player1 extends AbstractCharacter
         // Weapon data
         this._weapons = {
             _default: new DefaultWeapon(this, 300),
-            _rocket: new RocketWeapon(this, 200)
+            _rocket: new MissileWeapon(this, 300)
         };
         // Selected weapon
         this._selectedWeapon = this._weapons._rocket;

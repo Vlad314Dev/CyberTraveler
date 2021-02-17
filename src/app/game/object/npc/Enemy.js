@@ -119,7 +119,7 @@ class Enemy extends AbstractCharacter
         
         const spawnSideCoef = Phaser.Math.Between(1, 100);
         const spawnSide = spawnSideCoef >= 50 ? 1 : -1;
-        this.setPosition(this._scene._player1.x + 1200 * spawnSide, 1000);
+        this.setPosition(this._scene._player1.x + window.innerWidth * spawnSide, 1000);
         this.setScale(3);
         this.setActive(true);
         this.setVisible(true);
