@@ -47,11 +47,11 @@ class Player1 extends AbstractCharacter
         this._directionX = 1;
         // Weapon data
         this._weapons = {
-            _default: new DefaultWeapon(this, 300),
-            _rocket: new MissileWeapon(this, 300)
+            _defaultWeapon: new DefaultWeapon(this, 300, 10),
+            _missileWeapon: new MissileWeapon(this, 300, 10)
         };
         // Selected weapon
-        this._selectedWeapon = this._weapons._rocket;
+        this._selectedWeapon = this._weapons._missileWeapon;
         // Keyboard controls
         this._keyboard = {
             _left: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
@@ -70,9 +70,9 @@ class Player1 extends AbstractCharacter
     _init()
     {
         this.body.setCollideWorldBounds(true); // Make screen borders to collide
-        this.body.setGravityY(400);
+        this.body.setGravityY(350);
         
-        this.setScale(3); // Icrease size
+        this.setScale(2); // Icrease size
         // @todo
         this.setY(1000);
 

@@ -43,7 +43,10 @@ class GameContainer extends PureComponent
                 scene: [
                     BootScene,
                     GameScene
-                ]
+                ],
+                render: {
+                    pixelArt: true
+                }
             }
         }
     }

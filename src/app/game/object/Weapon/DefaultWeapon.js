@@ -2,7 +2,7 @@ import DefaultBullet from 'GameObject/Bullet/DefaultBullet';
 
 class DefaultWeapon
 {
-    constructor(abstractCharacter, fireRate)
+    constructor(abstractCharacter, fireRate, bulletsCount = 1)
     {
         this._scene = abstractCharacter._scene;
         this._character = abstractCharacter;
@@ -11,7 +11,7 @@ class DefaultWeapon
             classType: DefaultBullet,
             key: 'guns-and-shots-atlas',
             frame: 'shot-00-01',
-            frameQuantity: 50,
+            frameQuantity: bulletsCount,
             active: false,
             visible: false
         });
@@ -20,7 +20,7 @@ class DefaultWeapon
     }
 
     _setProperties()
-    { 
+    {
     }
 
     _setBullet(bulletConfig)

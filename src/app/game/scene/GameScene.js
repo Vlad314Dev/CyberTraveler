@@ -32,7 +32,7 @@ class GameScene extends Phaser.Scene
         this._enemySpawnDelay = 2000;
         this._nextEnemySpawnTime = 0;
 
-        // this._enemies.getFirst()._spawn();
+        this._enemies.getFirst()._spawn();
 
         this.physics.add.collider(this._player1._getBullets(), this._enemies, this._enemyHit, null, this);
         this._enemies.children.each((enemy) => {

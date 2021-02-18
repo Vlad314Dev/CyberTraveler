@@ -11,7 +11,8 @@ class MissileBullet extends DefaultBullet
         super(scene, x, y, key, frame);
         
         this._target;
-        this._rocketPath = [];
+        this._pi = 0;
+        this._path = [];
     }
 
     /**
@@ -43,7 +44,7 @@ class MissileBullet extends DefaultBullet
             });
         }
 
-        this.setScale(2);
+        this.setScale(1.5);
         this.setActive(true);
         this.setVisible(true);
     }

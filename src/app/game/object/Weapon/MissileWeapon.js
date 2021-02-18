@@ -3,7 +3,7 @@ import DefaultWeapon from 'GameObject/Weapon/DefaultWeapon';
 
 class MissileWeapon extends DefaultWeapon
 {
-    constructor(abstractCharacter, fireRate)
+    constructor(abstractCharacter, fireRate, bulletsCount = 1)
     {
         super(abstractCharacter, fireRate);
         
@@ -11,7 +11,7 @@ class MissileWeapon extends DefaultWeapon
             classType: MissileBullet,
             key: 'guns-and-shots-atlas',
             frame: 'shot-09-01',
-            frameQuantity: 50,
+            frameQuantity: bulletsCount,
             active: false,
             visible: false
         });
