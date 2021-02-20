@@ -1,5 +1,6 @@
-import DefaultWeapon from 'GameObject/Weapon/DefaultWeapon';
+import FireWeapon from 'GameObject/Weapon/FireWeapon';
 import MissileWeapon from 'GameObject/Weapon/MissileWeapon';
+import PierceWeapon from 'GameObject/Weapon/PierceWeapon';
 import P1Emitter from 'GUIBridgeEmitter/P1Emitter';
 import TestSceneEmitter from 'GUIBridgeEmitter/TestSceneEmitter';
 import Phaser from 'phaser';
@@ -46,17 +47,23 @@ class Player1 extends AbstractCharacter
         // Object direction on X axis
         this._directionX = 1;
         // Weapon data
-        this._weapons = {
-            _defaultWeapon: new DefaultWeapon(this, 300, 10),
-            _missileWeapon: new MissileWeapon(this, 300, 10)
-        };
+        this._weapons = [
+            new FireWeapon(this, 300, 10),
+            new MissileWeapon(this, 300, 10),
+            new PierceWeapon(this, 500, 5)
+        ];
+        // Weapons count
+        this._weaponsCount = this._weapons.length;
+        // Select weapon index
+        this._selectedWeaponIdx = 0
         // Selected weapon
-        this._selectedWeapon = this._weapons._missileWeapon;
+        this._selectedWeapon = this._weapons[this._selectedWeaponIdx];
         // Keyboard controls
         this._keyboard = {
             _left: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
             _right: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
             _crouch: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+            _switchWeapon: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q, true, false),
             _jump: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
             _fire: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
         };
@@ -132,6 +139,20 @@ class Player1 extends AbstractCharacter
                 default:
                     break;
             }
+        });
+
+        // Switch weapon
+        this._keyboard._switchWeapon.on('down', () => {
+            for (let i = 0, nextWeaponidx = this._selectedWeaponIdx; i < this._weaponsCount; i++) {
+                nextWeaponidx = nextWeaponidx < (this._weaponsCount - 1) ? nextWeaponidx + 1 : 0;
+
+                if (this._weapons[nextWeaponidx]._enabled) {
+                    this._selectedWeaponIdx = nextWeaponidx;
+                    break;
+                }
+            }
+
+            this._selectedWeapon = this._weapons[this._selectedWeaponIdx];
         });
     }
 

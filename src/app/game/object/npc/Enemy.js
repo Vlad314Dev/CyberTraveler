@@ -1,6 +1,7 @@
 import AbstractCharacter from 'GameObject/AbstractCharacter';
 import DefaultWeapon from 'GameObject/Weapon/DefaultWeapon';
 import Phaser from 'phaser';
+import LifeTime from 'phaser3-rex-plugins/plugins/lifetime.js';
 
 class Enemy extends AbstractCharacter
 {
@@ -31,6 +32,7 @@ class Enemy extends AbstractCharacter
         this._directionX = 1;
         // Selected weapon
         this._selectedWeapon = new DefaultWeapon(this, 2000);
+        this._selectedWeapon._enabled = true;
         // Health
         this._defaultHealth = 2;
         this._health = this._defaultHealth;
@@ -38,6 +40,7 @@ class Enemy extends AbstractCharacter
         this._lifeTime;
         // The distance that is used by npc to chase/attack player
         this._activeDistance = 800;
+        this._isDead = true;
     }
 
     /**
@@ -116,11 +119,13 @@ class Enemy extends AbstractCharacter
     _spawn()
     {
         this._health = this._defaultHealth;
+        this._isDead = false;
         
         const spawnSideCoef = Phaser.Math.Between(1, 100);
         const spawnSide = spawnSideCoef >= 50 ? 1 : -1;
         this.setPosition(this._scene._player1.x + window.innerWidth * spawnSide, 1000);
         this.setScale(2);
+        this._resetHitbox();
         this.setActive(true);
         this.setVisible(true);
         // @todo
@@ -148,7 +153,90 @@ class Enemy extends AbstractCharacter
     {
         this.setActive(false);
         this.setVisible(false);
+        this._dropItem();
         this.body.reset();
+        this._isDead = true;
+    }
+
+    /**
+     * Leave item
+     */
+    _dropItem()
+    {
+        if (!this._isDead) {
+            const itemsDropChance = [
+                { 
+                    chance: 25,
+                    type: 'weapon',
+                    id: 'missile'
+                },
+                {
+                    chance: 60,
+                    type: 'weapon',
+                    id: 'pierce'
+                }
+            ];
+            const randomChance = Phaser.Math.Between(1, 100);
+
+            itemsDropChance.every((dropData) => {
+                if (dropData.chance > randomChance) {
+                    if (dropData.type === 'weapon') {
+                        if (dropData.id === 'missile') {
+                            let itemSprite = this._scene.add.sprite(this.x, this.y, 'guns-and-shots-atlas', 'gun-09');
+                            this._scene.physics.world.enable(itemSprite);
+                            itemSprite.body.setCollideWorldBounds(true);
+                            itemSprite.body.setImmovable(true);
+                            new LifeTime(itemSprite, {
+                                lifeTime: 15000, 
+                                destroy: true 
+                            });
+
+                            this._scene.physics.add.overlap(this._scene._player1, itemSprite, this._onItemPick, null, {
+                                this: this,
+                                dropData: dropData,
+                                _scene: this._scene,
+                                itemSprite: itemSprite
+                            });
+
+                            return false;
+                        } else if (dropData.id === 'pierce') {
+                            let itemSprite = this._scene.add.sprite(this.x, this.y, 'guns-and-shots-atlas', 'gun-06');
+                            this._scene.physics.world.enable(itemSprite);
+                            itemSprite.body.setCollideWorldBounds(true);
+                            itemSprite.body.setImmovable(true);
+                            new LifeTime(itemSprite, {
+                                lifeTime: 15000, 
+                                destroy: true 
+                            });
+
+                            this._scene.physics.add.overlap(this._scene._player1, itemSprite, this._onItemPick, null, {
+                                this: this,
+                                dropData: dropData,
+                                _scene: this._scene,
+                                itemSprite: itemSprite
+                            });
+
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            });
+        }
+    }
+
+    _onItemPick()
+    {
+        if (this.dropData.type === 'weapon') {
+            this._scene._player1._weapons.forEach((weapon) => {
+                if (weapon._type === this.dropData.id) {
+                    weapon._enabled = true;
+                }
+            });
+
+            this.itemSprite.destroy();
+        }
     }
 
     /**

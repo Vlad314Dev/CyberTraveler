@@ -1,16 +1,16 @@
-import MissileBullet from 'GameObject/Bullet/MissileBullet';
+import PierceBullet from 'GameObject/Bullet/PierceBullet';
 import DefaultWeapon from 'GameObject/Weapon/DefaultWeapon';
 
-class MissileWeapon extends DefaultWeapon
+class PierceWeapon extends DefaultWeapon
 {
     constructor(abstractCharacter, fireRate, bulletsCount = 1)
     {
         super(abstractCharacter, fireRate);
         
         this._setBullet({
-            classType: MissileBullet,
+            classType: PierceBullet,
             key: 'guns-and-shots-atlas',
-            frame: 'shot-09-01',
+            frame: 'shot-07-01',
             frameQuantity: bulletsCount,
             active: false,
             visible: false
@@ -19,8 +19,8 @@ class MissileWeapon extends DefaultWeapon
 
     _setProperties()
     {
-        this._type = 'missile';
+        this._type = 'pierce';
     }
 }
 
-export default MissileWeapon;
+export default PierceWeapon;

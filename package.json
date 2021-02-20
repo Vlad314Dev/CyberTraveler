@@ -17,6 +17,7 @@
         "graphql": "^15.5.0",
         "mysql": "^2.18.1",
         "phaser": "3.24.1",
+        "phaser3-rex-plugins": "^1.1.39",
         "promise": "^8.1.0",
         "prop-types": "^15.7.2",
         "react": "^17.0.1",

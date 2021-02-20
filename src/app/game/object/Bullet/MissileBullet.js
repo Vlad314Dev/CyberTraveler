@@ -9,10 +9,44 @@ class MissileBullet extends DefaultBullet
     constructor(scene, x, y, key, frame)
     {
         super(scene, x, y, key, frame);
-        
+
         this._target;
         this._pi = 0;
         this._path = [];
+    }
+
+    _init()
+    {
+        this._damage = 0.7;
+
+        super._init();
+    }
+
+    /**
+     * Set animation keys
+     */
+    _initAnimKeys()
+    {
+        super._initAnimKeys();
+
+        this._animKey.fire = 'missile/fire';
+    }
+
+    /**
+     * Create animations
+     */
+    _addAnimations()
+    {
+        this.scene.anims.create({
+            key: this._animKey.fire,
+            frames: this.scene.anims.generateFrameNames('guns-and-shots-atlas', {
+                prefix: 'shot-09-0',
+                start: 1,
+                end: 2
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
     }
 
     /**
@@ -28,9 +62,11 @@ class MissileBullet extends DefaultBullet
     _fire(x, y, offsetX, offsetY, directionX, velocityX = 0)
     {   
         this._lifeTime = this.scene.time.now + 5000; // 5 sec
+        this._directionX = directionX;
 
-        this.body.reset(x, y);
-        this.body.setVelocity(velocityX);
+        this.rotation = directionX !== 1 ? Math.PI : 0;
+        this.body.reset(x + offsetX, y + offsetY);
+        this.body.setVelocity(velocityX, 0);
 
         if (!this._target) {
             const p1 = this.scene._player1;
@@ -47,6 +83,7 @@ class MissileBullet extends DefaultBullet
         this.setScale(1.5);
         this.setActive(true);
         this.setVisible(true);
+        this.play(this._animKey.fire, true);
     }
 
     /**
@@ -73,30 +110,22 @@ class MissileBullet extends DefaultBullet
             this._target = null;
         }
 
-        if (this._target) {
-            this._points = {
-                x: [this.x, this._target.x],
-                y: [this.y, this._target.y]
-            };   
-        } else {
-            this._points = {
-                x: [this.x, this.x + window.innerWidth],
-                y: [this.y, this.y]
-            }
+        if (!this._target) {
+            return null;
         }
 
-        const distance = Math.abs(this.x - (this._target ? this._target.x : this.x + window.innerWidth));
+        this._points = {
+            x: [this.x, this._target.x + this._target.body.halfWidth / 2],
+            y: [this.y, this._target.y]
+        };
+
+        const distance = Math.abs(this.x - this._target.x + this._target.body.halfWidth);
         let t = 1 / distance;
         for (let i = 0, ax = 0; i <= 1; i += t, ax++) {
             let px, py;
             
-            if (this._target && this.y != this._target.y) {
-                px = Phaser.Math.Interpolation.Bezier(this._points.x, i);
-                py = Phaser.Math.Interpolation.Bezier(this._points.y, i);
-            } else {
-                px = Phaser.Math.Interpolation.Linear(this._points.x, i);
-                py = Phaser.Math.Interpolation.Linear(this._points.y, i);
-            }
+            px = Phaser.Math.Interpolation.Bezier(this._points.x, i);
+            py = Phaser.Math.Interpolation.Bezier(this._points.y, i);
 
             let path = { x: px, y: py, angle: 0 };
             
@@ -123,6 +152,8 @@ class MissileBullet extends DefaultBullet
             this.rotation = this._path[this._pi].angle;
             this._pi++;
             if (this._pi >= this._path.length) this._onCollision();
+        } else {
+            this.x += 15 * this._directionX;
         }
     }
 }

@@ -25,11 +25,43 @@ class DefaultBullet extends Phaser.Physics.Arcade.Sprite
      */
     _init()
     {
+        this.setImmovable(true);
+        
         this.body.checkWorldBounds(true);
         this.body.setAllowGravity(false);
 
         this.body.collideWorldBounds = true;
         this.body.onWorldBounds = true;
+
+        this._initAnimKeys();
+        this._addAnimations();
+    }
+
+    /**
+     * Set animation keys
+     */
+    _initAnimKeys() 
+    {
+        this._animKey = {
+            fire: 'bullet/fire'
+        };
+    }
+
+    /**
+     * Create animations
+     */
+    _addAnimations()
+    {
+        this.scene.anims.create({
+            key: this._animKey.fire,
+            frames: this.scene.anims.generateFrameNames('guns-and-shots-atlas', {
+                prefix: 'shot-00-0',
+                start: 1,
+                end: 2
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
     }
 
     /**
@@ -64,9 +96,11 @@ class DefaultBullet extends Phaser.Physics.Arcade.Sprite
         this.body.reset(x + offsetX, y + offsetY);
         this.body.setVelocity(velocityX * directionX, 0);
 
+        this.flipX = directionX !== 1;
         this.setScale(2);
         this.setActive(true);
         this.setVisible(true);
+        this.play(this._animKey.fire, true);
     }
 
     /**

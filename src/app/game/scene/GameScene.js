@@ -34,7 +34,10 @@ class GameScene extends Phaser.Scene
 
         this._enemies.getFirst()._spawn();
 
-        this.physics.add.collider(this._player1._getBullets(), this._enemies, this._enemyHit, null, this);
+        this._player1._weapons.forEach((weapon) => {
+            this.physics.add.collider(weapon._bullets, this._enemies, this._enemyHit, null, this);
+        });
+
         this._enemies.children.each((enemy) => {
             this.physics.add.collider(enemy._getBullets(), this._player1, this._player1Hit, null, this);
         });

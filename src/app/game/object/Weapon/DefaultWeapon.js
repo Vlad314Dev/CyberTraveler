@@ -16,6 +16,8 @@ class DefaultWeapon
             visible: false
         });
         this._nextFireTime = 0;
+        this._enabled = false;
+        this._type = 'default';
         this._setProperties();
     }
 
@@ -31,16 +33,18 @@ class DefaultWeapon
 
     _fire(x, y, offsetX, offsetY, directionX, velocityX)
     {
-        const timeNow = this._scene.time.now;
+        if (this._enabled) {
+            const timeNow = this._scene.time.now;
 
-        if (timeNow > this._nextFireTime) {
-            const bullet = this._bullets.getFirst();
-        
-            if (bullet) {
-                bullet._fire(x, y, offsetX, offsetY, directionX, velocityX);
+            if (timeNow > this._nextFireTime) {
+                const bullet = this._bullets.getFirst();
+            
+                if (bullet) {
+                    bullet._fire(x, y, offsetX, offsetY, directionX, velocityX);
+                }
+    
+                this._nextFireTime = timeNow + this._fireRate;
             }
-
-            this._nextFireTime = timeNow + this._fireRate;
         }
     }
 }
