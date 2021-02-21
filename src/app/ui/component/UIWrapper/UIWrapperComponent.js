@@ -44,7 +44,7 @@ class UIWrapperComponent extends PureComponent
             p1Health
         } = this.props;
         
-        return(
+        return (
             <div block="UIWrapper">
                 UI Score: { score }
                 { <LeaderboardList /> }

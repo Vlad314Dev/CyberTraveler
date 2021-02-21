@@ -110,4 +110,5 @@ dist
 build/
 samples/
 texture-packer/
+tiled/
 .idea/

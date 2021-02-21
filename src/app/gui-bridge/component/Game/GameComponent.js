@@ -1,3 +1,5 @@
+import './GameStyle';
+
 import { IonPhaser } from '@ion-phaser/react';
 import { PropTypes } from 'prop-types';
 import React, { PureComponent } from 'react';
@@ -18,12 +20,16 @@ class GameComponent extends PureComponent
         } = this.props;
 
         return (
-            <IonPhaser 
-                game = { game }
-                initialize = { initialize }
+            <div 
+                block="Game"
             >
-                <UIWrapper />
-            </IonPhaser>
+                <IonPhaser 
+                    game = { game }
+                    initialize = { initialize }
+                >
+                    <UIWrapper />
+                </IonPhaser>
+            </div>
         );
     }
 }
