@@ -76,12 +76,12 @@ class Player1 extends AbstractCharacter
      */
     _init()
     {
-        this.body.setCollideWorldBounds(true); // Make screen borders to collide
+        // this.body.setCollideWorldBounds(true); // Make screen borders to collide
         this.body.setGravityY(350);
         
         this.setScale(2); // Icrease size
         // @todo
-        this.setY(1000);
+        // this.setY(1000);
 
         this._resetHitbox();
         this._setState(this._states._idle);
@@ -251,6 +251,11 @@ class Player1 extends AbstractCharacter
 
         if (this._keyboard._fire.isDown) {
             this._fire();
+        }
+
+        if (this.y >= 5000) {
+            this.y = 600;
+            this.x = 600;
         }
     }
 

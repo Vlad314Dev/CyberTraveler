@@ -37,11 +37,14 @@ class GameScene extends Phaser.Scene
         // Tilemap
         const tilemap = this.add.tilemap('tilemap');
         // Tilesets
-        const tileset = tilemap.addTilesetImage('tileset');
+        const tileset = tilemap.addTilesetImage('tileset', 'tiles/tileset');
+        const props = tilemap.addTilesetImage('props', 'tiles/props');
         // Layers
-        const mainLayer = tilemap.createStaticLayer('main', [tileset], 0, -(this.game.scale.height / 2)).setDepth(-1);
+        const mainLayer = tilemap.createStaticLayer('main', [tileset, props], -600, 0);
+        mainLayer.setDepth(-1)
+            .setScale(2)
+            .setCollisionByProperty({ collides: true });
 
-        mainLayer.setCollisionByProperty({ colldes: true });
         this.physics.add.collider(this._player1, mainLayer, null, null, this);
     }
 
@@ -76,16 +79,18 @@ class GameScene extends Phaser.Scene
         this.load.image('bg-3', '/game/assets/background/bg-3.png');
 
         // Tilemap
-        this.load.image('tileset', '/game/assets/tiles/tileset.png');
+        this.load.image('tiles/tileset', '/game/assets/tiles/tileset.png');
+        this.load.image('tiles/props', '/game/assets/tiles/props.png');
         this.load.tilemapTiledJSON('tilemap', '/game/assets/tiles/map.json');
     }
 
     create()
     {
         // Set the world size
-        this.physics.world.setBounds(0, 0, 2000, 600);
+        // world physics are bounded to the world size
+        this.physics.world.setBounds(0, 0, 5000, 5000);
 
-        this._player1 = new Player1({ scene: this, x: 20, y: 0, key: 'player1' });
+        this._player1 = new Player1({ scene: this, x: 300, y: 700, key: 'player1' });
         this._enemies = this.add.group({
             classType: Enemy,
             key: 'enemy',
