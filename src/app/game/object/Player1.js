@@ -81,7 +81,7 @@ class Player1 extends AbstractCharacter
         
         this.setScale(2); // Icrease size
         // @todo
-        // this.setY(1000);
+        // this.setY(800);
 
         this._resetHitbox();
         this._setState(this._states._idle);
@@ -253,9 +253,9 @@ class Player1 extends AbstractCharacter
             this._fire();
         }
 
-        if (this.y >= 5000) {
-            this.y = 600;
-            this.x = 600;
+        if (this.y > 5000) {
+            this.body.y = 4500;
+            this.body.x = 600;
         }
     }
 

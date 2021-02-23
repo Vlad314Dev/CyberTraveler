@@ -10,6 +10,24 @@ class GameScene extends Phaser.Scene
         super({ key: 'GameScene' });
     }
 
+    preload()
+    {
+        // Atlas
+        this.load.atlas('player1-atlas', '/game/assets/atlas/player1.png', '/game/assets/atlas/player1.json');
+        this.load.atlas('guns-and-shots-atlas', '/game/assets/atlas/guns-and-shots.png', '/game/assets/atlas/guns-and-shots.json');
+        this.load.atlas('enemies-atlas', '/game/assets/atlas/enemies.png', '/game/assets/atlas/enemies.json');
+        this.load.atlas('props-atlas', '/game/assets/atlas/props.png', '/game/assets/atlas/props.json');
+        
+        // Background
+        this.load.image('bg-1', '/game/assets/background/bg-1.png');
+        this.load.image('bg-2', '/game/assets/background/bg-2.png');
+        this.load.image('bg-3', '/game/assets/background/bg-3.png');
+
+        // Tilemap
+        this.load.image('tiles/tileset', '/game/assets/tiles/tileset.png');
+        this.load.tilemapTiledJSON('tilemap', '/game/assets/tiles/map.json');
+    }
+
     _createBackgrounds()
     {
         const gameWidth = this.game.scale.width * 4;
@@ -38,59 +56,31 @@ class GameScene extends Phaser.Scene
         const tilemap = this.add.tilemap('tilemap');
         // Tilesets
         const tileset = tilemap.addTilesetImage('tileset', 'tiles/tileset');
-        const props = tilemap.addTilesetImage('props', 'tiles/props');
         // Layers
-        const mainLayer = tilemap.createStaticLayer('main', [tileset, props], -600, 0);
+        const mainLayer = tilemap.createStaticLayer('main', tileset, 0, 0);
         mainLayer.setDepth(-1)
             .setScale(2)
             .setCollisionByProperty({ collides: true });
-
         this.physics.add.collider(this._player1, mainLayer, null, null, this);
-    }
 
-    _parallaxBackground()
-    {
-        this.bg2.x = this._player1.x * -.08;
-        this.bg3.x = this._player1.x * -.2;
-    }
-
-    _enemyHit(bullet, enemy)
-    {
-        bullet._onCollision();
-        enemy._onHit(bullet._damage);
-    }
-
-    _player1Hit(bullet, player1)
-    {
-        bullet._onCollision();
-        player1._onHit(bullet._damage);
-    }
-
-    preload()
-    {
-        // Atlas
-        this.load.atlas('player1-atlas', '/game/assets/atlas/player1.png', '/game/assets/atlas/player1.json');
-        this.load.atlas('guns-and-shots-atlas', '/game/assets/atlas/guns-and-shots.png', '/game/assets/atlas/guns-and-shots.json');
-        this.load.atlas('enemies-atlas', '/game/assets/atlas/enemies.png', '/game/assets/atlas/enemies.json');
-        
-        // Background
-        this.load.image('bg-1', '/game/assets/background/bg-1.png');
-        this.load.image('bg-2', '/game/assets/background/bg-2.png');
-        this.load.image('bg-3', '/game/assets/background/bg-3.png');
-
-        // Tilemap
-        this.load.image('tiles/tileset', '/game/assets/tiles/tileset.png');
-        this.load.image('tiles/props', '/game/assets/tiles/props.png');
-        this.load.tilemapTiledJSON('tilemap', '/game/assets/tiles/map.json');
+        // @todo add props to the map (tiles with embeded images do not work, use cutom atlas sprites instead and place them on a hardcoded x/y)
+        // const propsLayer = tilemap.getObjectLayer('props')['objects'];
+        // const propsGroup = this.physics.add.staticGroup();
+        // propsLayer.forEach((object) => {
+        //     const obj = propsGroup.create(object.x, object.y, 'props-atlas', object.name);
+        //     obj.body.width = object.width;
+        //     obj.body.height = object.height;
+        // });
+        // propsLayer.setScale(2).setDepth(-1);
     }
 
     create()
     {
         // Set the world size
         // world physics are bounded to the world size
-        this.physics.world.setBounds(0, 0, 5000, 5000);
+        this.physics.world.setBounds(0, 0, 5000, 2500);
 
-        this._player1 = new Player1({ scene: this, x: 300, y: 700, key: 'player1' });
+        this._player1 = new Player1({ scene: this, x: 100, y: 2500 / 2 + (117 * 16) / 2, key: 'player1' });
         this._enemies = this.add.group({
             classType: Enemy,
             key: 'enemy',
@@ -115,6 +105,24 @@ class GameScene extends Phaser.Scene
 
         this._createBackgrounds();
         this._createMap();
+    }
+
+    _parallaxBackground()
+    {
+        this.bg2.x = this._player1.x * -.08;
+        this.bg3.x = this._player1.x * -.2;
+    }
+
+    _enemyHit(bullet, enemy)
+    {
+        bullet._onCollision();
+        enemy._onHit(bullet._damage);
+    }
+
+    _player1Hit(bullet, player1)
+    {
+        bullet._onCollision();
+        player1._onHit(bullet._damage);
     }
 
     update(time, delta)
