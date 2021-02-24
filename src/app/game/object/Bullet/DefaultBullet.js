@@ -89,9 +89,9 @@ class DefaultBullet extends Phaser.Physics.Arcade.Sprite
      * @param {number 1 or -1} directionX 
      * @param {number} velocityX 
      */
-    _fire(x, y, offsetX, offsetY, directionX, velocityX = 800)
+    _fire(x, y, offsetX, offsetY, directionX, velocityX = 800, lifetime = 5000)
     {   
-        this._lifeTime = this.scene.time.now + 5000; // 5 sec
+        this._lifeTime = this.scene.time.now + lifetime; // 5 sec
 
         this.body.reset(x + offsetX, y + offsetY);
         this.body.setVelocity(velocityX * directionX, 0);
@@ -120,9 +120,11 @@ class DefaultBullet extends Phaser.Physics.Arcade.Sprite
     {
         super.preUpdate(time, delta);
 
-        // Trigger collision if object is alive for too long
+        // Hide and reset the object if visible for too long
         if (time > this._lifeTime) {
-            this._onCollision();
+            this.setActive(false);
+            this.setVisible(false);
+            this.body.reset();
         }
     }
 }

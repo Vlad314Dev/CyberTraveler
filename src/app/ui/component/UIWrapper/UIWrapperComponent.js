@@ -11,7 +11,8 @@ class UIWrapperComponent extends PureComponent
 {
     static propTypes = {
         score: PropTypes.number.isRequired,
-        p1Health: PropTypes.number.isRequired
+        p1Health: PropTypes.number.isRequired,
+        debugData: PropTypes.object
     };
 
     renderP1Health(p1Health)
@@ -41,7 +42,8 @@ class UIWrapperComponent extends PureComponent
     {
         const { 
             score,
-            p1Health
+            p1Health,
+            debugData
         } = this.props;
         
         return (
@@ -49,6 +51,12 @@ class UIWrapperComponent extends PureComponent
                 UI Score: { score }
                 { <LeaderboardList /> }
                 <button onClick={ () => TestSceneEmitter.emit(TEST_EVENT) }>Click Me To Test Emitter</button>
+                <div>
+                    x: { debugData.x },
+                    y: { debugData.y },
+                    body_x: { debugData.body_x },
+                    body_y: { debugData.body_y }
+                </div>
                 { this.renderP1Health(p1Health) }
             </div>
         );

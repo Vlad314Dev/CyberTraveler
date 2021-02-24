@@ -4,6 +4,7 @@ import PierceWeapon from 'GameObject/Weapon/PierceWeapon';
 import P1Emitter from 'GUIBridgeEmitter/P1Emitter';
 import TestSceneEmitter from 'GUIBridgeEmitter/TestSceneEmitter';
 import Phaser from 'phaser';
+import { DEBUG } from 'UIStore/Debug/DebugAction';
 import { REDUCE_HEALTH } from 'UIStore/P1Health/P1HealthAction';
 
 import AbstractCharacter from './AbstractCharacter';
@@ -50,7 +51,7 @@ class Player1 extends AbstractCharacter
         this._weapons = [
             new FireWeapon(this, 300, 10),
             new MissileWeapon(this, 300, 10),
-            new PierceWeapon(this, 500, 5)
+            new PierceWeapon(this, 500, 10)
         ];
         // Weapons count
         this._weaponsCount = this._weapons.length;
@@ -257,6 +258,13 @@ class Player1 extends AbstractCharacter
             this.body.y = 4500;
             this.body.x = 600;
         }
+
+        P1Emitter.emit(DEBUG, {
+            x: this.x,
+            y: this.y,
+            body_x: this.body.x,
+            body_y: this.body.y
+        });
     }
 
     /**

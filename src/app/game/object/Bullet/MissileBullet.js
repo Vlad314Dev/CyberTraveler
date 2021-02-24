@@ -59,9 +59,9 @@ class MissileBullet extends DefaultBullet
      * @param {number 1 or -1} directionX 
      * @param {number} velocityX 
      */
-    _fire(x, y, offsetX, offsetY, directionX, velocityX = 0)
+    _fire(x, y, offsetX, offsetY, directionX, velocityX = 0, lifetime = 1000)
     {   
-        this._lifeTime = this.scene.time.now + 5000; // 5 sec
+        this._lifeTime = this.scene.time.now + lifetime; // 5 sec
         this._directionX = directionX;
 
         this.rotation = directionX !== 1 ? Math.PI : 0;

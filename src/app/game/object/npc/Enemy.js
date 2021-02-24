@@ -184,8 +184,9 @@ class Enemy extends AbstractCharacter
                         if (dropData.id === 'missile') {
                             let itemSprite = this._scene.add.sprite(this.x, this.y, 'guns-and-shots-atlas', 'gun-09');
                             this._scene.physics.world.enable(itemSprite);
-                            itemSprite.body.setCollideWorldBounds(true);
-                            itemSprite.body.setImmovable(true);
+                            itemSprite.body.setCollideWorldBounds(true)
+                                .setImmovable(true)
+                                .setAllowGravity(false);
                             new LifeTime(itemSprite, {
                                 lifeTime: 15000, 
                                 destroy: true 
@@ -202,8 +203,9 @@ class Enemy extends AbstractCharacter
                         } else if (dropData.id === 'pierce') {
                             let itemSprite = this._scene.add.sprite(this.x, this.y, 'guns-and-shots-atlas', 'gun-06');
                             this._scene.physics.world.enable(itemSprite);
-                            itemSprite.body.setCollideWorldBounds(true);
-                            itemSprite.body.setImmovable(true);
+                            itemSprite.body.setCollideWorldBounds(true)
+                                .setImmovable(true)
+                                .setAllowGravity(false);
                             new LifeTime(itemSprite, {
                                 lifeTime: 15000, 
                                 destroy: true 
@@ -254,9 +256,9 @@ class Enemy extends AbstractCharacter
     {
         super.preUpdate(time, delta);
 
-        // if (this._scene.time.now > this._lifeTime) {
-        //     this._deactivate();
-        // }
+        if (this._scene.time.now > this._lifeTime) {
+            this._deactivate();
+        }
         // The code below will not be executed if the object is not active
 
         const p1DistanceX = this._scene._player1.x - this.x;

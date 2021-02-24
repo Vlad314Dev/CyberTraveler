@@ -16,7 +16,6 @@ class GameScene extends Phaser.Scene
         this.load.atlas('player1-atlas', '/game/assets/atlas/player1.png', '/game/assets/atlas/player1.json');
         this.load.atlas('guns-and-shots-atlas', '/game/assets/atlas/guns-and-shots.png', '/game/assets/atlas/guns-and-shots.json');
         this.load.atlas('enemies-atlas', '/game/assets/atlas/enemies.png', '/game/assets/atlas/enemies.json');
-        this.load.atlas('props-atlas', '/game/assets/atlas/props.png', '/game/assets/atlas/props.json');
         
         // Background
         this.load.image('bg-1', '/game/assets/background/bg-1.png');
@@ -25,6 +24,7 @@ class GameScene extends Phaser.Scene
 
         // Tilemap
         this.load.image('tiles/tileset', '/game/assets/tiles/tileset.png');
+        this.load.image('tiles/props', '/game/assets/tiles/props.png');
         this.load.tilemapTiledJSON('tilemap', '/game/assets/tiles/map.json');
     }
 
@@ -56,31 +56,28 @@ class GameScene extends Phaser.Scene
         const tilemap = this.add.tilemap('tilemap');
         // Tilesets
         const tileset = tilemap.addTilesetImage('tileset', 'tiles/tileset');
+        const props = tilemap.addTilesetImage('props', 'tiles/props');
         // Layers
-        const mainLayer = tilemap.createStaticLayer('main', tileset, 0, 0);
+        const mainLayer = tilemap.createStaticLayer('main', tileset, 0, -2000);
+        const propsLayer = tilemap.createStaticLayer('props', props, 0, -2000);
+
         mainLayer.setDepth(-1)
             .setScale(2)
             .setCollisionByProperty({ collides: true });
-        this.physics.add.collider(this._player1, mainLayer, null, null, this);
 
-        // @todo add props to the map (tiles with embeded images do not work, use cutom atlas sprites instead and place them on a hardcoded x/y)
-        // const propsLayer = tilemap.getObjectLayer('props')['objects'];
-        // const propsGroup = this.physics.add.staticGroup();
-        // propsLayer.forEach((object) => {
-        //     const obj = propsGroup.create(object.x, object.y, 'props-atlas', object.name);
-        //     obj.body.width = object.width;
-        //     obj.body.height = object.height;
-        // });
-        // propsLayer.setScale(2).setDepth(-1);
+        propsLayer.setDepth(-1).setScale(2);
+        
+        this.physics.add.collider(this._player1, mainLayer, null, null, this);
+        this.physics.add.collider(this._enemies, mainLayer, null, null, this);
     }
 
     create()
     {
         // Set the world size
         // world physics are bounded to the world size
-        this.physics.world.setBounds(0, 0, 5000, 2500);
+        this.physics.world.setBounds(0, 0, 10000, 3500);
 
-        this._player1 = new Player1({ scene: this, x: 100, y: 2500 / 2 + (117 * 16) / 2, key: 'player1' });
+        this._player1 = new Player1({ scene: this, x: 100, y: 750 + (117 * 16) / 2, key: 'player1' });
         this._enemies = this.add.group({
             classType: Enemy,
             key: 'enemy',
@@ -98,7 +95,7 @@ class GameScene extends Phaser.Scene
         });
 
         this._enemies.children.each((enemy) => {
-            this.physics.add.collider(enemy._getBullets(), this._player1, this._player1Hit, null, this);
+            this.physics.add.collider(enemy._getBullets(), this._player1, this._playerHit, null, this);
         });
 
         this.cameras.main.startFollow(this._player1);
@@ -119,10 +116,10 @@ class GameScene extends Phaser.Scene
         enemy._onHit(bullet._damage);
     }
 
-    _player1Hit(bullet, player1)
+    _playerHit(bullet, player)
     {
         bullet._onCollision();
-        player1._onHit(bullet._damage);
+        player._onHit(bullet._damage);
     }
 
     update(time, delta)

@@ -7,7 +7,7 @@ class PierceBullet extends DefaultBullet
      */
     _init()
     {
-        this._damage = 0.1;
+        this._damage = 0.5;
 
         super._init();
     }
@@ -45,6 +45,14 @@ class PierceBullet extends DefaultBullet
     _onCollision()
     {
         return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    _fire(x, y, offsetX, offsetY, directionX, velocityX, lifetime = 1000)
+    {
+        super._fire(x, y, offsetX, offsetY, directionX, velocityX, lifetime);
     }
 }
 

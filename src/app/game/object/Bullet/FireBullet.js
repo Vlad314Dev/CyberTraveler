@@ -38,6 +38,14 @@ class FireBullet extends DefaultBullet
             repeat: -1
         });
     }
+
+    /**
+     * @inheritdoc
+     */
+    _fire(x, y, offsetX, offsetY, directionX, velocityX, lifetime = 1000)
+    {
+        super._fire(x, y, offsetX, offsetY, directionX, velocityX, lifetime)
+    }
 }
 
 export default FireBullet;
