@@ -36,11 +36,10 @@ class Enemy extends AbstractCharacter
         // Health
         this._defaultHealth = 2;
         this._health = this._defaultHealth;
-        // Time when an object will dissapear from the world
-        this._lifeTime;
         // The distance that is used by npc to chase/attack player
         this._activeDistance = 800;
         this._isDead = true;
+        this._canJump = false;
     }
 
     /**
@@ -121,17 +120,29 @@ class Enemy extends AbstractCharacter
         this._health = this._defaultHealth;
         this._isDead = false;
         
-        const spawnSideCoef = Phaser.Math.Between(1, 100);
-        const spawnSide = spawnSideCoef >= 50 ? 1 : -1;
-        this.setPosition(this._scene._player1.x + window.innerWidth * spawnSide, 1000);
+        const spawnCoef = Phaser.Math.Between(1, 100);
+        const spawnSide = spawnCoef <= 65 || this._scene._player1.x < 1600 ? 1 : -1;
+        const maxY = 1692;
+        const floorSize = 112;
+        let spawnY;
+
+        if (spawnCoef <= 50) {
+            spawnY = this._scene._player1.y - 20; // Make sure that sprite do not fall
+        } else if (spawnCoef <= 75) {
+            spawnY = maxY - floorSize;
+        } else {
+            spawnY = maxY - floorSize * 2;
+        }
+
+        // Set spawn direction based on the player1 position
+        this._directionX = this._scene._player1.x > this.x ? 1 : -1;
+        this.flipX = this._directionX !== 1;
+
+        this.setPosition(this._scene._player1.x + window.innerWidth / 2 * spawnSide, spawnY);
         this.setScale(2);
         this._resetHitbox();
         this.setActive(true);
         this.setVisible(true);
-        // @todo
-        this.setY(1000);
-
-        this._lifeTime = this._scene.time.now + 20000;
     }
 
     /**
@@ -256,26 +267,38 @@ class Enemy extends AbstractCharacter
     {
         super.preUpdate(time, delta);
 
-        if (this._scene.time.now > this._lifeTime) {
+        // Deactivate if fall or too far away
+        if (this.y >= 2000
+            || (p1DistanceX >= 0 && p1DistanceX >= this._activeDistance * 1.5) // NPC went far away to left
+            || (p1DistanceX <= 0 && p1DistanceX <= -this._activeDistance * 1.5) // NPC went far away to right
+        ) {
             this._deactivate();
         }
-        // The code below will not be executed if the object is not active
 
+        // Fire if distance allows
         const p1DistanceX = this._scene._player1.x - this.x;
-
         if ((p1DistanceX >= 0 && p1DistanceX <= this._activeDistance && this._directionX === 1) // Player at right and NPC is turned right
             || (p1DistanceX <= 0 && p1DistanceX >= -this._activeDistance && this._directionX === -1) // Player at left and NPC is turned left
         ) {
             this._fire();
         }
         
-        if ((p1DistanceX >= 0 && p1DistanceX >= this._activeDistance && this._directionX === -1) // NPC went far away to left
-            || (p1DistanceX <= 0 && p1DistanceX <= -this._activeDistance && this._directionX === 1) // NPC went far away to right
-            || (this.body.blocked.left || this.body.blocked.right) // World bounds collision
-        ) {
+        // World bounds collision
+        if (this.body.blocked.left || this.body.blocked.right) {
             // Turn around
             this.flipX = !this.flipX;
             this._directionX = -this._directionX;
+        }
+
+        // Jump is allowed if on ground
+        if (!this._canJump) {
+            this._canJump = this.body.blocked.down;
+        }
+        
+        // If can jump and not on a ground then jump once
+        if (this._canJump && !this.body.blocked.down) {
+            this.body.setVelocityY(-400);
+            this._canJump = false;
         }
 
         this.x += 3 * this._directionX;

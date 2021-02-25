@@ -8,6 +8,14 @@ class GameScene extends Phaser.Scene
     constructor()
     {
         super({ key: 'GameScene' });
+
+        this._player1;
+        this._enemies;
+        this._enemySpawnDelay;
+        this._nextEnemySpawnTime;
+        this._bg1;
+        this._bg2;
+        this._bg3;
     }
 
     preload()
@@ -32,22 +40,22 @@ class GameScene extends Phaser.Scene
     {
         const gameWidth = this.game.scale.width * 4;
         const gameHeight = 224;
-        this.bg1 = this.add.tileSprite(0, this.game.scale.height / 2, gameWidth, gameHeight, 'bg-1').setDepth(-1);
-        this.bg2 = this.add.tileSprite(0, this.game.scale.height / 2, gameWidth, gameHeight, 'bg-2').setDepth(-1);
-        this.bg3 = this.add.tileSprite(0, this.game.scale.height / 2, gameWidth, gameHeight, 'bg-3').setDepth(-1);
+        this._bg1 = this.add.tileSprite(0, this.game.scale.height / 2, gameWidth, gameHeight, 'bg-1').setDepth(-1);
+        this._bg2 = this.add.tileSprite(0, this.game.scale.height / 2, gameWidth, gameHeight, 'bg-2').setDepth(-1);
+        this._bg3 = this.add.tileSprite(0, this.game.scale.height / 2, gameWidth, gameHeight, 'bg-3').setDepth(-1);
 
-        let scaleX = this.cameras.main.width / this.bg1.width;
-        let scaleY = this.cameras.main.height / this.bg1.height;
+        let scaleX = this.cameras.main.width / this._bg1.width;
+        let scaleY = this.cameras.main.height / this._bg1.height;
         let scale = Math.max(scaleX, scaleY);
-        this.bg1.setScale(scale).setScrollFactor(0);
-        scaleX = this.cameras.main.width / this.bg2.width;
-        scaleY = this.cameras.main.height / this.bg2.height;
+        this._bg1.setScale(scale).setScrollFactor(0);
+        scaleX = this.cameras.main.width / this._bg2.width;
+        scaleY = this.cameras.main.height / this._bg2.height;
         scale = Math.max(scaleX, scaleY);
-        this.bg2.setScale(scale).setScrollFactor(0);
-        scaleX = this.cameras.main.width / this.bg3.width;
-        scaleY = this.cameras.main.height / this.bg3.height;
+        this._bg2.setScale(scale).setScrollFactor(0);
+        scaleX = this.cameras.main.width / this._bg3.width;
+        scaleY = this.cameras.main.height / this._bg3.height;
         scale = Math.max(scaleX, scaleY);
-        this.bg3.setScale(scale).setScrollFactor(0);
+        this._bg3.setScale(scale).setScrollFactor(0);
     }
 
     _createMap()
@@ -81,14 +89,12 @@ class GameScene extends Phaser.Scene
         this._enemies = this.add.group({
             classType: Enemy,
             key: 'enemy',
-            frameQuantity: 2,
+            frameQuantity: 7,
             active: false,
             visible: false
         });
-        this._enemySpawnDelay = 2000;
+        this._enemySpawnDelay = 1000;
         this._nextEnemySpawnTime = 0;
-
-        this._enemies.getFirst()._spawn();
 
         this._player1._weapons.forEach((weapon) => {
             this.physics.add.collider(weapon._bullets, this._enemies, this._enemyHit, null, this);
@@ -106,8 +112,8 @@ class GameScene extends Phaser.Scene
 
     _parallaxBackground()
     {
-        this.bg2.x = this._player1.x * -.08;
-        this.bg3.x = this._player1.x * -.2;
+        this._bg2.x = this._player1.x * -.08;
+        this._bg3.x = this._player1.x * -.2;
     }
 
     _enemyHit(bullet, enemy)
@@ -126,10 +132,13 @@ class GameScene extends Phaser.Scene
     {
         super.update(time, delta);
 
-        const enemy = this._enemies.getFirst();
-        if (enemy && time > this._nextEnemySpawnTime) {
-            enemy._spawn();
-            this._nextEnemySpawnTime = time + this._enemySpawnDelay;
+        if (this._player1.x > 1500) {
+            const enemy = this._enemies.getFirst();
+            if (enemy && time > this._nextEnemySpawnTime) {
+                enemy._spawn();
+                this._nextEnemySpawnTime = time + this._enemySpawnDelay;
+            }
+    
         }
 
         this._parallaxBackground();
