@@ -18,11 +18,6 @@ class DefaultWeapon
         this._nextFireTime = 0;
         this._enabled = false;
         this._type = 'default';
-        this._setProperties();
-    }
-
-    _setProperties()
-    {
     }
 
     _setBullet(bulletConfig)

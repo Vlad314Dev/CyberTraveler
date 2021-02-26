@@ -14,19 +14,10 @@ class AbstractCharacter extends Phaser.GameObjects.Sprite
         this._scene = config.scene;
         this._scene.add.existing(this);
         this._scene.physics.world.enable(this); // Enable physics for sprite
-
-        this._setProperties();
-        this._bindEvents();
-        this._init();
-    }
-
-    /**
-     * Set properties
-     */
-    _setProperties()
-    {
         // Object states
         this._states = {};
+        // Damage on collision
+        this._damage = 1;
         // Object default hitbox data
         this._defaultHitbox = {
             _size: {
@@ -38,20 +29,6 @@ class AbstractCharacter extends Phaser.GameObjects.Sprite
                 _y: 10
             }
         };
-    }
-
-    /**
-     * Bind events for this object
-     */
-    _bindEvents()
-    {
-    }
-
-    /**
-     * Init options
-     */
-    _init()
-    {
     }
 
     /**
@@ -100,6 +77,13 @@ class AbstractCharacter extends Phaser.GameObjects.Sprite
     _resetHitbox()
     {
         this._setHitbox(this._defaultHitbox);
+    }
+
+    /**
+     * Collision logic
+     */
+    _onCollision()
+    {
     }
 }
 

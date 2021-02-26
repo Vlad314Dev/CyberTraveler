@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Enemy from 'GameObject/Npc/Enemy';
+import EnemyTurret from 'GameObject/Npc/EnemyTurret';
 import Player1 from 'GameObject/Player1';
 import Phaser from 'phaser';
 
@@ -11,11 +12,14 @@ class GameScene extends Phaser.Scene
 
         this._player1;
         this._enemies;
+        this._turrets;
         this._enemySpawnDelay;
         this._nextEnemySpawnTime;
         this._bg1;
         this._bg2;
         this._bg3;
+        this._mainLayer;
+        this._propsLayer;
     }
 
     preload()
@@ -24,6 +28,7 @@ class GameScene extends Phaser.Scene
         this.load.atlas('player1-atlas', '/game/assets/atlas/player1.png', '/game/assets/atlas/player1.json');
         this.load.atlas('guns-and-shots-atlas', '/game/assets/atlas/guns-and-shots.png', '/game/assets/atlas/guns-and-shots.json');
         this.load.atlas('enemies-atlas', '/game/assets/atlas/enemies.png', '/game/assets/atlas/enemies.json');
+        this.load.atlas('city-atlas', '/game/assets/atlas/city.png', '/game/assets/atlas/city.json');
         
         // Background
         this.load.image('bg-1', '/game/assets/background/bg-1.png');
@@ -66,21 +71,23 @@ class GameScene extends Phaser.Scene
         const tileset = tilemap.addTilesetImage('tileset', 'tiles/tileset');
         const props = tilemap.addTilesetImage('props', 'tiles/props');
         // Layers
-        const mainLayer = tilemap.createStaticLayer('main', tileset, 0, -2000);
-        const propsLayer = tilemap.createStaticLayer('props', props, 0, -2000);
+        this._mainLayer = tilemap.createStaticLayer('main', tileset, 0, -2000);
+        this._propsLayer = tilemap.createStaticLayer('props', props, 0, -2000);
 
-        mainLayer.setDepth(-1)
+        this._mainLayer.setDepth(-1)
             .setScale(2)
             .setCollisionByProperty({ collides: true });
 
-        propsLayer.setDepth(-1).setScale(2);
-        
-        this.physics.add.collider(this._player1, mainLayer, null, null, this);
-        this.physics.add.collider(this._enemies, mainLayer, null, null, this);
+        this._propsLayer.setDepth(-1).setScale(2);
+
+        this._turrets = tilemap.getObjectLayer('turrets')['objects'];
     }
 
     create()
     {
+        this._createBackgrounds();
+        this._createMap();
+
         // Set the world size
         // world physics are bounded to the world size
         this.physics.world.setBounds(0, 0, 10000, 3500);
@@ -93,6 +100,9 @@ class GameScene extends Phaser.Scene
             active: false,
             visible: false
         });
+        this._turrets.forEach((turret) => {
+            this._enemies.add(new EnemyTurret(this, turret.x * 2, turret.y / 2, 'enemy/enemy-turret'));
+        });
         this._enemySpawnDelay = 1000;
         this._nextEnemySpawnTime = 0;
 
@@ -101,13 +111,14 @@ class GameScene extends Phaser.Scene
         });
 
         this._enemies.children.each((enemy) => {
+            this.physics.add.overlap(enemy, this._player1, this._playerHit, null, this);
             this.physics.add.collider(enemy._getBullets(), this._player1, this._playerHit, null, this);
         });
 
-        this.cameras.main.startFollow(this._player1);
+        this.physics.add.collider(this._player1, this._mainLayer, null, null, this);
+        this.physics.add.collider(this._enemies, this._mainLayer, null, null, this);
 
-        this._createBackgrounds();
-        this._createMap();
+        this.cameras.main.startFollow(this._player1);
     }
 
     _parallaxBackground()
@@ -122,10 +133,10 @@ class GameScene extends Phaser.Scene
         enemy._onHit(bullet._damage);
     }
 
-    _playerHit(bullet, player)
+    _playerHit(object, player)
     {
-        bullet._onCollision();
-        player._onHit(bullet._damage);
+        object._onCollision();
+        player._onHit(object._damage);
     }
 
     update(time, delta)

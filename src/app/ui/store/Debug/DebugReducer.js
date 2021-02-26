@@ -26,7 +26,8 @@ export const DebugReducer = (
 
     switch (type) {
         case DEBUG:
-            return debug(action, state);
+            // return debug(action, state);
+            return state;
         default:
             return state;
     }

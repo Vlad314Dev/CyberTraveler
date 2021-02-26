@@ -19,13 +19,7 @@ class Player1 extends AbstractCharacter
     constructor(config)
     {
         super(config);
-    }
 
-    /**
-     * @inheritdoc
-     */
-    _setProperties()
-    {
         // Object states
         this._states = {
             _idle: 'idle',
@@ -70,19 +64,24 @@ class Player1 extends AbstractCharacter
         };
         // Player1 health
         this._health = 5;
+        // One hit per ms
+        this._hitDelay = 2000;
+        // Next hit time
+        this._nextHitTime = 0;
+
+        this._bindEvents();
+        this._init();
     }
 
     /**
-     * @inheritdoc
+     * Init options
      */
     _init()
     {
-        // this.body.setCollideWorldBounds(true); // Make screen borders to collide
+        this.body.setImmovable(true);
         this.body.setGravityY(350);
         
         this.setScale(2); // Icrease size
-        // @todo
-        // this.setY(800);
 
         this._resetHitbox();
         this._setState(this._states._idle);
@@ -92,7 +91,7 @@ class Player1 extends AbstractCharacter
     }
 
     /**
-     * @inheritdoc
+     * Bind events to the object
      */
     _bindEvents()
     {
@@ -229,6 +228,7 @@ class Player1 extends AbstractCharacter
         const stateDataKey = 'state';
         const state = this.getData(stateDataKey);
         const isPlayerOnGroud = this.body.blocked.down;
+        const timeNow = this._scene.time.now;
 
         if (this._keyboard._right.isDown) { // Move right
             this._setData(stateDataKey, states._runRight, true);
@@ -259,6 +259,15 @@ class Player1 extends AbstractCharacter
             this.body.x = 600;
         }
 
+        if (Math.round((this._nextHitTime - timeNow) < 0)) { // Reset hit timer
+            this.clearTint();
+            this._nextHitTime = 0;
+        } else if (Math.round((this._nextHitTime - timeNow) / 500) % 2 == 0) { // Blink in red color every 500ms after hit
+            this.setTint(0xff0000, 0xff0000, 0xff0000, 0xff0000); // Red tint
+        } else {
+            this.clearTint(); // Blink
+        }
+
         P1Emitter.emit(DEBUG, {
             x: this.x,
             y: this.y,
@@ -280,10 +289,14 @@ class Player1 extends AbstractCharacter
      */
     _onHit(damage = 1)
     {
-        this.body.setVelocityX(0);
-        this._health -= damage;
+        const timeNow = this._scene.time.now;
+        if (timeNow > this._nextHitTime) {
+            this._nextHitTime = timeNow + this._hitDelay;
+            this.clearTint();
+            this._health -= damage;
 
-        P1Emitter.emit(REDUCE_HEALTH, damage);
+            P1Emitter.emit(REDUCE_HEALTH, damage);
+        }
 
         if (this._health <= 0) {
             // @todo die

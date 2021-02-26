@@ -15,10 +15,7 @@ class PierceWeapon extends DefaultWeapon
             active: false,
             visible: false
         });
-    }
 
-    _setProperties()
-    {
         this._type = 'pierce';
     }
 }

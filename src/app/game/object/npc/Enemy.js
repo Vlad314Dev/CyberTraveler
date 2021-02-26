@@ -11,12 +11,6 @@ class Enemy extends AbstractCharacter
     constructor(scene, x, y, key)
     {
         super({ scene, x, y, key });
-        // Object states
-        this._states = {
-            _patrol: 'patrol',
-            _chase: 'chase',
-            _attack: 'attack'
-        };
         // Object default hitbox data
         this._defaultHitbox = {
             _size: {
@@ -40,6 +34,17 @@ class Enemy extends AbstractCharacter
         this._activeDistance = 800;
         this._isDead = true;
         this._canJump = false;
+
+        this._bindEvents();
+        this._init();
+    }
+
+    /**
+     * Bind events to the object
+     */
+    _bindEvents()
+    {
+        
     }
 
     /**
@@ -54,34 +59,9 @@ class Enemy extends AbstractCharacter
         this.body.setImmovable(true);
 
         this._resetHitbox();
-        this._setState(this._states._patrol);
 
         this._addAnimations();
         this.play('enemy/robo-solder-run', true);
-    }
-
-    /**
-     * Bind events to use outside of the object
-     */
-    _bindEvents()
-    {
-        /**
-         * Actions triggered on state change
-         * State is changed once per setState call if not forced
-         */
-        this.on('changedata-state', (obj, state) => {
-            const states = this._states;
-
-            switch (state) {
-                case states._patrol:
-                case states._chase:
-                    break;
-                case states._attack:
-                    break;
-                default:
-                    break;
-            }
-        });
     }
 
     /**

@@ -15,10 +15,7 @@ class FireWeapon extends DefaultWeapon
             active: false,
             visible: false
         });
-    }
 
-    _setProperties()
-    {
         this._enabled = true;
         this._type = 'fire';
     }
