@@ -142,6 +142,10 @@ class Enemy extends AbstractCharacter
      */
     _deactivate()
     {
+        if (this.active) {
+            this._scene._misc._enemyExplosion.getFirst()._activate(this.body.x, this.body.y);
+        }
+
         this.setActive(false);
         this.setVisible(false);
         this._dropItem();

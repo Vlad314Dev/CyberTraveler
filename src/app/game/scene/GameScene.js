@@ -1,4 +1,5 @@
-/* eslint-disable no-unused-vars */
+import EnemyExplosion from 'GameObject/Misc/EnemyExplosion';
+import HitExplosion from 'GameObject/Misc/HitExplosion';
 import Enemy from 'GameObject/Npc/Enemy';
 import EnemyTurret from 'GameObject/Npc/EnemyTurret';
 import Player1 from 'GameObject/Player1';
@@ -39,6 +40,16 @@ class GameScene extends Phaser.Scene
         this.load.image('tiles/tileset', '/game/assets/tiles/tileset.png');
         this.load.image('tiles/props', '/game/assets/tiles/props.png');
         this.load.tilemapTiledJSON('tilemap', '/game/assets/tiles/map.json');
+
+        // Misc
+        this.load.spritesheet('misc/hit-1', '/game/assets/sprites/explosion-1.png', {
+            frameWidth: 32,
+            frameHeight: 32
+        });
+        this.load.spritesheet('misc/explosion-6', '/game/assets/sprites/explosion-6.png', {
+            frameWidth: 48,
+            frameHeight: 48
+        });
     }
 
     _createBackgrounds()
@@ -92,6 +103,23 @@ class GameScene extends Phaser.Scene
         // world physics are bounded to the world size
         this.physics.world.setBounds(0, 0, 10000, 3500);
 
+        this._misc = {
+            _hitExplosion: this.add.group({
+                classType: HitExplosion,
+                key: 'hit-explosion',
+                frameQuantity: 5,
+                active: false,
+                visible: false
+            }),
+            _enemyExplosion: this.add.group({
+                classType: EnemyExplosion,
+                key: 'enemy-explosion',
+                frameQuantity: 3,
+                active: false,
+                visible: false
+            })
+        };
+
         this._player1 = new Player1({ scene: this, x: 100, y: 750 + (117 * 16) / 2, key: 'player1' });
         this._enemies = this.add.group({
             classType: Enemy,
@@ -111,7 +139,7 @@ class GameScene extends Phaser.Scene
         });
 
         this._enemies.children.each((enemy) => {
-            this.physics.add.overlap(enemy, this._player1, this._playerHit, null, this);
+            this.physics.add.overlap(enemy, this._player1, this._playerEnemyOverlap, null, this);
             this.physics.add.collider(enemy._getBullets(), this._player1, this._playerHit, null, this);
         });
 
@@ -133,10 +161,16 @@ class GameScene extends Phaser.Scene
         enemy._onHit(bullet._damage);
     }
 
-    _playerHit(object, player)
+    _playerHit(bullet, player)
     {
-        object._onCollision();
-        player._onHit(object._damage);
+        bullet._onCollision();
+        player._onHit(bullet._damage);
+    }
+
+    _playerEnemyOverlap(enemy, player)
+    {
+        enemy._onCollision();
+        player._onHit(enemy._damage);
     }
 
     update(time, delta)

@@ -4,7 +4,8 @@ import { ApolloServer } from 'apollo-server-express';
 
 import DBConnection, {
     getUserInfo,
-    getUsers} from './mysql.js';
+    getUsers
+} from './mysql.js';
 
 // getUsers: [User] @cacheControl(maxAge: 45),
 const typeDefs = gql`

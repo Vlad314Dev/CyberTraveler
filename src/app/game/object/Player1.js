@@ -5,7 +5,10 @@ import P1Emitter from 'GUIBridgeEmitter/P1Emitter';
 import TestSceneEmitter from 'GUIBridgeEmitter/TestSceneEmitter';
 import Phaser from 'phaser';
 import { DEBUG } from 'UIStore/Debug/DebugAction';
-import { REDUCE_HEALTH } from 'UIStore/P1Health/P1HealthAction';
+import { 
+    REDUCE_HEALTH,
+    RESTORE_HEALTH
+} from 'UIStore/P1Health/P1HealthAction';
 
 import AbstractCharacter from './AbstractCharacter';
 
@@ -26,21 +29,25 @@ class Player1 extends AbstractCharacter
             _runLeft: 'runLeft',
             _runRight: 'runRight',
             _crouch: 'crouch',
-            _jump: 'jump'
+            _jump: 'jump',
+            _death: 'death',
         };
+        
         // Object default hitbox data
         this._defaultHitbox = {
             _size: {
                 _w: 35, 
-                _h: 40
+                _h: 38
             },
             _offset: {
                 _x: 20, 
                 _y: 10
             }
         };
+        
         // Object direction on X axis
         this._directionX = 1;
+        
         // Weapon data
         this._weapons = [
             new FireWeapon(this, 300, 10),
@@ -53,6 +60,7 @@ class Player1 extends AbstractCharacter
         this._selectedWeaponIdx = 0
         // Selected weapon
         this._selectedWeapon = this._weapons[this._selectedWeaponIdx];
+
         // Keyboard controls
         this._keyboard = {
             _left: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
@@ -62,12 +70,22 @@ class Player1 extends AbstractCharacter
             _jump: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
             _fire: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
         };
+        
         // Player1 health
-        this._health = 5;
+        this._initHealth = 5;
+        this._health = this._initHealth;
         // One hit per ms
-        this._hitDelay = 2000;
+        this._hitDelay = 1500;
         // Next hit time
         this._nextHitTime = 0;
+        this._lives = 3;
+        this._maxY = 2000;
+
+        // Checkpoint
+        this._checkpoint = [
+            { x: config.x, y: config.y }
+        ];
+        this._currentCheckpoint = 0;
 
         this._bindEvents();
         this._init();
@@ -123,7 +141,7 @@ class Player1 extends AbstractCharacter
                 case states._crouch:
                     this.play('player1/crouch', true);
                     this._setHitbox({
-                        _size: { _w: 35, _h: 30 },
+                        _size: { _w: 35, _h: 28 },
                         _offset: { _x: 20, _y: 20 }
                     });
                     break;
@@ -135,6 +153,12 @@ class Player1 extends AbstractCharacter
                     this._resetHitbox();
                     this.play('player1/jump', true);
                     this.body.setVelocityY(-500);
+                    break;
+                case states._death:
+                    this.play('player1/death', true);
+                    P1Emitter.emit(REDUCE_HEALTH, this._health);
+                    this._health = 0;
+                    // this._lives--;
                     break;
                 default:
                     break;
@@ -154,6 +178,16 @@ class Player1 extends AbstractCharacter
 
             this._selectedWeapon = this._weapons[this._selectedWeaponIdx];
         });
+
+        // Reset player to active checkpoint
+        this.on('animationcomplete-player1/death', () => {
+            if (this._lives < 1) {
+                // @todo death screen with options
+                this._resurrect();
+            } else {
+                this._resurrect();
+            }
+        }, this);
     }
 
     /**
@@ -201,6 +235,16 @@ class Player1 extends AbstractCharacter
             frameRate: 15,
             repeat: 0
         });
+        this._scene.anims.create({
+            key: 'player1/death',
+            frames: this._scene.anims.generateFrameNames('player1-atlas', {
+                prefix: 'die',
+                start: 1,
+                end: 3
+            }),
+            frameRate: 5,
+            repeat: 0
+        });
     }
 
     _fire()
@@ -218,54 +262,72 @@ class Player1 extends AbstractCharacter
     }
 
     /**
+     * Resurrect character on active checkpoint
+     */
+    _resurrect()
+    {
+        if (this.getData('state') === this._states._death) {
+            const checkpoint = this._checkpoint[this._currentCheckpoint];
+            
+            this._health = this._initHealth;
+            P1Emitter.emit(RESTORE_HEALTH, this._health);
+            this.clearTint();
+            this.body.reset(checkpoint.x, checkpoint.y);
+            this._setData('state', this._states._idle);
+        }
+    }
+
+    /**
      * @inheritdoc
      */
     preUpdate(time, delta)
     {
         super.preUpdate(time, delta);
-
-        const states = this._states
+        
         const stateDataKey = 'state';
         const state = this.getData(stateDataKey);
-        const isPlayerOnGroud = this.body.blocked.down;
-        const timeNow = this._scene.time.now;
+        const states = this._states
 
-        if (this._keyboard._right.isDown) { // Move right
-            this._setData(stateDataKey, states._runRight, true);
-            this.x += 3;
-        } else if (this._keyboard._left.isDown) { // Move left
-            this._setData(stateDataKey, states._runLeft, true);
-            this.x -= 3;
-        } else if (this._keyboard._crouch.isDown && state != states._crouch && isPlayerOnGroud) { // Crouch
-            this._setData(stateDataKey, states._crouch);
-        } else if (!this._keyboard._crouch.isDown && state == states._crouch) {
-            this._setData(stateDataKey, states._idle);
-        } else if (state != states._idle && isPlayerOnGroud && (state != states._crouch || state == states._jump)) { // Idle
-            this._setData(stateDataKey, states._idle);
-        }
-
-        if (this._keyboard._jump.isDown && isPlayerOnGroud && state != states._jump) { // Jump
-            this._setData(stateDataKey, states._jump);
-        } else if (isPlayerOnGroud && state == states._jump) {
-            this._setData(stateDataKey, states._idle);
-        }
-
-        if (this._keyboard._fire.isDown) {
-            this._fire();
-        }
-
-        if (this.y > 5000) {
-            this.body.y = 4500;
-            this.body.x = 600;
-        }
-
-        if (Math.round((this._nextHitTime - timeNow) < 0)) { // Reset hit timer
-            this.clearTint();
-            this._nextHitTime = 0;
-        } else if (Math.round((this._nextHitTime - timeNow) / 500) % 2 == 0) { // Blink in red color every 500ms after hit
-            this.setTint(0xff0000, 0xff0000, 0xff0000, 0xff0000); // Red tint
-        } else {
-            this.clearTint(); // Blink
+        if (state !== states._death) {
+            const isPlayerOnGroud = this.body.blocked.down;
+            const timeNow = this._scene.time.now;
+    
+            if (this._keyboard._right.isDown) { // Move right
+                this._setData(stateDataKey, states._runRight, true);
+                this.x += 3;
+            } else if (this._keyboard._left.isDown) { // Move left
+                this._setData(stateDataKey, states._runLeft, true);
+                this.x -= 3;
+            } else if (this._keyboard._crouch.isDown && state != states._crouch && isPlayerOnGroud) { // Crouch
+                this._setData(stateDataKey, states._crouch);
+            } else if (!this._keyboard._crouch.isDown && state == states._crouch) {
+                this._setData(stateDataKey, states._idle);
+            } else if (state != states._idle && isPlayerOnGroud && (state != states._crouch || state == states._jump)) { // Idle
+                this._setData(stateDataKey, states._idle);
+            }
+    
+            if (this._keyboard._jump.isDown && isPlayerOnGroud && state != states._jump) { // Jump
+                this._setData(stateDataKey, states._jump);
+            } else if (isPlayerOnGroud && state == states._jump) {
+                this._setData(stateDataKey, states._idle);
+            }
+    
+            if (this._keyboard._fire.isDown) {
+                this._fire();
+            }
+    
+            if (this.y > this._maxY) {
+                this._setData(stateDataKey, this._states._death);
+            }
+    
+            if (Math.round((this._nextHitTime - timeNow) < 0)) { // Reset hit timer
+                this.clearTint();
+                this._nextHitTime = 0;
+            } else if (Math.round((this._nextHitTime - timeNow) / 500) % 2 == 0) { // Blink in red color every 500ms after hit
+                this.setTint(0xff0000, 0xff0000, 0xff0000, 0xff0000); // Red tint
+            } else {
+                this.clearTint(); // Blink
+            }
         }
 
         P1Emitter.emit(DEBUG, {
@@ -289,17 +351,19 @@ class Player1 extends AbstractCharacter
      */
     _onHit(damage = 1)
     {
-        const timeNow = this._scene.time.now;
-        if (timeNow > this._nextHitTime) {
-            this._nextHitTime = timeNow + this._hitDelay;
-            this.clearTint();
-            this._health -= damage;
+        if (this._health > 0) {
+            const timeNow = this._scene.time.now;
+            if (timeNow > this._nextHitTime) {
+                this._nextHitTime = timeNow + this._hitDelay;
+                this.clearTint();
+                this._health -= damage;
+    
+                P1Emitter.emit(REDUCE_HEALTH, damage);
 
-            P1Emitter.emit(REDUCE_HEALTH, damage);
-        }
-
-        if (this._health <= 0) {
-            // @todo die
+                if (this._health <= 0) {
+                    this._setData('state', this._states._death);
+                }
+            }
         }
     }
 }

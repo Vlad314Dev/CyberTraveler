@@ -32,7 +32,7 @@ class DefaultBullet extends Phaser.Physics.Arcade.Sprite
 
         this.body.collideWorldBounds = true;
         this.body.onWorldBounds = true;
-
+        
         this._initAnimKeys();
         this._addAnimations();
     }
@@ -108,6 +108,10 @@ class DefaultBullet extends Phaser.Physics.Arcade.Sprite
      */
     _onCollision()
     {
+        if (this.active) {
+            this.scene._misc._hitExplosion.getFirst()._activate(this.body.x, this.body.y);
+        }
+        
         this.setActive(false);
         this.setVisible(false);
         this.body.reset(); // Without reset the body will be still in scene
