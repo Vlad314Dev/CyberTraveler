@@ -135,12 +135,12 @@ class GameScene extends Phaser.Scene
         this._nextEnemySpawnTime = 0;
 
         this._player1._weapons.forEach((weapon) => {
-            this.physics.add.collider(weapon._bullets, this._enemies, this._enemyHit, null, this);
+            this.physics.add.collider(weapon._bullets, this._enemies, this._p1EnemyHit, null, this);
         });
 
         this._enemies.children.each((enemy) => {
             this.physics.add.overlap(enemy, this._player1, this._playerEnemyOverlap, null, this);
-            this.physics.add.collider(enemy._getBullets(), this._player1, this._playerHit, null, this);
+            this.physics.add.collider(enemy._getBullets(), this._player1, this._p1EnemyHit, null, this);
         });
 
         this.physics.add.collider(this._player1, this._mainLayer, null, null, this);
@@ -155,10 +155,16 @@ class GameScene extends Phaser.Scene
         this._bg3.x = this._player1.x * -.2;
     }
 
-    _enemyHit(bullet, enemy)
+    _p1EnemyHit(bullet, enemy)
     {
         bullet._onCollision();
+        const wasDead = enemy._isDead;
         enemy._onHit(bullet._damage);
+        const isDead = enemy._isDead;
+
+        if (wasDead !== isDead && isDead === true) {
+            this._player1._addScore(enemy._score);
+        }
     }
 
     _playerHit(bullet, player)

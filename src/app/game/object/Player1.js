@@ -2,13 +2,15 @@ import FireWeapon from 'GameObject/Weapon/FireWeapon';
 import MissileWeapon from 'GameObject/Weapon/MissileWeapon';
 import PierceWeapon from 'GameObject/Weapon/PierceWeapon';
 import P1Emitter from 'GUIBridgeEmitter/P1Emitter';
-import TestSceneEmitter from 'GUIBridgeEmitter/TestSceneEmitter';
 import Phaser from 'phaser';
-import { DEBUG } from 'UIStore/Debug/DebugAction';
-import { 
+// import { DEBUG } from 'UIStore/Debug/DebugAction';
+import {
     REDUCE_HEALTH,
     RESTORE_HEALTH
 } from 'UIStore/P1Health/P1HealthAction';
+import {
+    SET_SCORE
+} from 'UIStore/Score/ScoreAction';
 
 import AbstractCharacter from './AbstractCharacter';
 
@@ -51,7 +53,7 @@ class Player1 extends AbstractCharacter
         // Weapon data
         this._weapons = [
             new FireWeapon(this, 300, 10),
-            new MissileWeapon(this, 300, 10),
+            new MissileWeapon(this, 1000, 10),
             new PierceWeapon(this, 500, 10)
         ];
         // Weapons count
@@ -80,6 +82,8 @@ class Player1 extends AbstractCharacter
         this._nextHitTime = 0;
         this._lives = 3;
         this._maxY = 2000;
+        // Total score
+        this._score = 0;
 
         // Checkpoint
         this._checkpoint = [
@@ -256,9 +260,6 @@ class Player1 extends AbstractCharacter
         const offsetY = isCrouch ? this.height / 2 : 5 + (isRunning ? 10 : 0);
 
         this._selectedWeapon._fire(this.x, this.y, offsetX, offsetY, this._directionX);
-
-        // Testing GUIBrigde
-        TestSceneEmitter.emit('TEST_POINTERDOWN_EVENT');
     }
 
     /**
@@ -275,6 +276,15 @@ class Player1 extends AbstractCharacter
             this.body.reset(checkpoint.x, checkpoint.y);
             this._setData('state', this._states._idle);
         }
+    }
+
+    /**
+     * Add score
+     */
+    _addScore(score)
+    {
+        this._score += score;
+        P1Emitter.emit(SET_SCORE, this._score);
     }
 
     /**
@@ -330,12 +340,12 @@ class Player1 extends AbstractCharacter
             }
         }
 
-        P1Emitter.emit(DEBUG, {
-            x: this.x,
-            y: this.y,
-            body_x: this.body.x,
-            body_y: this.body.y
-        });
+        // P1Emitter.emit(DEBUG, {
+        //     x: this.x,
+        //     y: this.y,
+        //     body_x: this.body.x,
+        //     body_y: this.body.y
+        // });
     }
 
     /**

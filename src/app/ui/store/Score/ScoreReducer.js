@@ -1,14 +1,13 @@
 import {
-    ADD_TO_SCORE
+    SET_SCORE
 } from './ScoreAction';
 
-export const addToScore = (action, state) => {
+export const setScore = (action, state) => {
     const { score } = action;
-    const { score: oldScore } = state;
 
     return {
         ...state,
-        score: oldScore + score
+        score
     }
 };
 
@@ -21,8 +20,8 @@ export const ScoreReducer = (
     const { type } = action;
 
     switch (type) {
-        case ADD_TO_SCORE:
-            return addToScore(action, state);
+        case SET_SCORE:
+            return setScore(action, state);
         default:
             return state;
     }

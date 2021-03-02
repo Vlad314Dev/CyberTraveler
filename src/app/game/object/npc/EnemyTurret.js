@@ -31,6 +31,7 @@ class EnemyTurret extends AbstractCharacter
         // The distance that is used by npc to chase/attack player
         this._activeDistance = 800;
         this._isDead = false;
+        this._score = 300;
 
         this._bindEvents();
         this._init();
@@ -117,9 +118,11 @@ class EnemyTurret extends AbstractCharacter
      */
     _deactivate()
     {
-        if (this.active) {
-            this._scene._misc._enemyExplosion.getFirst()._activate(this.body.x, this.body.y);
+        const enemyExplosion = this._scene._misc._enemyExplosion.getFirst();
+        if (this.active && enemyExplosion) {
+            enemyExplosion._activate(this.body.x, this.body.y);
         }
+        this._isDead = true;
         this.destroy();
     }
 

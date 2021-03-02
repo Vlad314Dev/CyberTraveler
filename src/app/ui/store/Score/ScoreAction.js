@@ -1,6 +1,6 @@
-export const ADD_TO_SCORE = 'ADD_SCORE';
+export const SET_SCORE = 'SET_SCORE';
 
-export const addToScore = (score) => ({
-    type: ADD_TO_SCORE,
+export const setScore = (score) => ({
+    type: SET_SCORE,
     score
 });

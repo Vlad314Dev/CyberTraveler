@@ -17,7 +17,7 @@ class MissileBullet extends DefaultBullet
 
     _init()
     {
-        this._damage = 0.7;
+        this._damage = 3;
 
         super._init();
     }
@@ -91,6 +91,11 @@ class MissileBullet extends DefaultBullet
      */
     _onCollision()
     {
+        const hitExplosion = this.scene._misc._hitExplosion.getFirst();
+        if (this.active && hitExplosion) {
+            hitExplosion._activate(this.body.x, this.body.y);
+        }
+        
         this._path = [];
         this._target = null;
         this._pi = 0;

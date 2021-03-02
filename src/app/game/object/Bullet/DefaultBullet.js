@@ -108,8 +108,9 @@ class DefaultBullet extends Phaser.Physics.Arcade.Sprite
      */
     _onCollision()
     {
-        if (this.active) {
-            this.scene._misc._hitExplosion.getFirst()._activate(this.body.x, this.body.y);
+        const hitExplosion = this.scene._misc._hitExplosion.getFirst();
+        if (this.active && hitExplosion) {
+            hitExplosion._activate(this.body.x, this.body.y);
         }
         
         this.setActive(false);

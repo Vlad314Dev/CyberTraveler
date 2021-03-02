@@ -7,7 +7,7 @@ class PierceBullet extends DefaultBullet
      */
     _init()
     {
-        this._damage = 0.5;
+        this._damage = 1.5;
 
         super._init();
     }
@@ -44,7 +44,10 @@ class PierceBullet extends DefaultBullet
      */
     _onCollision()
     {
-        return null;
+        const hitExplosion = this.scene._misc._hitExplosion.getFirst();
+        if (this.active && hitExplosion) {
+            hitExplosion._activate(this.body.x, this.body.y);
+        }
     }
 
     /**

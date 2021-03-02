@@ -34,6 +34,11 @@ class Enemy extends AbstractCharacter
         this._activeDistance = 800;
         this._isDead = true;
         this._canJump = false;
+        // Movement speed
+        this._speed = 4;
+        // List of animation keys
+        this._animationKeys = [];
+        this._score = 100;
 
         this._bindEvents();
         this._init();
@@ -61,7 +66,6 @@ class Enemy extends AbstractCharacter
         this._resetHitbox();
 
         this._addAnimations();
-        this.play('enemy/robo-solder-run', true);
     }
 
     /**
@@ -70,7 +74,7 @@ class Enemy extends AbstractCharacter
     _addAnimations()
     {
         this._scene.anims.create({
-            key: 'enemy/robo-solder-run',
+            key: 'enemy/robo-soldier-run',
             frames: this._scene.anims.generateFrameNames('enemies-atlas', {
                 prefix: 'robo-soldier-run',
                 start: 1,
@@ -79,6 +83,31 @@ class Enemy extends AbstractCharacter
             frameRate: 10,
             repeat: -1
         });
+        this._animationKeys.push('enemy/robo-soldier-run');
+
+        this._scene.anims.create({
+            key: 'enemy/robo-soldier',
+            frames: this._scene.anims.generateFrameNames('enemies-atlas', {
+                prefix: 'robo-soldier',
+                start: 1,
+                end: 6
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this._animationKeys.push('enemy/robo-soldier');
+
+        this._scene.anims.create({
+            key: 'enemy/roboid',
+            frames: this._scene.anims.generateFrameNames('enemies-atlas', {
+                prefix: 'roboid',
+                start: 1,
+                end: 6
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this._animationKeys.push('enemy/roboid');
     }
 
     /**
@@ -114,11 +143,14 @@ class Enemy extends AbstractCharacter
             spawnY = maxY - floorSize * 2;
         }
 
-        // Set spawn direction based on the player1 position
-        this._directionX = this._scene._player1.x > this.x ? 1 : -1;
+        // Set spawn direction based on the spawnSide
+        this._directionX = spawnSide === 1 ? -1 : 1;
         this.flipX = this._directionX !== 1;
 
-        this.setPosition(this._scene._player1.x + window.innerWidth / 2 * spawnSide, spawnY);
+        // Select random animation
+        this.play(this._animationKeys[Phaser.Math.Between(0, this._animationKeys.length - 1)]);
+
+        this.setPosition(this._scene._player1.x + window.innerWidth / 1.5 * spawnSide, spawnY);
         this.setScale(2);
         this._resetHitbox();
         this.setActive(true);
@@ -142,8 +174,9 @@ class Enemy extends AbstractCharacter
      */
     _deactivate()
     {
-        if (this.active) {
-            this._scene._misc._enemyExplosion.getFirst()._activate(this.body.x, this.body.y);
+        const enemyExplosion = this._scene._misc._enemyExplosion.getFirst();
+        if (this.active && enemyExplosion) {
+            enemyExplosion._activate(this.body.x, this.body.y);
         }
 
         this.setActive(false);
@@ -161,12 +194,12 @@ class Enemy extends AbstractCharacter
         if (!this._isDead) {
             const itemsDropChance = [
                 { 
-                    chance: 25,
+                    chance: 3,
                     type: 'weapon',
                     id: 'missile'
                 },
                 {
-                    chance: 60,
+                    chance: 8,
                     type: 'weapon',
                     id: 'pierce'
                 }
@@ -174,7 +207,7 @@ class Enemy extends AbstractCharacter
             const randomChance = Phaser.Math.Between(1, 100);
 
             itemsDropChance.every((dropData) => {
-                if (dropData.chance > randomChance) {
+                if (dropData.chance >= randomChance) {
                     if (dropData.type === 'weapon') {
                         if (dropData.id === 'missile') {
                             let itemSprite = this._scene.add.sprite(this.x, this.y, 'guns-and-shots-atlas', 'gun-09');
@@ -250,17 +283,18 @@ class Enemy extends AbstractCharacter
     preUpdate(time, delta)
     {
         super.preUpdate(time, delta);
+        
+        const p1DistanceX = this._scene._player1.x - this.x;
 
         // Deactivate if fall or too far away
         if (this.y >= 2000
-            || (p1DistanceX >= 0 && p1DistanceX >= this._activeDistance * 1.5) // NPC went far away to left
-            || (p1DistanceX <= 0 && p1DistanceX <= -this._activeDistance * 1.5) // NPC went far away to right
+            || (p1DistanceX >= 0 && p1DistanceX >= this._activeDistance * 2) // NPC went far away to left
+            || (p1DistanceX <= 0 && p1DistanceX <= -this._activeDistance * 2) // NPC went far away to right
         ) {
             this._deactivate();
         }
 
         // Fire if distance allows
-        const p1DistanceX = this._scene._player1.x - this.x;
         if ((p1DistanceX >= 0 && p1DistanceX <= this._activeDistance && this._directionX === 1) // Player at right and NPC is turned right
             || (p1DistanceX <= 0 && p1DistanceX >= -this._activeDistance && this._directionX === -1) // Player at left and NPC is turned left
         ) {
@@ -285,7 +319,7 @@ class Enemy extends AbstractCharacter
             this._canJump = false;
         }
 
-        this.x += 3 * this._directionX;
+        this.x += this._speed * this._directionX;
     }
 }
 
