@@ -1,5 +1,6 @@
 import EnemyExplosion from 'GameObject/Misc/EnemyExplosion';
 import HitExplosion from 'GameObject/Misc/HitExplosion';
+import Boss from 'GameObject/Npc/Boss';
 import Enemy from 'GameObject/Npc/Enemy';
 import EnemyTurret from 'GameObject/Npc/EnemyTurret';
 import Player1 from 'GameObject/Player1';
@@ -135,31 +136,7 @@ class GameScene extends Phaser.Scene
         this._enemySpawnDelay = 1000;
         this._nextEnemySpawnTime = 0;
 
-        // const bossParts = [
-        //     'torso1',
-        //     'torso2',
-        //     'torso3',
-        //     'forearm-front',
-        //     'forearm-back',
-        //     'lower-torso-1',
-        //     'lower-torso-2',
-        //     'lower-torso-3',
-        //     'arm-part',
-        //     'arm-back-part'
-        // ];
-        this._boss = this.add.group();
-        this._boss.add(this.add.sprite(230, 1585, 'boss-atlas', 'arm-back-part').setDepth(4));
-        this._boss.add(this.add.sprite(175, 1625, 'boss-atlas', 'forearm-back').setDepth(5));
-        this._boss.add(this.add.sprite(295, 1560, 'boss-atlas', 'torso1').setDepth(4));
-        this._boss.add(this.add.sprite(365, 1585, 'boss-atlas', 'arm-part').setDepth(5));
-        this._boss.add(this.add.sprite(375, 1605, 'boss-atlas', 'arm-part').setDepth(5));
-        this._boss.add(this.add.sprite(350, 1640, 'boss-atlas', 'forearm-front').setDepth(5));
-        this._boss.add(this.add.sprite(340, 1652, 'boss-atlas', 'lower-torso-1').setDepth(3));
-        this._boss.add(this.add.sprite(345, 1690, 'boss-atlas', 'lower-torso-2').setDepth(2));
-        this._boss.add(this.add.sprite(350, 1715, 'boss-atlas', 'lower-torso-3').setDepth(1));
-        this._boss.children.each((bossPart) => bossPart.setScale(2));
-
-        
+        this._boss = new Boss(this, 295, 1540, 'boss');
 
         this._player1._weapons.forEach((weapon) => {
             this.physics.add.collider(weapon._bullets, this._enemies, this._p1EnemyHit, null, this);
@@ -220,18 +197,6 @@ class GameScene extends Phaser.Scene
         }
 
         this._parallaxBackground();
-
-        // if (this._boss.getFirst(true).x != this._player1.x) {
-        //     if (this._boss.getFirst(true).x > this._player1.x) {
-        //         this._boss.children.each((bossPart) => {
-        //             bossPart.x -= 2;
-        //         });
-        //     } else {
-        //         this._boss.children.each((bossPart) => {
-        //             bossPart.x += 2;
-        //         });
-        //     }
-        // }
     }
 }
 
