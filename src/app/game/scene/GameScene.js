@@ -1,3 +1,4 @@
+import BossHit from 'GameObject/Misc/BossHit';
 import EnemyExplosion from 'GameObject/Misc/EnemyExplosion';
 import HitExplosion from 'GameObject/Misc/HitExplosion';
 import Boss from 'GameObject/Npc/Boss';
@@ -32,6 +33,7 @@ class GameScene extends Phaser.Scene
         this.load.atlas('enemies-atlas', '/game/assets/atlas/enemies.png', '/game/assets/atlas/enemies.json');
         this.load.atlas('city-atlas', '/game/assets/atlas/city.png', '/game/assets/atlas/city.json');
         this.load.atlas('boss-atlas', '/game/assets/atlas/boss.png', '/game/assets/atlas/boss.json');
+        this.load.atlas('warped-shots-and-hits-atlas', '/game/assets/atlas/warped-shots-and-hits.png', '/game/assets/atlas/warped-shots-and-hits.json');
         
         // Background
         this.load.image('bg-1', '/game/assets/background/bg-1.png');
@@ -119,7 +121,14 @@ class GameScene extends Phaser.Scene
                 frameQuantity: 3,
                 active: false,
                 visible: false
-            })
+            }),
+            _bossHit: this.add.group({
+                classType: BossHit,
+                key: 'boss-hit',
+                frameQuantity: 3,
+                active: false,
+                visible: false
+            }),
         };
 
         this._player1 = new Player1({ scene: this, x: 100, y: 750 + (117 * 16) / 2, key: 'player1' });
@@ -136,7 +145,12 @@ class GameScene extends Phaser.Scene
         this._enemySpawnDelay = 1000;
         this._nextEnemySpawnTime = 0;
 
-        this._boss = new Boss(this, 295, 1540, 'boss');
+        this._boss = new Boss(this, 1200, 1540, 'boss');
+
+        Object.keys(this._boss._attack._type).forEach((attack) => {
+            const bossAttack = this._boss._attack._type[attack];
+            this.physics.add.collider(bossAttack._bullets, this._player1, this._playerHit, null, this);
+        });
 
         this._player1._weapons.forEach((weapon) => {
             this.physics.add.collider(weapon._bullets, this._enemies, this._p1EnemyHit, null, this);

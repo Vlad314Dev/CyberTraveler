@@ -4,8 +4,8 @@
 			"image": "boss.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 160,
-				"h": 474
+				"w": 138,
+				"h": 419
 			},
 			"scale": 1,
 			"frames": [
@@ -94,27 +94,6 @@
 					}
 				},
 				{
-					"filename": "laser-base2",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 67,
-						"h": 55
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 62,
-						"h": 55
-					},
-					"frame": {
-						"x": 0,
-						"y": 318,
-						"w": 62,
-						"h": 55
-					}
-				},
-				{
 					"filename": "forearm-back",
 					"rotated": false,
 					"trimmed": false,
@@ -130,30 +109,9 @@
 					},
 					"frame": {
 						"x": 0,
-						"y": 373,
+						"y": 318,
 						"w": 52,
 						"h": 51
-					}
-				},
-				{
-					"filename": "laser-base1",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 67,
-						"h": 55
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 3,
-						"w": 64,
-						"h": 50
-					},
-					"frame": {
-						"x": 0,
-						"y": 424,
-						"w": 64,
-						"h": 50
 					}
 				},
 				{
@@ -171,8 +129,8 @@
 						"h": 50
 					},
 					"frame": {
-						"x": 52,
-						"y": 373,
+						"x": 0,
+						"y": 369,
 						"w": 63,
 						"h": 50
 					}
@@ -192,7 +150,7 @@
 						"h": 50
 					},
 					"frame": {
-						"x": 62,
+						"x": 52,
 						"y": 318,
 						"w": 61,
 						"h": 50
@@ -220,27 +178,6 @@
 					}
 				},
 				{
-					"filename": "laser1",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 67,
-						"h": 55
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 22,
-						"w": 67,
-						"h": 12
-					},
-					"frame": {
-						"x": 68,
-						"y": 306,
-						"w": 67,
-						"h": 12
-					}
-				},
-				{
 					"filename": "arm-back-part",
 					"rotated": false,
 					"trimmed": false,
@@ -255,8 +192,8 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 135,
-						"y": 306,
+						"x": 113,
+						"y": 0,
 						"w": 25,
 						"h": 24
 					}
@@ -276,31 +213,10 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 135,
-						"y": 330,
-						"w": 25,
-						"h": 24
-					}
-				},
-				{
-					"filename": "laser2",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 67,
-						"h": 55
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 21,
-						"w": 67,
-						"h": 14
-					},
-					"frame": {
 						"x": 82,
 						"y": 0,
-						"w": 67,
-						"h": 14
+						"w": 25,
+						"h": 24
 					}
 				}
 			]

@@ -25,6 +25,7 @@ class DefaultBullet extends Phaser.Physics.Arcade.Sprite
      */
     _init()
     {
+        this.setDepth(10);
         this.setImmovable(true);
         
         this.body.checkWorldBounds(true);
