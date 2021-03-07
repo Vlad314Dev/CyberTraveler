@@ -1,5 +1,6 @@
 import AbstractCharacter from 'GameObject/AbstractCharacter';
 import BossAttack from 'GameObject/Npc/Boss/BossAttack';
+import Phaser from 'phaser';
 
 class Boss extends AbstractCharacter
 {
@@ -19,7 +20,7 @@ class Boss extends AbstractCharacter
         };
 
         this._bodyParts = {
-            'torso-1': {},
+            'torso': {},
             'arm-back-part-1': {},
             'forearm-back': {},
             'arm-part-1': {},
@@ -29,11 +30,12 @@ class Boss extends AbstractCharacter
             'lower-torso-2': {},
             'lower-torso-3': {},
         };
-        this._torso = { _x: x, _y: y };
+        this._torso = { _x: x, _y: y, _active: 1 };
         this._states = {
             _idle: 'idle'
         };
-        this._health = 3000;
+        this._maxHealth = 10;
+        this._health = 10;
         this._animations = {
             _arms: {
                 _speed: 80,
@@ -64,6 +66,8 @@ class Boss extends AbstractCharacter
             }
         };
         this._attack = new BossAttack(this);
+        this._isDead = false;
+        this._score = 10000;
 
         this._bindEvents();
         this._init();
@@ -85,7 +89,7 @@ class Boss extends AbstractCharacter
         // Body parts based on the torso position
         this._bodyParts['arm-back-part-1'] = this.scene.add.sprite(this._torso._x - 65, this._torso._y + 25, 'boss-atlas', 'arm-back-part').setDepth(4);
         this._bodyParts['forearm-back'] = this.scene.add.sprite(this._torso._x - 120, this._torso._y + 65, 'boss-atlas', 'forearm-back').setDepth(5);
-        this._bodyParts['torso-1'] = this.scene.add.sprite(this._torso._x, this._torso._y, 'boss-atlas', 'torso1').setDepth(4);
+        this._bodyParts['torso'] = this.scene.add.sprite(this._torso._x, this._torso._y, 'boss-atlas', 'torso1').setDepth(4);
         this._bodyParts['arm-part-1'] = this.scene.add.sprite(this._torso._x + 70, this._torso._y + 25, 'boss-atlas', 'arm-part').setDepth(5);
         this._bodyParts['arm-part-2'] = this.scene.add.sprite(this._torso._x + 80, this._torso._y + 45, 'boss-atlas', 'arm-part').setDepth(5);
         this._bodyParts['forearm-front'] = this.scene.add.sprite(this._torso._x + 65, this._torso._y + 80, 'boss-atlas', 'forearm-front').setDepth(5);
@@ -101,6 +105,7 @@ class Boss extends AbstractCharacter
         this._resetHitbox();
         this._addAnimations();
         this._setState(this._states._idle);
+        this.setAlpha(0);
     }
 
     /**
@@ -111,10 +116,59 @@ class Boss extends AbstractCharacter
     }
 
     /**
+     * When enemy is hitted
+     */
+    _onHit(damage = 1)
+    {
+        this._health -= damage;
+        
+        if (this._health <= 0) {
+            this._deactivate();
+        }
+
+        if (this._torso._active == 1 && this._health <= this._maxHealth / 3 * 2 && this._health >= this._maxHealth / 3) {
+            this._torso._active = 2;
+            this._bodyParts['torso'].destroy();
+            this._bodyParts['torso'] = this.scene.add.sprite(this._torso._x, this._torso._y, 'boss-atlas', 'torso2').setDepth(4).setScale(2);
+        }
+
+        if (this._torso._active == 2 && this._health <= this._maxHealth / 3) {
+            this._torso._active = 3;
+            this._bodyParts['torso'].destroy();
+            this._bodyParts['torso'] = this.scene.add.sprite(this._torso._x, this._torso._y, 'boss-atlas', 'torso3').setDepth(4).setScale(2);
+        }
+    }
+
+    /**
+     * Deactivate object from the world
+     */
+    _deactivate()
+    {
+        this._isDead = true;
+        this.body.setSize(0);
+
+        Object.keys(this._bodyParts).forEach((bossPartKey) => {
+            this.scene.time.addEvent({
+                delay: Phaser.Math.Between(1, 3) * 200,
+                callback: () => {
+                    const bodyPart = this._bodyParts[bossPartKey];
+                    this.scene.physics.world.enable(bodyPart);
+                },
+                callbackScope: this,
+                repeat: 0
+            });
+        });
+    }
+
+    /**
      * @inheritdoc
      */
     preUpdate(time, delta)
     {
+        if (this._isDead) {
+            return;
+        }
+
         super.preUpdate(time, delta);
 
         if (this.getData('state') === this._states._idle) {
@@ -126,14 +180,14 @@ class Boss extends AbstractCharacter
 
             if (this._animations._torso._forward) {
                 this._animations._torso._y += 1;
-                this._bodyParts['torso-1'].y += 1;
+                this._bodyParts['torso'].y += 1;
                 
                 if (this._animations._torso._y == this._animations._torso._yMax) {
                     this._animations._torso._forward = false;
                 }
             } else {
                 this._animations._torso._y -= 1;
-                this._bodyParts['torso-1'].y -= 1;
+                this._bodyParts['torso'].y -= 1;
     
                 if (this._animations._torso._y == 0) {
                     this._animations._torso._forward = true;
@@ -199,7 +253,9 @@ class Boss extends AbstractCharacter
             }
         }
 
-        this._attack._execute('bounce');
+        // this._attack._execute('default');
+        // this._attack._execute('bounce');
+        this._attack._execute('rain');
     }
 }
 

@@ -125,7 +125,7 @@ class GameScene extends Phaser.Scene
             _bossHit: this.add.group({
                 classType: BossHit,
                 key: 'boss-hit',
-                frameQuantity: 3,
+                frameQuantity: 15,
                 active: false,
                 visible: false
             }),
@@ -151,9 +151,11 @@ class GameScene extends Phaser.Scene
             const bossAttack = this._boss._attack._type[attack];
             this.physics.add.collider(bossAttack._bullets, this._player1, this._playerHit, null, this);
         });
+        this.physics.add.overlap(this._boss, this._player1, this._playerEnemyOverlap, null, this);
 
         this._player1._weapons.forEach((weapon) => {
             this.physics.add.collider(weapon._bullets, this._enemies, this._p1EnemyHit, null, this);
+            this.physics.add.collider(weapon._bullets, this._boss, this._p1EnemyHit, null, this);
         });
 
         this._enemies.children.each((enemy) => {
@@ -164,6 +166,7 @@ class GameScene extends Phaser.Scene
         this.physics.add.collider(this._player1, this._mainLayer, null, null, this);
         this.physics.add.collider(this._enemies, this._mainLayer, null, null, this);
         this.physics.add.collider(this._boss._attack._type._bounce._bullets, this._mainLayer, null, null, this);
+        this.physics.add.collider(this._boss._attack._type._rain._bullets, this._mainLayer, this._bulletWorldCollision, null, this);
 
         this.cameras.main.startFollow(this._player1);
     }
@@ -184,6 +187,11 @@ class GameScene extends Phaser.Scene
         if (wasDead !== isDead && isDead === true) {
             this._player1._addScore(enemy._score);
         }
+    }
+
+    _bulletWorldCollision(bullet)
+    {
+        bullet._onCollision();
     }
 
     _playerHit(bullet, player)
