@@ -199,7 +199,7 @@ class Boss extends AbstractCharacter
             }
         }
 
-        this._attack._execute('default');
+        this._attack._execute('bounce');
     }
 }
 

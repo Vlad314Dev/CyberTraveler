@@ -163,6 +163,7 @@ class GameScene extends Phaser.Scene
 
         this.physics.add.collider(this._player1, this._mainLayer, null, null, this);
         this.physics.add.collider(this._enemies, this._mainLayer, null, null, this);
+        this.physics.add.collider(this._boss._attack._type._bounce._bullets, this._mainLayer, null, null, this);
 
         this.cameras.main.startFollow(this._player1);
     }
