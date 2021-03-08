@@ -2,7 +2,6 @@ import './UIWrapperStyle';
 
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import LeaderboardList from 'UIComponent/LeaderboardList';
 
 class UIWrapperComponent extends PureComponent
 {
@@ -12,13 +11,24 @@ class UIWrapperComponent extends PureComponent
         debugData: PropTypes.object
     };
 
-    renderP1Health(p1Health)
+    renderP1Score()
     {
-        if (p1Health <= 0) {
-            return ( 
-                <div block="UI" elem="P1HealthBar">DEAD</div>
-            );
-        }
+        const {
+            score
+        } = this.props;
+
+        return (
+            <div block="UI" elem="Score">
+                <span block="Score" elem="Value">{ `Score ${ score }` }</span>
+            </div>
+        );
+    }
+
+    renderP1Health()
+    {
+        const { 
+            p1Health,
+        } = this.props;
 
         const healthBar = Array.from(Array(p1Health).keys());
 
@@ -35,25 +45,26 @@ class UIWrapperComponent extends PureComponent
         );
     }
 
+    renderP1Weapons()
+    {
+        return (
+            <div block="UI" elem="Weapons">
+                <div block="Weapons" elem="List">
+                    <div block="Weapons" elem="Available" mods={ { type: 'default' } }>
+
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     render()
     {
-        const { 
-            score,
-            p1Health,
-            debugData
-        } = this.props;
-        
         return (
             <div block="UIWrapper">
-                UI Score: { score }
-                { <LeaderboardList /> }
-                <div>
-                    x: { debugData.x },
-                    y: { debugData.y },
-                    body_x: { debugData.body_x },
-                    body_y: { debugData.body_y }
-                </div>
-                { this.renderP1Health(p1Health) }
+                { this.renderP1Score() }
+                { this.renderP1Health() }
+                { this.renderP1Weapons() }
             </div>
         );
     }

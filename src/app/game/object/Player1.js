@@ -3,11 +3,13 @@ import MissileWeapon from 'GameObject/Weapon/MissileWeapon';
 import PierceWeapon from 'GameObject/Weapon/PierceWeapon';
 import P1Emitter from 'GUIBridgeEmitter/P1Emitter';
 import Phaser from 'phaser';
-// import { DEBUG } from 'UIStore/Debug/DebugAction';
 import {
     REDUCE_HEALTH,
     RESTORE_HEALTH
 } from 'UIStore/P1Health/P1HealthAction';
+import {
+    DEFAULT_HEALTH_AMOUNT
+} from 'UIStore/P1Health/P1HealthConfig';
 import {
     SET_SCORE
 } from 'UIStore/Score/ScoreAction';
@@ -74,13 +76,12 @@ class Player1 extends AbstractCharacter
         };
         
         // Player1 health
-        this._initHealth = 5;
+        this._initHealth = DEFAULT_HEALTH_AMOUNT;
         this._health = this._initHealth;
         // One hit per ms
         this._hitDelay = 1500;
         // Next hit time
         this._nextHitTime = 0;
-        this._lives = 3;
         this._maxY = 2000;
         // Total score
         this._score = 0;
