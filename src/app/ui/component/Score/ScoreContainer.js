@@ -1,9 +1,13 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
-import UIWrapperComponent from './UIWrapperComponent';
+import UIWrapperComponent from './ScoreComponent';
 
-class UIWrapperContainer extends PureComponent
+export const mapStateToProps = (state) => ({
+    score: state.ScoreReducer.score
+});
+
+class ScoreContainer extends PureComponent
 {
     render()
     {
@@ -16,4 +20,4 @@ class UIWrapperContainer extends PureComponent
     }
 }
 
-export default connect(null, null)(UIWrapperContainer);
+export default connect(mapStateToProps, null)(ScoreContainer);

@@ -17,7 +17,7 @@ class FireWeapon extends DefaultWeapon
         });
 
         this._enabled = true;
-        this._type = 'fire';
+        this._type = 'default';
     }
 }
 

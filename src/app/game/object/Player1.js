@@ -7,12 +7,9 @@ import {
     REDUCE_HEALTH,
     RESTORE_HEALTH
 } from 'UIStore/P1Health/P1HealthAction';
-import {
-    DEFAULT_HEALTH_AMOUNT
-} from 'UIStore/P1Health/P1HealthConfig';
-import {
-    SET_SCORE
-} from 'UIStore/Score/ScoreAction';
+import { DEFAULT_HEALTH_AMOUNT } from 'UIStore/P1Health/P1HealthConfig';
+import { SET_SCORE } from 'UIStore/Score/ScoreAction';
+import { SELECT_WEAPON } from 'UIStore/Weapon/WeaponAction';
 
 import AbstractCharacter from './AbstractCharacter';
 
@@ -163,7 +160,6 @@ class Player1 extends AbstractCharacter
                     this.play('player1/death', true);
                     P1Emitter.emit(REDUCE_HEALTH, this._health);
                     this._health = 0;
-                    // this._lives--;
                     break;
                 default:
                     break;
@@ -182,6 +178,7 @@ class Player1 extends AbstractCharacter
             }
 
             this._selectedWeapon = this._weapons[this._selectedWeaponIdx];
+            P1Emitter.emit(SELECT_WEAPON, this._selectedWeapon._type);
         });
 
         // Reset player to active checkpoint
@@ -340,13 +337,6 @@ class Player1 extends AbstractCharacter
                 this.clearTint(); // Blink
             }
         }
-
-        // P1Emitter.emit(DEBUG, {
-        //     x: this.x,
-        //     y: this.y,
-        //     body_x: this.body.x,
-        //     body_y: this.body.y
-        // });
     }
 
     /**

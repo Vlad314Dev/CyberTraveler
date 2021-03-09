@@ -1,7 +1,9 @@
 import AbstractCharacter from 'GameObject/AbstractCharacter';
 import DefaultWeapon from 'GameObject/Weapon/DefaultWeapon';
+import P1Emitter from 'GUIBridgeEmitter/P1Emitter';
 import Phaser from 'phaser';
 import LifeTime from 'phaser3-rex-plugins/plugins/lifetime.js';
+import { PICK_WEAPON } from 'UIStore/Weapon/WeaponAction';
 
 class Enemy extends AbstractCharacter
 {
@@ -262,6 +264,7 @@ class Enemy extends AbstractCharacter
             this._scene._player1._weapons.forEach((weapon) => {
                 if (weapon._type === this.dropData.id) {
                     weapon._enabled = true;
+                    P1Emitter.emit(PICK_WEAPON, weapon._type);
                 }
             });
 

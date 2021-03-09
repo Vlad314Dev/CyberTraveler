@@ -1,0 +1,13 @@
+.Score {
+    &-Wrapper {
+        padding: 1rem;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    &-Value {
+        text-transform: uppercase;
+        font-size: 1.5rem;
+    }
+}

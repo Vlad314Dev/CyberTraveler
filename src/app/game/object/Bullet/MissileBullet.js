@@ -124,8 +124,8 @@ class MissileBullet extends DefaultBullet
             y: [this.y, this._target.y]
         };
 
-        const distance = Math.abs(this.x - this._target.x + this._target.body.halfWidth);
-        let t = 1 / distance;
+        const pointsCount = Math.abs(this.x - this._target.x) + this._target.body.halfWidth;
+        const t = 1 / pointsCount; // Interpolation percentage
         for (let i = 0, ax = 0; i <= 1; i += t, ax++) {
             let px, py;
             

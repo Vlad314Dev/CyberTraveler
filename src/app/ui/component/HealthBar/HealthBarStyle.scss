@@ -1,0 +1,16 @@
+.P1HealthBar {
+    &-Wrapper {
+        padding: 1rem 1rem 0 1rem;
+        min-height: 3rem;
+    }
+
+    &-HealthElem {
+        display: inline-block;
+        background-image: url('../../assets/health/face_on_heart.png');
+        background-size: 2rem;
+        background-repeat: no-repeat;
+        width: 2rem;
+        height: 2rem;
+        margin: 5px 5px 5px 0;
+    }
+}
