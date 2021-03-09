@@ -52,8 +52,8 @@ class Player1 extends AbstractCharacter
         // Weapon data
         this._weapons = [
             new FireWeapon(this, 300, 10),
-            new MissileWeapon(this, 1000, 10),
-            new PierceWeapon(this, 500, 10)
+            new PierceWeapon(this, 500, 10),
+            new MissileWeapon(this, 1000, 10)
         ];
         // Weapons count
         this._weaponsCount = this._weapons.length;
