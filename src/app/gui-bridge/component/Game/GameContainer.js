@@ -1,4 +1,3 @@
-import GameScene from 'GameScene/GameScene';
 import MainMenuScene from 'GameScene/MainMenuScene';
 import Phaser from 'phaser';
 import { PropTypes } from 'prop-types';
@@ -42,8 +41,7 @@ class GameContainer extends PureComponent
                     }
                 },
                 scene: [
-                    MainMenuScene,
-                    GameScene
+                    MainMenuScene
                 ],
                 render: {
                     pixelArt: true

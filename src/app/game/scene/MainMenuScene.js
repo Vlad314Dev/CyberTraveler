@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import GameScene from './GameScene';
+
 class MainMenuScene extends Phaser.Scene
 {
     constructor()
@@ -17,7 +19,22 @@ class MainMenuScene extends Phaser.Scene
 
     create()
     {
-        this.scene.start('GameScene');
+        const gameWidth = this.game.scale.width * 4;
+        const gameHeight = 224;
+        this._bg1 = this.add.tileSprite(0, this.game.scale.height / 2, gameWidth, gameHeight, 'bg-1').setScale(3);
+        this._bg2 = this.add.tileSprite(0, this.game.scale.height / 2, gameWidth, gameHeight, 'bg-2').setScale(3);
+        this.scene.add('GameScene', GameScene, false);
+
+        this.input.on('pointerup', function () {
+            this.scene.start('GameScene');
+        }, this);
+    }
+
+    update(time, delta)
+    {
+        super.update(time, delta);
+
+        this._bg2.tilePositionX -= 0.2;
     }
 }
 
