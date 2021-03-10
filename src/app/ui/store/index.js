@@ -3,7 +3,7 @@ import {
     createStore
 } from 'redux';
 
-import GameSettingsReducer from './GameSettings/GameSettingsReducer';
+import GameReducer from './Game/GameReducer';
 import P1HealthReducer from './P1Health/P1HealthReducer';
 import ScoreReducer from './Score/ScoreReducer';
 import WeaponReducer from './Weapon/WeaponReducer';
@@ -11,7 +11,7 @@ import WeaponReducer from './Weapon/WeaponReducer';
 export const createReducer = () => {
     return combineReducers({
         ScoreReducer,
-        GameSettingsReducer,
+        GameReducer,
         P1HealthReducer,
         WeaponReducer
     });

@@ -1,5 +1,5 @@
-import BootScene from 'GameScene/BootScene';
 import GameScene from 'GameScene/GameScene';
+import MainMenuScene from 'GameScene/MainMenuScene';
 import Phaser from 'phaser';
 import { PropTypes } from 'prop-types';
 import React, { PureComponent } from 'react';
@@ -8,7 +8,8 @@ import { connect } from 'react-redux';
 import GameComponent from './GameComponent';
 
 const mapStateToProps = (state) => ({
-    userSettings: state.GameSettingsReducer.userSettings
+    userSettings: state.GameReducer.userSettings,
+    currentScene: state.GameReducer.currentScene
 });
 
 class GameContainer extends PureComponent
@@ -41,7 +42,7 @@ class GameContainer extends PureComponent
                     }
                 },
                 scene: [
-                    BootScene,
+                    MainMenuScene,
                     GameScene
                 ],
                 render: {
