@@ -4,6 +4,7 @@ import {
 } from 'redux';
 
 import GameReducer from './Game/GameReducer';
+import MainMenuReducer from './MainMenu/MainMenuReducer';
 import P1HealthReducer from './P1Health/P1HealthReducer';
 import ScoreReducer from './Score/ScoreReducer';
 import WeaponReducer from './Weapon/WeaponReducer';
@@ -13,7 +14,8 @@ export const createReducer = () => {
         ScoreReducer,
         GameReducer,
         P1HealthReducer,
-        WeaponReducer
+        WeaponReducer,
+        MainMenuReducer
     });
 }
 

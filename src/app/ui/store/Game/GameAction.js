@@ -1,5 +1,5 @@
 export const SAVE_SETTINGS = 'SAVE_SETTINGS';
-export const SET_SCENE = 'SEt_SCENE';
+export const SET_SCENE = 'SET_SCENE';
 
 export const saveSettings = (userSettings) => ({
     type: SAVE_SETTINGS,

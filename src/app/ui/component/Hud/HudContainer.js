@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
-import UIWrapperComponent from './UIWrapperComponent';
+import HudComponent from './HudComponent';
 
-class UIWrapperContainer extends PureComponent
+class HudContainer extends PureComponent
 {
     render()
     {
         return (
-            <UIWrapperComponent 
+            <HudComponent 
                 { ...this.props }
                 { ...this.state }
             />
@@ -16,4 +16,4 @@ class UIWrapperContainer extends PureComponent
     }
 }
 
-export default connect(null, null)(UIWrapperContainer);
+export default connect(null, null)(HudContainer);

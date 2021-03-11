@@ -1,16 +1,16 @@
-import './UIWrapperStyle';
+import './HudStyle';
 
 import React, { PureComponent } from 'react';
 import HealthBar from 'UIComponent/HealthBar';
 import Score from 'UIComponent/Score';
 import Weapons from 'UIComponent/Weapons';
 
-class UIWrapperComponent extends PureComponent
+class HudComponent extends PureComponent
 {
     render()
     {
         return (
-            <div block="UIWrapper">
+            <div block="Hud">
                 <HealthBar/>
                 <Weapons/>
                 <Score/>
@@ -19,4 +19,4 @@ class UIWrapperComponent extends PureComponent
     }
 }
 
-export default UIWrapperComponent;
+export default HudComponent;

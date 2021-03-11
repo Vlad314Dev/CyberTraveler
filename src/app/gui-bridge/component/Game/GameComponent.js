@@ -3,7 +3,8 @@ import './GameStyle';
 import { IonPhaser } from '@ion-phaser/react';
 import { PropTypes } from 'prop-types';
 import React, { PureComponent } from 'react';
-import UIWrapper from 'UIComponent/UIWrapper';
+import Hud from 'UIComponent/Hud';
+import MainMenu from 'UIComponent/MainMenu';
 import {
     SCENE_GAME,
     SCENE_MAIN_MENU
@@ -24,9 +25,9 @@ class GameComponent extends PureComponent
         } = this.props;
 
         if (currentScene === SCENE_MAIN_MENU) {
-            return <div style={ { color: '#fff' } }>SCENE_MAIN_MENU</div>;
+            return <MainMenu />
         } else if (currentScene === SCENE_GAME) {
-            return <UIWrapper />;
+            return <Hud />;
         }
     }
 
