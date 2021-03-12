@@ -6,8 +6,8 @@ import React, { PureComponent } from 'react';
 import Hud from 'UIComponent/Hud';
 import MainMenu from 'UIComponent/MainMenu';
 import {
-    SCENE_GAME,
-    SCENE_MAIN_MENU
+    GAME_SCENE,
+    MAIN_MENU_SCENE
 } from 'UIStore/Game/GameConfig';
 
 class GameComponent extends PureComponent
@@ -24,9 +24,9 @@ class GameComponent extends PureComponent
             currentScene
         } = this.props;
 
-        if (currentScene === SCENE_MAIN_MENU) {
+        if (currentScene === MAIN_MENU_SCENE) {
             return <MainMenu />
-        } else if (currentScene === SCENE_GAME) {
+        } else if (currentScene === GAME_SCENE) {
             return <Hud />;
         }
     }

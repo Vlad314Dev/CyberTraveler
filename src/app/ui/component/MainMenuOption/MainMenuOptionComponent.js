@@ -1,6 +1,6 @@
 import './MainMenuOptionStyle';
 
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import {
     AUTHORIZE_OPTION,
@@ -12,8 +12,17 @@ import {
 
 class MainMenuOptionComponent extends PureComponent
 {
+    static propTypes = {
+        setActiveOption: PropTypes.func.isRequired
+    };
+
+    setActiveOption = (optionName) => () => {
+        const { setActiveOption } = this.props;
+        setActiveOption(optionName)
+    }
+
     render()
-    {
+    {   
         return (
             <div block="MainMenuOption" elem="List">
                 {optionLabels.map((option, index) => {
@@ -31,6 +40,7 @@ class MainMenuOptionComponent extends PureComponent
                                 block="MainMenuOption" 
                                 elem="Value"
                                 key={ index }
+                                onClick={ this.setActiveOption(option.key) }
                             >{ option.label }</span>
                         </div>
                     }

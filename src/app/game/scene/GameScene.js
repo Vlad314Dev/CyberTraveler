@@ -5,10 +5,7 @@ import Boss from 'GameObject/Npc/Boss';
 import Enemy from 'GameObject/Npc/Enemy';
 import EnemyTurret from 'GameObject/Npc/EnemyTurret';
 import Player1 from 'GameObject/Player1';
-import GameEmitter from 'GUIBridgeEmitter/GameEmitter';
 import Phaser from 'phaser';
-import { SET_SCENE } from 'UIStore/Game/GameAction';
-import { SCENE_GAME } from 'UIStore/Game/GameConfig';
 
 class GameScene extends Phaser.Scene
 {
@@ -103,8 +100,6 @@ class GameScene extends Phaser.Scene
 
     create()
     {
-        GameEmitter.emit(SET_SCENE, SCENE_GAME);
-
         this._createBackgrounds();
         this._createMap();
 

@@ -1,2 +1,2 @@
-export const SCENE_MAIN_MENU = 'SCENE_MAIN_MENU';
-export const SCENE_GAME = 'SCENE_GAME';
+export const MAIN_MENU_SCENE = 'MAIN_MENU_SCENE';
+export const GAME_SCENE = 'GAME_SCENE';

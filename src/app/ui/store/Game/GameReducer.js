@@ -1,8 +1,14 @@
+import GameEmitter from 'GUIBridgeEmitter/GameEmitter';
+import { PLAY_GAME } from 'GUIBridgeEmitter/GameEmitter/GameEmitterConfig';
+
 import { 
     SAVE_SETTINGS,
     SET_SCENE
 } from './GameAction';
-import { SCENE_MAIN_MENU } from './GameConfig';
+import { 
+    GAME_SCENE,
+    MAIN_MENU_SCENE
+} from './GameConfig';
 
 export const saveSettings = (action, state) => {
     const { userSettings } = action;
@@ -16,6 +22,10 @@ export const saveSettings = (action, state) => {
 export const setScene = (action, state) => {
     const { sceneName } = action;
 
+    if (sceneName === GAME_SCENE) {
+        GameEmitter.emit(PLAY_GAME, true);
+    }
+
     return {
         ...state,
         currentScene: sceneName
@@ -24,7 +34,7 @@ export const setScene = (action, state) => {
 
 export const GameReducer = (
     state = {
-        currentScene: SCENE_MAIN_MENU
+        currentScene: MAIN_MENU_SCENE
     },
     action
  ) => {

@@ -1,3 +1,5 @@
+import GameEmitter from 'GUIBridgeEmitter/GameEmitter';
+import { PLAY_GAME } from 'GUIBridgeEmitter/GameEmitter/GameEmitterConfig';
 import Phaser from 'phaser';
 
 import GameScene from './GameScene';
@@ -25,9 +27,13 @@ class MainMenuScene extends Phaser.Scene
         this._bg2 = this.add.tileSprite(0, this.game.scale.height / 2, gameWidth, gameHeight, 'bg-2').setScale(3);
         this.scene.add('GameScene', GameScene, false);
 
-        this.input.on('pointerup', function () {
-            this.scene.start('GameScene');
-        }, this);
+        GameEmitter.on(PLAY_GAME, (flag) => {
+            if (flag) {
+                this.scene.start('GameScene');
+            } else {
+                this.scene.start('MenuScene');
+            }
+        });
     }
 
     update(time, delta)
