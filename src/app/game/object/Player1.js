@@ -69,7 +69,7 @@ class Player1 extends AbstractCharacter
             _crouch: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
             _switchWeapon: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q, true, false),
             _jump: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
-            _fire: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
+            _fire: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
         };
         
         // Player1 health

@@ -8,6 +8,7 @@ export const RESET_PASSWORD_OPTION = 'RESET_PASSWORD_OPTION';
 export const SETTINGS_OPTION = 'SETTINGS_OPTION';
 export const SETTINGS_SHOW_CONTROLS = 'SETTINGS_SHOW_CONTROLS';
 export const SETTINGS_DISABLE_SOUND = 'SETTINGS_DISABLE_SOUND';
+export const BACK_OPTION = 'BACK_OPTION';
 
 export const optionLabels = [
     { key: PLAY_GAME_OPTION, label: 'Play' },
@@ -18,5 +19,6 @@ export const optionLabels = [
     { key: RESET_PASSWORD_OPTION, label: 'Reset Password' },
     { key: SETTINGS_OPTION, label: 'Settings' },
     { key: SETTINGS_SHOW_CONTROLS, label: 'Show Controls' },
-    { key: SETTINGS_DISABLE_SOUND, label: 'Disable Sound' }
+    { key: SETTINGS_DISABLE_SOUND, label: 'Disable Sound' },
+    { key: BACK_OPTION, label: 'Back' }
 ];

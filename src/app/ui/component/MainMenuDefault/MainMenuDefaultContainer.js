@@ -6,14 +6,18 @@ import { GAME_SCENE } from 'UIStore/Game/GameConfig';
 import { setActiveOption } from 'UIStore/MainMenu/MainMenuAction';
 import { PLAY_GAME_OPTION } from 'UIStore/MainMenu/MainMenuConfig';
 
-import MainMenuOptionComponent from './MainMenuOptionComponent';
+import MainMenuDefaultComponent from './MainMenuDefaultComponent';
 
 export const mapDispatchToProps = (dispatch) => ({
     setActiveOption: (optionName) => dispatch(setActiveOption(optionName)),
     setScene: (sceneName) => dispatch(setScene(sceneName))
 });
 
-class MainMenuOptionContainer extends PureComponent
+export const mapStateToProps = (state) => ({
+    activeOption: state.MainMenuReducer.activeOption
+});
+
+class MainMenuDefaultContainer extends PureComponent
 {
     static propTypes = {
         setActiveOption: PropTypes.func.isRequired,
@@ -40,7 +44,7 @@ class MainMenuOptionContainer extends PureComponent
     render()
     {
         return (
-            <MainMenuOptionComponent 
+            <MainMenuDefaultComponent 
                 { ...this.props }
                 { ...this.state }
                 { ...this.containerFunctions }
@@ -49,4 +53,4 @@ class MainMenuOptionContainer extends PureComponent
     }
 }
 
-export default connect(null, mapDispatchToProps)(MainMenuOptionContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(MainMenuDefaultContainer);

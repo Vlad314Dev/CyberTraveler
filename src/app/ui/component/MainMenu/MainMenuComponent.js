@@ -2,14 +2,17 @@ import './MainMenuStyle';
 
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import MainMenuOptionComponent from 'UIComponent/MainMenuOption';
+import MainMenuDefaultComponent from 'UIComponent/MainMenuDefault';
+import MainMenuSettings from 'UIComponent/MainMenuSettings';
+import MainMenuSettingsControls from 'UIComponent/MainMenuSettingsControls';
 import MainMenuTitle from 'UIComponent/MainMenuTitle';
 import {
     AUTHORIZE_OPTION,
     DEFAULT_OPTION,
     PLAY_GAME_OPTION,
     SETTINGS_OPTION,
-    VIEW_LEADERBOARD_OPTION,
+    SETTINGS_SHOW_CONTROLS,
+    VIEW_LEADERBOARD_OPTION
 } from 'UIStore/MainMenu/MainMenuConfig';
 
 class MainMenuComponent extends PureComponent
@@ -18,7 +21,7 @@ class MainMenuComponent extends PureComponent
         activeOption: PropTypes.string.isRequired
     };
 
-    render()
+    renderMenuSection()
     {
         const { 
             activeOption,
@@ -26,10 +29,7 @@ class MainMenuComponent extends PureComponent
 
         if (activeOption === DEFAULT_OPTION) {
             return (
-                <div block="MainMenu" elem="Wrapper">
-                    <MainMenuTitle />
-                    <MainMenuOptionComponent />
-                </div>
+                <MainMenuDefaultComponent />
             );
         }
 
@@ -38,19 +38,39 @@ class MainMenuComponent extends PureComponent
         }
 
         if (activeOption === SETTINGS_OPTION) {
-            return null;
+            return (
+                <MainMenuSettings />
+            );
+        }
+
+        if (activeOption === SETTINGS_SHOW_CONTROLS) {
+            return (
+                <MainMenuSettingsControls />
+            );
         }
 
         if (activeOption === VIEW_LEADERBOARD_OPTION) {
             return null;
         }
+    }
 
-        // If you're here then something went wrong
+    render()
+    {
+        const { 
+            activeOption,
+        } = this.props;
+
         if (activeOption === PLAY_GAME_OPTION) {
+            // If you're here then something went wrong
             return null;
         }
 
-        return null;
+        return (
+            <div block="MainMenu" elem="Wrapper">
+                <MainMenuTitle />
+                { this.renderMenuSection() }
+            </div>
+        );
     }
 }
 

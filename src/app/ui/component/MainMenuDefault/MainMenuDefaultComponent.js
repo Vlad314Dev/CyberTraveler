@@ -1,4 +1,4 @@
-import './MainMenuOptionStyle';
+import './MainMenuDefaultStyle';
 
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
@@ -10,15 +10,28 @@ import {
     VIEW_LEADERBOARD_OPTION
 } from 'UIStore/MainMenu/MainMenuConfig';
 
-class MainMenuOptionComponent extends PureComponent
+class MainMenuDefaultComponent extends PureComponent
 {
     static propTypes = {
-        setActiveOption: PropTypes.func.isRequired
+        setActiveOption: PropTypes.func.isRequired,
+        activeOption: PropTypes.string.isRequired
     };
 
     setActiveOption = (optionName) => () => {
         const { setActiveOption } = this.props;
         setActiveOption(optionName)
+    }
+
+    getActiveOptionLabel()
+    {
+        const { activeOption } = this.props;
+        const option = optionLabels.find((data) => data.key === activeOption);
+
+        if (option) {
+            return option.label;
+        }
+
+        return null;
     }
 
     render()
@@ -52,4 +65,4 @@ class MainMenuOptionComponent extends PureComponent
     }
 }
 
-export default MainMenuOptionComponent;
+export default MainMenuDefaultComponent;

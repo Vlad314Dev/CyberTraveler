@@ -3,10 +3,6 @@ import { connect } from 'react-redux';
 
 import MainMenuTitleComponent from './MainMenuTitleComponent';
 
-export const mapStateToProps = (state) => ({
-    activeOption: state.MainMenuReducer.activeOption
-});
-
 class MainMenuTitleContainer extends PureComponent
 {
     render()
@@ -20,4 +16,4 @@ class MainMenuTitleContainer extends PureComponent
     }
 }
 
-export default connect(mapStateToProps, null)(MainMenuTitleContainer);
+export default connect(null, null)(MainMenuTitleContainer);
