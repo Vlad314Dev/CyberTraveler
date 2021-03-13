@@ -23,9 +23,7 @@ class MainMenuSettingsControlsComponent extends PureComponent
     {
         return (
             <div block="SettingsControls" elem="Wrapper">
-                <div block="SettingsControls" elem="Keyboard">
-                    
-                </div>
+                <div block="SettingsControls" elem="Keyboard"></div>
                 <div block="SettingsControls" elem="Joystick"></div>
             </div>
         );

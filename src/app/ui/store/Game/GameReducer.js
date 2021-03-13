@@ -1,5 +1,8 @@
 import GameEmitter from 'GUIBridgeEmitter/GameEmitter';
-import { PLAY_GAME } from 'GUIBridgeEmitter/GameEmitter/GameEmitterConfig';
+import { 
+    PLAY_GAME,
+    TOGGLE_SOUND
+} from 'GUIBridgeEmitter/GameEmitter/GameEmitterConfig';
 
 import { 
     SAVE_SETTINGS,
@@ -12,10 +15,15 @@ import {
 
 export const saveSettings = (action, state) => {
     const { userSettings } = action;
+    const { userSettings: oldUserSettings } = state;
+
+    if (userSettings.audio !== oldUserSettings.audio) {
+        GameEmitter.emit(TOGGLE_SOUND);
+    }
 
     return {
         ...state,
-        userSettings
+        userSettings: userSettings
     }
 };
 
@@ -34,7 +42,13 @@ export const setScene = (action, state) => {
 
 export const GameReducer = (
     state = {
-        currentScene: MAIN_MENU_SCENE
+        currentScene: MAIN_MENU_SCENE,
+        userSettings: {
+            audio: {
+                disableWebAudio: false,
+                noAudio: false
+            }
+        }
     },
     action
  ) => {

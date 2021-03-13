@@ -25,6 +25,8 @@ class GameContainer extends PureComponent
     {
         super(props);
 
+        const { userSettings } = props;
+
         this.state = {
             initialize: true,
             game: {
@@ -45,7 +47,8 @@ class GameContainer extends PureComponent
                 ],
                 render: {
                     pixelArt: true
-                }
+                },
+                ...userSettings
             }
         }
     }

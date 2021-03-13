@@ -10,6 +10,7 @@ import {
     AUTHORIZE_OPTION,
     DEFAULT_OPTION,
     PLAY_GAME_OPTION,
+    SETTINGS_AUDIO,
     SETTINGS_OPTION,
     SETTINGS_SHOW_CONTROLS,
     VIEW_LEADERBOARD_OPTION
@@ -37,7 +38,7 @@ class MainMenuComponent extends PureComponent
             return null;
         }
 
-        if (activeOption === SETTINGS_OPTION) {
+        if (activeOption === SETTINGS_OPTION || activeOption === SETTINGS_AUDIO) {
             return (
                 <MainMenuSettings />
             );

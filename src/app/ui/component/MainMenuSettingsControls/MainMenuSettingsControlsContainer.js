@@ -8,6 +8,10 @@ export const mapDispatchToProps = (dispatch) => ({
     setActiveOption: (optionName) => dispatch(setActiveOption(optionName))
 });
 
+export const mapStateToProps = (state) => ({
+    activeOption: state.GameReducer.activeOption
+});
+
 class MainMenuSettingsControlsContainer extends PureComponent
 {
     render()
