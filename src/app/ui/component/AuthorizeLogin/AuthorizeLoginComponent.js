@@ -1,5 +1,3 @@
-import './AuthorizeLoginStyle';
-
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 
