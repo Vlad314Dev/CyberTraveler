@@ -6,34 +6,28 @@ import React, { PureComponent } from 'react';
 class AuthorizeLoginComponent extends PureComponent
 {
     static propTypes = {
-        handleNicknameChange: PropTypes.func.isRequired,
         handleSubmit: PropTypes.func.isRequired
     };
 
     render()
     {
         const { 
-            handleSubmit,
-            handleNicknameChange
+            handleSubmit
         } = this.props;
 
         return (
-            <div block="Authorize">
-                <form onSubmit={ handleSubmit } block="Authorize" elem="Form">
-                    <div block="Authorize" elem="Field">
-                        <label>
-                            Nickname:
-                            <input type="text" onChange={ handleNicknameChange } />
-                        </label>
+            <div block="AuthorizeSignup">
+                <form onSubmit={ handleSubmit } block="Form">
+                    <div block="Form" elem="Field">
+                        <label htmlFor="nickname">Nickname:</label>
+                        <input type="text" name="nickname" id="nickname" />
                     </div>
-                    <div block="Authorize" elem="Field">
-                        <label>
-                            Password:
-                            <input type="password" />
-                        </label>
+                    <div block="Form" elem="Field">
+                        <label htmlFor="password">Password:</label>
+                        <input type="password" name="password" id="password" />
                     </div>
-                    <div block="Authorize" elem="Submit">
-                        <button type="submit">Authorize</button>
+                    <div block="Form" elem="Submit">
+                        <button type="submit">Login</button>
                     </div>
                 </form>
             </div>
