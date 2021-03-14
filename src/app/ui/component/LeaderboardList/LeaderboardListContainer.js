@@ -8,7 +8,8 @@ import LeaderboardListComponent from './LeaderboardListComponent';
 
 class LeaderboardListContainer extends PureComponent
 {
-    constructor(props) {
+    constructor(props)
+    {
         super(props);
         
         this.state = {
@@ -18,14 +19,17 @@ class LeaderboardListContainer extends PureComponent
         };
     }
 
-    componentDidMount() {
+    componentDidMount()
+    {
         this.getLeaderboard();
     }
 
-    async getLeaderboard() {
+    async getLeaderboard()
+    {
         try {
             await GqlClient.query({
-                query: GET_LEADERBOARD
+                query: GET_LEADERBOARD,
+                fetchPolicy: 'no-cache'
             }).then(
                 ({ loading, error, data  }) => {
                     this.setState({
