@@ -2,13 +2,18 @@ import './MainMenuStyle';
 
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import MainMenuAuthorize from 'UIComponent/MainMenuAuthorize';
+import MainMenuAuthorizeLogin from 'UIComponent/MainMenuAuthorizeLogin';
+import MainMenuAuthorizeSignup from 'UIComponent/MainMenuAuthorizeSignup';
 import MainMenuDefaultComponent from 'UIComponent/MainMenuDefault';
 import MainMenuLeaderboard from 'UIComponent/MainMenuLeaderboard';
 import MainMenuSettings from 'UIComponent/MainMenuSettings';
 import MainMenuSettingsControls from 'UIComponent/MainMenuSettingsControls';
 import MainMenuTitle from 'UIComponent/MainMenuTitle';
 import {
+    AUTHORIZE_LOGIN_OPTION,
     AUTHORIZE_OPTION,
+    AUTHORIZE_SIGNUP_OPTION,
     DEFAULT_OPTION,
     PLAY_GAME_OPTION,
     SETTINGS_AUDIO,
@@ -37,7 +42,15 @@ class MainMenuComponent extends PureComponent
         }
 
         if (activeOption === AUTHORIZE_OPTION) {
-            return null;
+            return <MainMenuAuthorize />;
+        }
+
+        if (activeOption === AUTHORIZE_LOGIN_OPTION) {
+            return <MainMenuAuthorizeLogin />;
+        }
+
+        if (activeOption === AUTHORIZE_SIGNUP_OPTION) {
+            return <MainMenuAuthorizeSignup />;
         }
 
         if (activeOption === SETTINGS_OPTION || activeOption === SETTINGS_AUDIO) {
