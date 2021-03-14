@@ -11,7 +11,8 @@ import {
 class MainMenuSettingsControlsComponent extends PureComponent
 {
     static propTypes = {
-        setActiveOption: PropTypes.func.isRequired
+        setActiveOption: PropTypes.func.isRequired,
+        type: PropTypes.string.isRequired
     };
 
     setActiveOption = (optionName) => () => {
@@ -21,10 +22,11 @@ class MainMenuSettingsControlsComponent extends PureComponent
 
     renderControls()
     {
+        const { type } = this.props;
+
         return (
             <div block="SettingsControls" elem="Wrapper">
-                <div block="SettingsControls" elem="Keyboard"></div>
-                <div block="SettingsControls" elem="Joystick"></div>
+                <div block="SettingsControls" elem="Image" mods={ { type: type } }></div>
             </div>
         );
     }

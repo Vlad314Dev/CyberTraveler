@@ -4,11 +4,18 @@
         width: 35%;
     }
 
-    &-Keyboard {
-        background-image: url('../../assets/controls/keyboard-controls.png');
+    &-Image {
         background-size: 100% auto;
         background-repeat: no-repeat;
         width: 100%;
         height: 100%;
+
+        &_type_keyboard {
+            background-image: url('../../assets/controls/keyboard-controls.png');
+        }
+
+        &_type_mobile {
+            background-image: url('../../assets/controls/mobile-controls.png');
+        }
     }
 }

@@ -4,7 +4,8 @@ import {
     BACK_OPTION,
     optionLabels,
     SETTINGS_AUDIO,
-    SETTINGS_SHOW_CONTROLS,
+    SETTINGS_SHOW_KEYBOARD_CONTROLS,
+    SETTINGS_SHOW_MOBILE_CONTROLS
 } from 'UIStore/MainMenu/MainMenuConfig';
 
 class MainMenuOptionComponent extends PureComponent
@@ -47,7 +48,8 @@ class MainMenuOptionComponent extends PureComponent
                 <span block="MainMenuOption" elem="ActiveLabel">{ this.getActiveOptionLabel() }</span>
                 {optionLabels.map((option, index) => {
                     if (option.key === SETTINGS_AUDIO
-                        || option.key === SETTINGS_SHOW_CONTROLS
+                        || option.key === SETTINGS_SHOW_KEYBOARD_CONTROLS
+                        || option.key === SETTINGS_SHOW_MOBILE_CONTROLS
                         || option.key === BACK_OPTION 
                     ) {
                         return <div 

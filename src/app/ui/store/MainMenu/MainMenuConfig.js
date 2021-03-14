@@ -6,7 +6,8 @@ export const AUTHORIZE_SIGNUP_OPTION = 'AUTHORIZE_SIGNUP_OPTION';
 export const LOGIN_OPTION = 'LOGIN_OPTION';
 export const RESET_PASSWORD_OPTION = 'RESET_PASSWORD_OPTION';
 export const SETTINGS_OPTION = 'SETTINGS_OPTION';
-export const SETTINGS_SHOW_CONTROLS = 'SETTINGS_SHOW_CONTROLS';
+export const SETTINGS_SHOW_KEYBOARD_CONTROLS = 'SETTINGS_SHOW_KEYBOARD_CONTROLS';
+export const SETTINGS_SHOW_MOBILE_CONTROLS = 'SETTINGS_SHOW_MOBILE_CONTROLS';
 export const SETTINGS_AUDIO = 'SETTINGS_AUDIO';
 export const BACK_OPTION = 'BACK_OPTION';
 
@@ -18,7 +19,8 @@ export const optionLabels = [
     { key: LOGIN_OPTION, label: 'Login' },
     { key: RESET_PASSWORD_OPTION, label: 'Reset Password' },
     { key: SETTINGS_OPTION, label: 'Settings' },
-    { key: SETTINGS_SHOW_CONTROLS, label: 'Show Controls' },
+    { key: SETTINGS_SHOW_KEYBOARD_CONTROLS, label: 'Keyboard Controls' },
+    { key: SETTINGS_SHOW_MOBILE_CONTROLS, label: 'Mobile Controls' },
     { key: SETTINGS_AUDIO, label: 'Audio' },
     { key: BACK_OPTION, label: 'Back' }
 ];

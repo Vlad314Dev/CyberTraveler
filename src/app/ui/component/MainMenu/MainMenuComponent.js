@@ -12,7 +12,8 @@ import {
     PLAY_GAME_OPTION,
     SETTINGS_AUDIO,
     SETTINGS_OPTION,
-    SETTINGS_SHOW_CONTROLS,
+    SETTINGS_SHOW_KEYBOARD_CONTROLS,
+    SETTINGS_SHOW_MOBILE_CONTROLS,
     VIEW_LEADERBOARD_OPTION
 } from 'UIStore/MainMenu/MainMenuConfig';
 
@@ -44,9 +45,12 @@ class MainMenuComponent extends PureComponent
             );
         }
 
-        if (activeOption === SETTINGS_SHOW_CONTROLS) {
+        if (activeOption === SETTINGS_SHOW_KEYBOARD_CONTROLS 
+            || activeOption === SETTINGS_SHOW_MOBILE_CONTROLS
+        ) {
+            const type = activeOption === SETTINGS_SHOW_KEYBOARD_CONTROLS ? 'keyboard' : 'mobile';
             return (
-                <MainMenuSettingsControls />
+                <MainMenuSettingsControls type={ type } />
             );
         }
 
