@@ -3,6 +3,7 @@ import { RedisCache } from 'apollo-server-cache-redis';
 import { ApolloServer } from 'apollo-server-express';
 
 import DBConnection, {
+    getLeaderboard,
     getUserInfo,
     getUsers
 } from './mysql.js';
@@ -16,10 +17,17 @@ const typeDefs = gql`
         updated_at: String
     }
 
+    type Player {
+        nickname: String,
+        score: Int,
+        created_at: String
+    }
+
     type Query {
         test: String,
         getUsers: [User],
-        getUserInfo(id: Int): User
+        getUserInfo(id: Int): User,
+        getLeaderboard: [Player]
     }
 `;
 
@@ -27,7 +35,8 @@ const resolvers = {
     Query: {
         test: () => "Test Root Value",
         getUsers: getUsers,
-        getUserInfo: getUserInfo
+        getUserInfo: getUserInfo,
+        getLeaderboard: getLeaderboard
     }
 };
 

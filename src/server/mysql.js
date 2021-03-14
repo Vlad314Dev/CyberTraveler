@@ -29,4 +29,12 @@ export const getUserInfo = (parent, args, context, info) => {
         .then((data) => data[0]);
 };
 
+export const getLeaderboard = (parent, args, context, info) => {
+    return queryDB(context, "SELECT ld.nickname AS nickname, ld.score AS score, ld.created_at AS created_at \
+    FROM leaderboard as ld \
+    ORDER BY ld.score DESC \
+    LIMIT 10;")
+        .then((data) => data);
+};
+
 export default DBConnection;

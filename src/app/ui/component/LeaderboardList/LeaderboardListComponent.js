@@ -11,6 +11,12 @@ class LeaderboardListComponent extends PureComponent
         error: PropTypes.string
     };
 
+    formatDate(timestamp)
+    {
+        const date = new Date(parseInt(timestamp));
+        return `${ date.getDate() }/${ date.getMonth() + 1 }/${ date.getFullYear() }`;
+    }
+
     render()
     {
         const { 
@@ -32,12 +38,30 @@ class LeaderboardListComponent extends PureComponent
         if (data) {
             return (
                 <div block="LeaderboardList">
-                    Leaderboard
-                    {
-                        data.getUsers.map(( user, idx ) => (
-                            <p key={ idx }>{ user.nickname }</p>
-                        ))
-                    }
+                    <div block="LeaderboardList" elem="Content">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Player</th>
+                                    <th>Score</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                data.getLeaderboard.map(( player, idx ) => (
+                                    <tr key={ idx }>
+                                        <td>{ idx + 1 }</td>
+                                        <td>{ player.nickname }</td>
+                                        <td>{ player.score }</td>
+                                        <td>{ this.formatDate(player.created_at) }</td>
+                                    </tr>
+                                ))    
+                            }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )
         }

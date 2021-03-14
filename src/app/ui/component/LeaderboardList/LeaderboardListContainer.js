@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import GqlClient, {
-    GET_USERS
+    GET_LEADERBOARD
 } from 'UIQuery';
 
 import LeaderboardListComponent from './LeaderboardListComponent';
@@ -19,13 +19,13 @@ class LeaderboardListContainer extends PureComponent
     }
 
     componentDidMount() {
-        this.getUsers();
+        this.getLeaderboard();
     }
 
-    async getUsers() {
+    async getLeaderboard() {
         try {
             await GqlClient.query({
-                query: GET_USERS
+                query: GET_LEADERBOARD
             }).then(
                 ({ loading, error, data  }) => {
                     this.setState({

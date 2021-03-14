@@ -1,0 +1,12 @@
+.Leaderboard {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: #fff;
+    width: calc(min(35vw, 500px));
+    text-align: center;
+
+    &-Title {
+        font-size: calc(min(2vw, 29px));
+    }
+}

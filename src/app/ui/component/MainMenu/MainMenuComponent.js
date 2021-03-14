@@ -3,6 +3,7 @@ import './MainMenuStyle';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import MainMenuDefaultComponent from 'UIComponent/MainMenuDefault';
+import MainMenuLeaderboard from 'UIComponent/MainMenuLeaderboard';
 import MainMenuSettings from 'UIComponent/MainMenuSettings';
 import MainMenuSettingsControls from 'UIComponent/MainMenuSettingsControls';
 import MainMenuTitle from 'UIComponent/MainMenuTitle';
@@ -55,7 +56,7 @@ class MainMenuComponent extends PureComponent
         }
 
         if (activeOption === VIEW_LEADERBOARD_OPTION) {
-            return null;
+            return <MainMenuLeaderboard />;
         }
     }
 

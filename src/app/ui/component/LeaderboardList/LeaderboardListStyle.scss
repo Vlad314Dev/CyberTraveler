@@ -1,3 +1,31 @@
 .LeaderboardList {
-    background-color: transparent;
+    padding-top: 20px;
+    width: 100%;
+    font-size: calc(min(1.5vw, 22px));
+    color: #ffc107;
+    text-shadow:
+
+        0 0 0 rgb(225, 163, 0),
+        -1px -1px 0 rgb(196, 134, 0),
+        -2px -2px 0 rgb(166, 104, 0),
+        -3px -3px 0 rgb(137, 75, 0),
+        -4px -4px 0 rgb(107, 45, 0),
+        -5px -5px  0 rgb(77, 15, 0),
+        -6px -6px 5px rgba(0, 0, 0, .69),
+        -6px -6px 1px rgba(0, 0, 0, .5),
+        0 0 5px rgba(0, 0, 0, .2);
+
+    &-Content {
+        max-height: 30vh;
+        overflow-y: auto;
+
+        table {
+            width: 100%;
+            text-align: center;
+
+            tbody {
+                color: #ff0;
+            }
+        }
+    }
 }
