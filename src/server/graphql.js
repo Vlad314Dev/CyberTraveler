@@ -5,11 +5,13 @@ import { ApolloServer } from 'apollo-server-express';
 import DBConnection, {
     getLeaderboard,
     getUserInfo,
-    getUsers
+    getUsers,
+    signUp
 } from './mysql.js';
 
 // getUsers: [User] @cacheControl(maxAge: 45),
-const typeDefs = gql`
+// Schema
+const gqlSchema = gql`
     type User {
         id: Int
         nickname: String
@@ -29,19 +31,27 @@ const typeDefs = gql`
         getUserInfo(id: Int): User,
         getLeaderboard: [Player]
     }
+
+    type Mutation {
+        signUp(nickname: String, password: String): Player
+    }
 `;
 
 const resolvers = {
     Query: {
-        test: () => "Test Root Value",
         getUsers: getUsers,
         getUserInfo: getUserInfo,
         getLeaderboard: getLeaderboard
+    },
+    Mutation: {
+        signUp: async (_, args, context) => {
+            await signUp(_, args, context);
+        }
     }
 };
 
 const GqlServer = new ApolloServer({
-    typeDefs, 
+    typeDefs: gqlSchema, 
     resolvers,
     context: () => ({ 
         db: DBConnection

@@ -21,6 +21,16 @@ export const GET_LEADERBOARD = gql`{
     }
 }`;
 
+export const SIGNUP = gql`
+    mutation signUp($nickname: String, $password: String) {
+        signUp(nickname: $nickname, password: $password) {
+            nickname,
+            score,
+            created_at
+        }
+    }
+`;
+
 const httpLink = new HttpLink({ uri: '/graphql' });
 const persistedQueriesLink = createPersistedQueryLink({ 
     sha256,

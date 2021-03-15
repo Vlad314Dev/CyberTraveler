@@ -37,4 +37,9 @@ export const getLeaderboard = (parent, args, context, info) => {
         .then((data) => data);
 };
 
+export const signUp = (parent, args, context, info) => {
+    return queryDB(context, "INSERT INTO user (nickname, password) VALUES (?, ?);", [args.nickname, args.password])
+        .then((data) => data[0]);
+};
+
 export default DBConnection;
