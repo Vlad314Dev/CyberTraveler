@@ -1,15 +1,29 @@
-// import { PropTypes } from 'prop-types';
 import { sha256 } from 'crypto-hash';
+import { PropTypes } from 'prop-types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import GqlClient, {
+    LOGIN,
     SIGNUP
 } from 'UIQuery';
+import { logIn } from 'UIStore/Account/AccountAction';
+import { setActiveOption } from 'UIStore/MainMenu/MainMenuAction';
+import { DEFAULT_OPTION } from 'UIStore/MainMenu/MainMenuConfig';
 
 import AuthorizeSignupComponent from './AuthorizeSignupComponent';
 
+export const mapDispatchToProps = (dispatch) => ({
+    logIn: (data) => dispatch(logIn(data)),
+    setActiveOption: (optionName) => dispatch(setActiveOption(optionName))
+});
+
 class AuthorizeSignupContainer extends PureComponent
 {
+    static propTypes = {
+        logIn: PropTypes.func.isRequired,
+        setActiveOption: PropTypes.func.isRequired
+    };
+
     constructor(props)
     {
         super(props);
@@ -88,23 +102,35 @@ class AuthorizeSignupContainer extends PureComponent
     }
 
     async handleSubmit(e)
-    {        
+    {
         e.preventDefault();
+
         if (this.validateFormData()) {
+            const { setActiveOption } = this.props;
+            let success = false;
+
             this.setState({
                 loading: true
             });
     
             try {
-                await this.signUp();
+                success = await this.signUp();
                 alert('Success.');
-            } catch (err) {
-                alert('Something went wrong. Please try again.');
+            } catch (ex) {
+                if (ex.message.includes('ER_DUP_ENTRY')) {
+                    alert('Nickname is already taken. Please choose another nickname.');
+                } else {
+                    alert('Something went wrong. Please try again.');
+                }
             }
     
             this.setState({
                 loading: false
             });
+
+            if (success) {
+                setActiveOption(DEFAULT_OPTION);
+            }
         }
     }
 
@@ -114,21 +140,50 @@ class AuthorizeSignupContainer extends PureComponent
             nickname,
             password
         } = this.state;
-        const hashedPassword = await sha256(password);
+        const token = await sha256(nickname + ':' + password + ':' + '314');
         
-        await GqlClient.mutate({
+        return await GqlClient.mutate({
             mutation: SIGNUP,
             variables: {
-                nickname: nickname,
-                password: hashedPassword
+                nickname,
+                password: token
             },
             fetchPolicy: 'no-cache'
         }).then(
-            ({ error, data }) => {
-                this.setState({
-                    error,
-                    data
-                });
+            async ({ data: { signUp: result } }) => {
+                let success = false;
+
+                if (result) {
+                    try {
+                      success = await this.logIn(nickname, token);
+                    } catch (ex) {
+                        alert('Something went wrong. Please try again.');
+                    }
+                }
+
+                return success;
+            }
+        );
+    }
+
+    async logIn(nickname, token)
+    {
+        return await GqlClient.query({
+            query: LOGIN,
+            variables: {
+                nickname: nickname,
+                password: token
+            },
+            fetchPolicy: 'no-cache'
+        }).then(
+            ({ data: { logIn: result } }) => {
+                const { logIn } = this.props;
+                
+                if (result) {
+                    logIn({ nickname, token });
+                }
+
+                return result;
             }
         );
     }
@@ -145,4 +200,4 @@ class AuthorizeSignupContainer extends PureComponent
     }
 }
 
-export default connect(null, null)(AuthorizeSignupContainer);
+export default connect(null, mapDispatchToProps)(AuthorizeSignupContainer);

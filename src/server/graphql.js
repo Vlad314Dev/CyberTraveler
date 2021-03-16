@@ -6,6 +6,7 @@ import DBConnection, {
     getLeaderboard,
     getUserInfo,
     getUsers,
+    logIn,
     signUp
 } from './mysql.js';
 
@@ -29,11 +30,12 @@ const gqlSchema = gql`
         test: String,
         getUsers: [User],
         getUserInfo(id: Int): User,
-        getLeaderboard: [Player]
+        getLeaderboard: [Player],
+        logIn(nickname: String, password: String): Boolean
     }
 
     type Mutation {
-        signUp(nickname: String, password: String): Player
+        signUp(nickname: String, password: String): Boolean
     }
 `;
 
@@ -41,11 +43,15 @@ const resolvers = {
     Query: {
         getUsers: getUsers,
         getUserInfo: getUserInfo,
-        getLeaderboard: getLeaderboard
+        getLeaderboard: getLeaderboard,
+        logIn: async (_, args, context) => {
+            const result = await logIn(_, args, context);
+            return result && result.id;
+        }
     },
     Mutation: {
         signUp: async (_, args, context) => {
-            await signUp(_, args, context);
+            return await signUp(_, args, context);
         }
     }
 };

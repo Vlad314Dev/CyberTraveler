@@ -3,6 +3,7 @@ import {
     createStore
 } from 'redux';
 
+import AccountReducer from './Account/AccountReducer';
 import GameReducer from './Game/GameReducer';
 import MainMenuReducer from './MainMenu/MainMenuReducer';
 import P1HealthReducer from './P1Health/P1HealthReducer';
@@ -15,7 +16,8 @@ export const createReducer = () => {
         GameReducer,
         P1HealthReducer,
         WeaponReducer,
-        MainMenuReducer
+        MainMenuReducer,
+        AccountReducer
     });
 }
 

@@ -7,12 +7,6 @@ import {
 import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
 import { sha256 } from 'crypto-hash';
 
-export const GET_USERS = gql`{
-    getUsers {
-        nickname
-    }
-}`;
-
 export const GET_LEADERBOARD = gql`{
     getLeaderboard {
         nickname,
@@ -21,13 +15,15 @@ export const GET_LEADERBOARD = gql`{
     }
 }`;
 
+export const LOGIN = gql`
+    query logIn($nickname: String, $password: String) {
+        logIn(nickname: $nickname, password: $password)
+    }
+`;
+
 export const SIGNUP = gql`
     mutation signUp($nickname: String, $password: String) {
-        signUp(nickname: $nickname, password: $password) {
-            nickname,
-            score,
-            created_at
-        }
+        signUp(nickname: $nickname, password: $password)
     }
 `;
 

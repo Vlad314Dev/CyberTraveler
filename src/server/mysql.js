@@ -10,23 +10,23 @@ const DBConnection = mysql.createConnection({
 });
 
 const queryDB = (context, sql, args) => new Promise((resolve, reject) => {
-    context.db.query(sql, args, (err, rows) => {
+    context.db.query(sql, args, (err, result) => {
         if (err) {
             return reject(err);
         }
-        // rows is an array
-        rows.changedRows || rows.affectedRows || rows.insertId ? resolve(true) : resolve(rows);
+        // result is an array
+        result.changedRows || result.affectedRows || result.insertId ? resolve(true) : resolve(result);
     });
 });
 
 export const getUsers = (parent, args, context, info) => {
     return queryDB(context, "SELECT id, nickname, created_at, updated_at FROM user;")
-        .then((data) => data);
+        .then((result) => result);
 };
 
 export const getUserInfo = (parent, args, context, info) => {
     return queryDB(context, "SELECT id, nickname, created_at, updated_at FROM user WHERE id = ?;", args.id)
-        .then((data) => data[0]);
+        .then((result) => result[0]);
 };
 
 export const getLeaderboard = (parent, args, context, info) => {
@@ -34,12 +34,17 @@ export const getLeaderboard = (parent, args, context, info) => {
     FROM leaderboard as ld \
     ORDER BY ld.score DESC \
     LIMIT 10;")
-        .then((data) => data);
+        .then((result) => result);
 };
 
 export const signUp = (parent, args, context, info) => {
     return queryDB(context, "INSERT INTO user (nickname, password) VALUES (?, ?);", [args.nickname, args.password])
-        .then((data) => data[0]);
+        .then((result) => result);
+};
+
+export const logIn = (parent, args, context, info) => {
+    return queryDB(context, "SELECT id FROM user WHERE nickname = ? AND password = ?;", [args.nickname, args.password])
+        .then((result) => result[0]);
 };
 
 export default DBConnection;
