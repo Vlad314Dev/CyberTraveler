@@ -71,8 +71,10 @@ class Player1 extends AbstractCharacter
             _jump: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
             _fire: this._scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
         };
-        // Virtual joystick
+        // Virtual joystick and buttons
         this._joyStick = this._scene._joyStick;
+        this._mobileButtons = this._scene._mobileButtons;
+        this._isTouchFire = false;
         
         // Player1 health
         this._initHealth = DEFAULT_HEALTH_AMOUNT;
@@ -193,11 +195,44 @@ class Player1 extends AbstractCharacter
             }
         }, this);
 
-        // if (this._joyStick) {
-        //     this._joyStick.on('update', () => {
-                
-        //     });
-        // }
+        // Add mobile actions for buttons
+        if (this._joyStick) {
+            this._mobileButtons._jump.base.on('pointerdown', () => {
+                const stateDataKey = 'state';
+                const state = this.getData(stateDataKey);
+                const states = this._states
+
+                if (state !== states._death) {
+                    const isPlayerOnGroud = this.body.blocked.down;
+                    if (isPlayerOnGroud && state != states._jump) { // Jump
+                        this._setData(stateDataKey, states._jump);
+                    } else if (isPlayerOnGroud && state == states._jump) {
+                        this._setData(stateDataKey, states._idle);
+                    }
+                }
+            });
+
+            this._mobileButtons._fire.base.on('pointerdown', () => {
+                this._isTouchFire = true;
+            });
+            this._mobileButtons._fire.base.on('pointerup', () => {
+                this._isTouchFire = false;
+            });
+
+            this._mobileButtons._switchWeapon.base.on('pointerdown', () => {
+                for (let i = 0, nextWeaponidx = this._selectedWeaponIdx; i < this._weaponsCount; i++) {
+                    nextWeaponidx = nextWeaponidx < (this._weaponsCount - 1) ? nextWeaponidx + 1 : 0;
+    
+                    if (this._weapons[nextWeaponidx]._enabled) {
+                        this._selectedWeaponIdx = nextWeaponidx;
+                        break;
+                    }
+                }
+    
+                this._selectedWeapon = this._weapons[this._selectedWeaponIdx];
+                P1Emitter.emit(SELECT_WEAPON, this._selectedWeapon._type);
+            });
+        }
     }
 
     /**
@@ -308,18 +343,19 @@ class Player1 extends AbstractCharacter
             const isPlayerOnGroud = this.body.blocked.down;
             const timeNow = this._scene.time.now;
             const cursorKeys = this._joyStick ? this._joyStick.createCursorKeys() : null;
+            const isStickDown = Boolean(cursorKeys && cursorKeys['down'].isDown);
+            const isStickLeft = Boolean(cursorKeys && cursorKeys['left'].isDown);
+            const isStickRight = Boolean(cursorKeys && cursorKeys['right'].isDown);
     
-            if (this._keyboard._right.isDown 
-                || (cursorKeys && (cursorKeys['right'].isDown || cursorKeys['right'].isDown || cursorKeys['right'].isDown))
-            ) { // Move right
+            if (this._keyboard._right.isDown || isStickRight) { // Move right
                 this._setData(stateDataKey, states._runRight, true);
                 this.x += 3;
-            } else if (this._keyboard._left.isDown || (cursorKeys && cursorKeys['left'].isDown)) { // Move left
+            } else if (this._keyboard._left.isDown || isStickLeft) { // Move left
                 this._setData(stateDataKey, states._runLeft, true);
                 this.x -= 3;
-            } else if ((this._keyboard._crouch.isDown || (cursorKeys && cursorKeys['down'].isDown)) && state != states._crouch && isPlayerOnGroud) { // Crouch
+            } else if ((this._keyboard._crouch.isDown || isStickDown) && state != states._crouch && isPlayerOnGroud) { // Crouch
                 this._setData(stateDataKey, states._crouch);
-            } else if ((!this._keyboard._crouch.isDown || (cursorKeys && !cursorKeys['down'].isDown)) && state == states._crouch) {
+            } else if ((!this._keyboard._crouch.isDown && !isStickDown) && state == states._crouch) {
                 this._setData(stateDataKey, states._idle);
             } else if (state != states._idle && isPlayerOnGroud && (state != states._crouch || state == states._jump)) { // Idle
                 this._setData(stateDataKey, states._idle);
@@ -331,7 +367,7 @@ class Player1 extends AbstractCharacter
                 this._setData(stateDataKey, states._idle);
             }
     
-            if (this._keyboard._fire.isDown) {
+            if (this._keyboard._fire.isDown || this._isTouchFire) {
                 this._fire();
             }
     

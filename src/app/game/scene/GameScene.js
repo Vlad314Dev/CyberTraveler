@@ -26,6 +26,11 @@ class GameScene extends Phaser.Scene
         this._mainLayer;
         this._propsLayer;
         this._joyStick;
+        this._mobileButtons = {
+            _jump: undefined,
+            _switchWeapon: undefined,
+            _fire: undefined
+        }
     }
 
     preload()
@@ -101,42 +106,59 @@ class GameScene extends Phaser.Scene
         this._turrets = tilemap.getObjectLayer('turrets')['objects'];
     }
 
-    _createJoystick()
+    _createMobileControls()
     {
         if (isMobile) {
+            const stickRadius = 50;
             this._joyStick = new VirtualJoyStick(this, {
-                x: 150,
-                y: this.cameras.main.height - 150,
-                radius: 100,
-                base: this.add.circle(0, 0, 100, 0x888888),
-                thumb: this.add.circle(0, 0, 50, 0xcccccc),
-                // dir: '8dir',   // 'up&down'|0|'left&right'|1|'4dir'|2|'8dir'|3
-                // forceMin: 16,
-                // enable: true
+                x: stickRadius + 25,
+                y: this.cameras.main.height - stickRadius * 2,
+                radius: stickRadius,
+                base: this.add.circle(0, 0, stickRadius, 0x888888),
+                thumb: this.add.circle(0, 0, stickRadius / 2, 0xcccccc)
             });
-            // .on('update', this._dumpJoyStickState, this);
+            
+            const buttonRadius = 25;
+            this._mobileButtons._jump = new VirtualJoyStick(this, {
+                x: this.cameras.main.width - buttonRadius * 2 - 75,
+                y: this.cameras.main.height - buttonRadius * 2 - 35,
+                radius: buttonRadius,
+                base: this.add.circle(0, 0, buttonRadius, 0x888888),
+                thumb: this.add.text(0, 0, 'J').setFontSize(24)
+            });
+            this._mobileButtons._jump.touchCursor._eventEmitter.removeListener('update');
+            this._mobileButtons._jump.thumb.x -= 8;
+            this._mobileButtons._jump.thumb.y -= 12;
+
+            this._mobileButtons._fire = new VirtualJoyStick(this, {
+                x: this.cameras.main.width - buttonRadius * 2,
+                y: this.cameras.main.height - buttonRadius * 2 - 50,
+                radius: buttonRadius * 1.5,
+                base: this.add.circle(0, 0, buttonRadius * 1.5, 0x888888),
+                thumb: this.add.text(0, 0, 'FIRE').setFontSize(24)
+            });
+            this._mobileButtons._fire.touchCursor._eventEmitter.removeListener('update');
+            this._mobileButtons._fire.thumb.x -= 30;
+            this._mobileButtons._fire.thumb.y -= 15;
+
+            this._mobileButtons._switchWeapon = new VirtualJoyStick(this, {
+                x: this.cameras.main.width - buttonRadius * 2 - 30,
+                y: this.cameras.main.height - buttonRadius * 2 + 15,
+                radius: buttonRadius,
+                base: this.add.circle(0, 0, buttonRadius, 0x888888),
+                thumb: this.add.text(0, 0, 'S').setFontSize(24)
+            });
+            this._mobileButtons._switchWeapon.touchCursor._eventEmitter.removeListener('update');
+            this._mobileButtons._switchWeapon.thumb.x -= 8;
+            this._mobileButtons._switchWeapon.thumb.y -= 12;
         }
     }
-
-    // _dumpJoyStickState() {
-    //     var cursorKeys = this.joyStick.createCursorKeys();
-    //     var s = 'Key down: ';
-    //     for (var name in cursorKeys) {
-    //         if (cursorKeys[name].isDown) {
-    //             s += name + ' ';
-    //         }
-    //     }
-    //     s += '\n';
-    //     s += ('Force: ' + Math.floor(this.joyStick.force * 100) / 100 + '\n');
-    //     s += ('Angle: ' + Math.floor(this.joyStick.angle * 100) / 100 + '\n');
-    //     this.text.setText(s);
-    // }
 
     create()
     {
         this._createBackgrounds();
         this._createMap();
-        this._createJoystick();
+        this._createMobileControls();
 
         // Set the world size
         // world physics are bounded to the world size
