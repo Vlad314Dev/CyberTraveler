@@ -2,6 +2,7 @@ import './LeaderboardListStyle';
 
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import Loader from 'react-loader';
 
 class LeaderboardListComponent extends PureComponent
 {
@@ -25,7 +26,9 @@ class LeaderboardListComponent extends PureComponent
         
         if (loading) {
             return (
-                <div block="LeaderboardList">Loading...</div>
+                <Loader loaded={ !loading } color={ '#fff' }>
+                    <div block="LeaderboardList">Loading...</div>
+                </Loader>
             );
         }
 

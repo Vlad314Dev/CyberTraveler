@@ -6,6 +6,8 @@ import Enemy from 'GameObject/Npc/Enemy';
 import EnemyTurret from 'GameObject/Npc/EnemyTurret';
 import Player1 from 'GameObject/Player1';
 import Phaser from 'phaser';
+import VirtualJoyStick from 'phaser3-rex-plugins/plugins/virtualjoystick.js';
+import { isMobile } from 'react-device-detect';
 
 class GameScene extends Phaser.Scene
 {
@@ -23,6 +25,7 @@ class GameScene extends Phaser.Scene
         this._bg3;
         this._mainLayer;
         this._propsLayer;
+        this._joyStick;
     }
 
     preload()
@@ -98,10 +101,42 @@ class GameScene extends Phaser.Scene
         this._turrets = tilemap.getObjectLayer('turrets')['objects'];
     }
 
+    _createJoystick()
+    {
+        if (isMobile) {
+            this._joyStick = new VirtualJoyStick(this, {
+                x: 150,
+                y: this.cameras.main.height - 150,
+                radius: 100,
+                base: this.add.circle(0, 0, 100, 0x888888),
+                thumb: this.add.circle(0, 0, 50, 0xcccccc),
+                // dir: '8dir',   // 'up&down'|0|'left&right'|1|'4dir'|2|'8dir'|3
+                // forceMin: 16,
+                // enable: true
+            });
+            // .on('update', this._dumpJoyStickState, this);
+        }
+    }
+
+    // _dumpJoyStickState() {
+    //     var cursorKeys = this.joyStick.createCursorKeys();
+    //     var s = 'Key down: ';
+    //     for (var name in cursorKeys) {
+    //         if (cursorKeys[name].isDown) {
+    //             s += name + ' ';
+    //         }
+    //     }
+    //     s += '\n';
+    //     s += ('Force: ' + Math.floor(this.joyStick.force * 100) / 100 + '\n');
+    //     s += ('Angle: ' + Math.floor(this.joyStick.angle * 100) / 100 + '\n');
+    //     this.text.setText(s);
+    // }
+
     create()
     {
         this._createBackgrounds();
         this._createMap();
+        this._createJoystick();
 
         // Set the world size
         // world physics are bounded to the world size
