@@ -109,6 +109,8 @@ class GameScene extends Phaser.Scene
     _createMobileControls()
     {
         if (isMobile) {
+            this.input.addPointer(1);
+
             const stickRadius = 50;
             this._joyStick = new VirtualJoyStick(this, {
                 x: stickRadius + 25,

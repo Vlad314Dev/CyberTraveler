@@ -3,6 +3,7 @@ import DefaultWeapon from 'GameObject/Weapon/DefaultWeapon';
 import P1Emitter from 'GUIBridgeEmitter/P1Emitter';
 import Phaser from 'phaser';
 import LifeTime from 'phaser3-rex-plugins/plugins/lifetime.js';
+import { isMobile } from 'react-device-detect';
 import { PICK_WEAPON } from 'UIStore/Weapon/WeaponAction';
 
 class Enemy extends AbstractCharacter
@@ -29,18 +30,21 @@ class Enemy extends AbstractCharacter
         // Selected weapon
         this._selectedWeapon = new DefaultWeapon(this, 2000);
         this._selectedWeapon._enabled = true;
+        this._bulletSpeed = isMobile ? 200 : 400;
         // Health
         this._defaultHealth = 2;
         this._health = this._defaultHealth;
         // The distance that is used by npc to chase/attack player
-        this._activeDistance = 800;
+        this._activeDistance = this._scene.cameras.main.width / 2 - 100;
         this._isDead = true;
         this._canJump = false;
         // Movement speed
-        this._speed = 4;
+        this._speed = isMobile ? 2 : 4;
         // List of animation keys
         this._animationKeys = [];
         this._score = 100;
+        // Objects scaling
+        this._scale = isMobile ? 1.5 : 2;
 
         this._bindEvents();
         this._init();
@@ -119,7 +123,7 @@ class Enemy extends AbstractCharacter
     {
         const offsetX = (this.width / 2 + 10) * this._directionX;
         const offsetY = 10;
-        const velocityX = 400;
+        const velocityX = this._bulletSpeed;
         this._selectedWeapon._fire(this.x, this.y, offsetX, offsetY, this._directionX, velocityX);
     }
 
@@ -153,7 +157,7 @@ class Enemy extends AbstractCharacter
         this.play(this._animationKeys[Phaser.Math.Between(0, this._animationKeys.length - 1)]);
 
         this.setPosition(this._scene._player1.x + window.innerWidth / 1.5 * spawnSide, spawnY);
-        this.setScale(2);
+        this.setScale(this._scale);
         this._resetHitbox();
         this.setActive(true);
         this.setVisible(true);

@@ -3,6 +3,7 @@ import MissileWeapon from 'GameObject/Weapon/MissileWeapon';
 import PierceWeapon from 'GameObject/Weapon/PierceWeapon';
 import P1Emitter from 'GUIBridgeEmitter/P1Emitter';
 import Phaser from 'phaser';
+import { isMobile } from 'react-device-detect';
 import {
     REDUCE_HEALTH,
     RESTORE_HEALTH
@@ -86,6 +87,10 @@ class Player1 extends AbstractCharacter
         this._maxY = 2000;
         // Total score
         this._score = 0;
+        // Objects scaling
+        this._scale = isMobile ? 1.5 : 2;
+        // Movement speed
+        this._speed = isMobile ? 2.5 : 3;
 
         // Checkpoint
         this._checkpoint = [
@@ -105,7 +110,7 @@ class Player1 extends AbstractCharacter
         this.body.setImmovable(true);
         this.body.setGravityY(350);
         
-        this.setScale(2); // Icrease size
+        this.setScale(this._scale); // Icrease size
 
         this._resetHitbox();
         this._setState(this._states._idle);
@@ -329,6 +334,35 @@ class Player1 extends AbstractCharacter
     }
 
     /**
+     * Getter
+     */
+     _getBullets()
+     {
+         return this._selectedWeapon._bullets;
+     }
+ 
+     /**
+      * On player1 hit
+      */
+     _onHit(damage = 1)
+     {
+         if (this._health > 0) {
+             const timeNow = this._scene.time.now;
+             if (timeNow > this._nextHitTime) {
+                 this._nextHitTime = timeNow + this._hitDelay;
+                 this.clearTint();
+                 this._health -= damage;
+     
+                 P1Emitter.emit(REDUCE_HEALTH, damage);
+ 
+                 if (this._health <= 0) {
+                     this._setData('state', this._states._death);
+                 }
+             }
+         }
+     }
+
+    /**
      * @inheritdoc
      */
     preUpdate(time, delta)
@@ -349,10 +383,10 @@ class Player1 extends AbstractCharacter
     
             if (this._keyboard._right.isDown || isStickRight) { // Move right
                 this._setData(stateDataKey, states._runRight, true);
-                this.x += 3;
+                this.x += this._speed;
             } else if (this._keyboard._left.isDown || isStickLeft) { // Move left
                 this._setData(stateDataKey, states._runLeft, true);
-                this.x -= 3;
+                this.x -= this._speed;
             } else if ((this._keyboard._crouch.isDown || isStickDown) && state != states._crouch && isPlayerOnGroud) { // Crouch
                 this._setData(stateDataKey, states._crouch);
             } else if ((!this._keyboard._crouch.isDown && !isStickDown) && state == states._crouch) {
@@ -382,35 +416,6 @@ class Player1 extends AbstractCharacter
                 this.setTint(0xff0000, 0xff0000, 0xff0000, 0xff0000); // Red tint
             } else {
                 this.clearTint(); // Blink
-            }
-        }
-    }
-
-    /**
-     * Getter
-     */
-    _getBullets()
-    {
-        return this._selectedWeapon._bullets;
-    }
-
-    /**
-     * On player1 hit
-     */
-    _onHit(damage = 1)
-    {
-        if (this._health > 0) {
-            const timeNow = this._scene.time.now;
-            if (timeNow > this._nextHitTime) {
-                this._nextHitTime = timeNow + this._hitDelay;
-                this.clearTint();
-                this._health -= damage;
-    
-                P1Emitter.emit(REDUCE_HEALTH, damage);
-
-                if (this._health <= 0) {
-                    this._setData('state', this._states._death);
-                }
             }
         }
     }

@@ -1,5 +1,6 @@
 import AbstractCharacter from 'GameObject/AbstractCharacter';
 import TurretWeapon from 'GameObject/Weapon/TurretWeapon';
+import { isMobile } from 'react-device-detect';
 
 class EnemyTurret extends AbstractCharacter
 {
@@ -25,6 +26,7 @@ class EnemyTurret extends AbstractCharacter
         // Selected weapon
         this._selectedWeapon = new TurretWeapon(this, 2000);
         this._selectedWeapon._enabled = true;
+        this._bulletSpeed = isMobile ? 300 : 400;
         // Health
         this._defaultHealth = 1;
         this._health = this._defaultHealth;
@@ -92,8 +94,8 @@ class EnemyTurret extends AbstractCharacter
         if (weaponBullets.countActive(false) === (weaponBullets.countActive(true) + weaponBullets.countActive(false))) {
             const offsetX = (this.width / 2 + 10) * this._directionX;
             const offsetY = -10;
-            const velocityX = 400;
-            const velocityY = 200;
+            const velocityX = this._bulletSpeed;
+            const velocityY = this._bulletSpeed / 2;
 
             this._selectedWeapon._fire(this.x, this.y, offsetX, offsetY, this._directionX, velocityX, -velocityY);
             this._selectedWeapon._fire(this.x, this.y, offsetX, offsetY, this._directionX, velocityX, 0);

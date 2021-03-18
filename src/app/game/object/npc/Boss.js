@@ -1,6 +1,7 @@
 import AbstractCharacter from 'GameObject/AbstractCharacter';
 import BossAttack from 'GameObject/Npc/Boss/BossAttack';
 import Phaser from 'phaser';
+import { isMobile } from 'react-device-detect';
 
 class Boss extends AbstractCharacter
 {
@@ -69,6 +70,8 @@ class Boss extends AbstractCharacter
         this._isDead = false;
         this._score = 10000;
 
+        this._scale = isMobile ? 1.5 : 2;
+
         this._bindEvents();
         this._init();
     }
@@ -87,17 +90,30 @@ class Boss extends AbstractCharacter
     _init()
     {
         // Body parts based on the torso position
-        this._bodyParts['arm-back-part-1'] = this.scene.add.sprite(this._torso._x - 65, this._torso._y + 25, 'boss-atlas', 'arm-back-part').setDepth(4);
-        this._bodyParts['forearm-back'] = this.scene.add.sprite(this._torso._x - 120, this._torso._y + 65, 'boss-atlas', 'forearm-back').setDepth(5);
-        this._bodyParts['torso'] = this.scene.add.sprite(this._torso._x, this._torso._y, 'boss-atlas', 'torso1').setDepth(4);
-        this._bodyParts['arm-part-1'] = this.scene.add.sprite(this._torso._x + 70, this._torso._y + 25, 'boss-atlas', 'arm-part').setDepth(5);
-        this._bodyParts['arm-part-2'] = this.scene.add.sprite(this._torso._x + 80, this._torso._y + 45, 'boss-atlas', 'arm-part').setDepth(5);
-        this._bodyParts['forearm-front'] = this.scene.add.sprite(this._torso._x + 65, this._torso._y + 80, 'boss-atlas', 'forearm-front').setDepth(5);
-        this._bodyParts['lower-torso-1'] = this.scene.add.sprite(this._torso._x + 45, this._torso._y + 92, 'boss-atlas', 'lower-torso-1').setDepth(3);
-        this._bodyParts['lower-torso-2'] = this.scene.add.sprite(this._torso._x + 50, this._torso._y + 135, 'boss-atlas', 'lower-torso-2').setDepth(2);
-        this._bodyParts['lower-torso-3'] = this.scene.add.sprite(this._torso._x + 55, this._torso._y + 160, 'boss-atlas', 'lower-torso-3').setDepth(1);
-        Object.keys(this._bodyParts).forEach((bossPartKey) => this._bodyParts[bossPartKey].setScale(2));
-
+        if (!isMobile) {
+            this._bodyParts['arm-back-part-1'] = this.scene.add.sprite(this._torso._x - 65, this._torso._y + 25, 'boss-atlas', 'arm-back-part').setDepth(4);
+            this._bodyParts['forearm-back'] = this.scene.add.sprite(this._torso._x - 120, this._torso._y + 65, 'boss-atlas', 'forearm-back').setDepth(5);
+            this._bodyParts['torso'] = this.scene.add.sprite(this._torso._x, this._torso._y, 'boss-atlas', 'torso1').setDepth(4);
+            this._bodyParts['arm-part-1'] = this.scene.add.sprite(this._torso._x + 70, this._torso._y + 25, 'boss-atlas', 'arm-part').setDepth(5);
+            this._bodyParts['arm-part-2'] = this.scene.add.sprite(this._torso._x + 80, this._torso._y + 45, 'boss-atlas', 'arm-part').setDepth(5);
+            this._bodyParts['forearm-front'] = this.scene.add.sprite(this._torso._x + 65, this._torso._y + 80, 'boss-atlas', 'forearm-front').setDepth(5);
+            this._bodyParts['lower-torso-1'] = this.scene.add.sprite(this._torso._x + 45, this._torso._y + 92, 'boss-atlas', 'lower-torso-1').setDepth(3);
+            this._bodyParts['lower-torso-2'] = this.scene.add.sprite(this._torso._x + 50, this._torso._y + 135, 'boss-atlas', 'lower-torso-2').setDepth(2);
+            this._bodyParts['lower-torso-3'] = this.scene.add.sprite(this._torso._x + 55, this._torso._y + 160, 'boss-atlas', 'lower-torso-3').setDepth(1);
+            Object.keys(this._bodyParts).forEach((bossPartKey) => this._bodyParts[bossPartKey].setScale(this._scale));
+        } else {
+            this._bodyParts['arm-back-part-1'] = this.scene.add.sprite(this._torso._x - 55, this._torso._y + 25, 'boss-atlas', 'arm-back-part').setDepth(4);
+            this._bodyParts['forearm-back'] = this.scene.add.sprite(this._torso._x - 98, this._torso._y + 60, 'boss-atlas', 'forearm-back').setDepth(5);
+            this._bodyParts['torso'] = this.scene.add.sprite(this._torso._x, this._torso._y, 'boss-atlas', 'torso1').setDepth(4);
+            this._bodyParts['arm-part-1'] = this.scene.add.sprite(this._torso._x + 53, this._torso._y + 25, 'boss-atlas', 'arm-part').setDepth(5);
+            this._bodyParts['arm-part-2'] = this.scene.add.sprite(this._torso._x + 63, this._torso._y + 45, 'boss-atlas', 'arm-part').setDepth(5);
+            this._bodyParts['forearm-front'] = this.scene.add.sprite(this._torso._x + 48, this._torso._y + 75, 'boss-atlas', 'forearm-front').setDepth(5);
+            this._bodyParts['lower-torso-1'] = this.scene.add.sprite(this._torso._x + 28, this._torso._y + 67, 'boss-atlas', 'lower-torso-1').setDepth(3);
+            this._bodyParts['lower-torso-2'] = this.scene.add.sprite(this._torso._x + 38, this._torso._y + 105, 'boss-atlas', 'lower-torso-2').setDepth(2);
+            this._bodyParts['lower-torso-3'] = this.scene.add.sprite(this._torso._x + 43, this._torso._y + 130, 'boss-atlas', 'lower-torso-3').setDepth(1);
+            Object.keys(this._bodyParts).forEach((bossPartKey) => this._bodyParts[bossPartKey].setScale(this._scale));
+        }
+        
         this.body.setCollideWorldBounds(true);
         this.body.setImmovable(true);
         this.body.setAllowGravity(false);
@@ -129,13 +145,13 @@ class Boss extends AbstractCharacter
         if (this._torso._active == 1 && this._health <= this._maxHealth / 3 * 2 && this._health >= this._maxHealth / 3) {
             this._torso._active = 2;
             this._bodyParts['torso'].destroy();
-            this._bodyParts['torso'] = this.scene.add.sprite(this._torso._x, this._torso._y, 'boss-atlas', 'torso2').setDepth(4).setScale(2);
+            this._bodyParts['torso'] = this.scene.add.sprite(this._torso._x, this._torso._y, 'boss-atlas', 'torso2').setDepth(4).setScale(this._scale);
         }
 
         if (this._torso._active == 2 && this._health <= this._maxHealth / 3) {
             this._torso._active = 3;
             this._bodyParts['torso'].destroy();
-            this._bodyParts['torso'] = this.scene.add.sprite(this._torso._x, this._torso._y, 'boss-atlas', 'torso3').setDepth(4).setScale(2);
+            this._bodyParts['torso'] = this.scene.add.sprite(this._torso._x, this._torso._y, 'boss-atlas', 'torso3').setDepth(4).setScale(this._scale);
         }
     }
 
