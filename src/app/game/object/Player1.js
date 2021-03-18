@@ -87,10 +87,13 @@ class Player1 extends AbstractCharacter
         this._maxY = 2000;
         // Total score
         this._score = 0;
+        this._deathFine = 500;
         // Objects scaling
         this._scale = isMobile ? 1.5 : 2;
         // Movement speed
         this._speed = isMobile ? 2.5 : 3;
+        // Is controls enabled
+        this._isControlsEnabled = true;
 
         // Checkpoint
         this._checkpoint = [
@@ -169,6 +172,7 @@ class Player1 extends AbstractCharacter
                     this.play('player1/death', true);
                     P1Emitter.emit(REDUCE_HEALTH, this._health);
                     this._health = 0;
+                    this._addScore(-this._deathFine);
                     break;
                 default:
                     break;
@@ -330,37 +334,57 @@ class Player1 extends AbstractCharacter
     _addScore(score)
     {
         this._score += score;
+        if (this._score < 0) {
+            this._score = 0;
+        }
         P1Emitter.emit(SET_SCORE, this._score);
     }
 
     /**
      * Getter
      */
-     _getBullets()
-     {
-         return this._selectedWeapon._bullets;
-     }
- 
-     /**
-      * On player1 hit
-      */
-     _onHit(damage = 1)
-     {
-         if (this._health > 0) {
-             const timeNow = this._scene.time.now;
-             if (timeNow > this._nextHitTime) {
-                 this._nextHitTime = timeNow + this._hitDelay;
-                 this.clearTint();
-                 this._health -= damage;
-     
-                 P1Emitter.emit(REDUCE_HEALTH, damage);
- 
-                 if (this._health <= 0) {
-                     this._setData('state', this._states._death);
-                 }
-             }
-         }
-     }
+    _getBullets()
+    {
+        return this._selectedWeapon._bullets;
+    }
+
+    /**
+     * On player1 hit
+     */
+    _onHit(damage = 1)
+    {
+        if (this._health > 0) {
+            const timeNow = this._scene.time.now;
+            if (timeNow > this._nextHitTime) {
+                this._nextHitTime = timeNow + this._hitDelay;
+                this.clearTint();
+                this._health -= damage;
+    
+                P1Emitter.emit(REDUCE_HEALTH, damage);
+
+                if (this._health <= 0) {
+                    this._setData('state', this._states._death);
+                }
+            }
+        }
+    }
+
+    /**
+     * Disable controls
+     */
+    _disableControls()
+    {
+        this._isControlsEnabled = false;
+        this._setData('state', this._states._idle);
+    }
+
+    /**
+     * Enable controls
+     */
+    _enableControls()
+    {
+        this._isControlsEnabled = true;
+    }
 
     /**
      * @inheritdoc
@@ -380,29 +404,31 @@ class Player1 extends AbstractCharacter
             const isStickDown = Boolean(cursorKeys && cursorKeys['down'].isDown);
             const isStickLeft = Boolean(cursorKeys && cursorKeys['left'].isDown);
             const isStickRight = Boolean(cursorKeys && cursorKeys['right'].isDown);
-    
-            if (this._keyboard._right.isDown || isStickRight) { // Move right
-                this._setData(stateDataKey, states._runRight, true);
-                this.x += this._speed;
-            } else if (this._keyboard._left.isDown || isStickLeft) { // Move left
-                this._setData(stateDataKey, states._runLeft, true);
-                this.x -= this._speed;
-            } else if ((this._keyboard._crouch.isDown || isStickDown) && state != states._crouch && isPlayerOnGroud) { // Crouch
-                this._setData(stateDataKey, states._crouch);
-            } else if ((!this._keyboard._crouch.isDown && !isStickDown) && state == states._crouch) {
-                this._setData(stateDataKey, states._idle);
-            } else if (state != states._idle && isPlayerOnGroud && (state != states._crouch || state == states._jump)) { // Idle
-                this._setData(stateDataKey, states._idle);
-            }
-    
-            if (this._keyboard._jump.isDown && isPlayerOnGroud && state != states._jump) { // Jump
-                this._setData(stateDataKey, states._jump);
-            } else if (isPlayerOnGroud && state == states._jump) {
-                this._setData(stateDataKey, states._idle);
-            }
-    
-            if (this._keyboard._fire.isDown || this._isTouchFire) {
-                this._fire();
+            
+            if (this._isControlsEnabled) {
+                if (this._keyboard._right.isDown || isStickRight) { // Move right
+                    this._setData(stateDataKey, states._runRight, true);
+                    this.x += this._speed;
+                } else if (this._keyboard._left.isDown || isStickLeft) { // Move left
+                    this._setData(stateDataKey, states._runLeft, true);
+                    this.x -= this._speed;
+                } else if ((this._keyboard._crouch.isDown || isStickDown) && state != states._crouch && isPlayerOnGroud) { // Crouch
+                    this._setData(stateDataKey, states._crouch);
+                } else if ((!this._keyboard._crouch.isDown && !isStickDown) && state == states._crouch) {
+                    this._setData(stateDataKey, states._idle);
+                } else if (state != states._idle && isPlayerOnGroud && (state != states._crouch || state == states._jump)) { // Idle
+                    this._setData(stateDataKey, states._idle);
+                }
+        
+                if (this._keyboard._jump.isDown && isPlayerOnGroud && state != states._jump) { // Jump
+                    this._setData(stateDataKey, states._jump);
+                } else if (isPlayerOnGroud && state == states._jump) {
+                    this._setData(stateDataKey, states._idle);
+                }
+        
+                if (this._keyboard._fire.isDown || this._isTouchFire) {
+                    this._fire();
+                }
             }
     
             if (this.y > this._maxY) {

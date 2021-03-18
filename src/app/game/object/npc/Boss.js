@@ -33,10 +33,13 @@ class Boss extends AbstractCharacter
         };
         this._torso = { _x: x, _y: y, _active: 1 };
         this._states = {
-            _idle: 'idle'
+            _idle: 'idle',
+            _phase1: 'phase1',
+            _phase2: 'phase2',
+            _phase3: 'phase3'
         };
-        this._maxHealth = 10;
-        this._health = 10;
+        this._maxHealth = 100;
+        this._health = this._maxHealth;
         this._animations = {
             _arms: {
                 _speed: 80,
@@ -139,20 +142,47 @@ class Boss extends AbstractCharacter
         this._health -= damage;
         
         if (this._health <= 0) {
+            this._scene.cameras.main.shake(2000, 0.01);
             this._deactivate();
+            return;
         }
 
-        if (this._torso._active == 1 && this._health <= this._maxHealth / 3 * 2 && this._health >= this._maxHealth / 3) {
+        if (this._torso._active == 1 && this._health <= (this._maxHealth * 0.66) && this._health >= (this._maxHealth * 0.33)) {
             this._torso._active = 2;
             this._bodyParts['torso'].destroy();
             this._bodyParts['torso'] = this.scene.add.sprite(this._torso._x, this._torso._y, 'boss-atlas', 'torso2').setDepth(4).setScale(this._scale);
         }
 
-        if (this._torso._active == 2 && this._health <= this._maxHealth / 3) {
+        if (this._torso._active == 2 && this._health <= (this._maxHealth * 0.33)) {
             this._torso._active = 3;
             this._bodyParts['torso'].destroy();
             this._bodyParts['torso'] = this.scene.add.sprite(this._torso._x, this._torso._y, 'boss-atlas', 'torso3').setDepth(4).setScale(this._scale);
         }
+
+        if (this._health >= this._maxHealth * 0.66) {
+            this._setData('state', this._states._phase1);
+        } else if (this._health >= this._maxHealth * 0.33) {
+            this._setData('state', this._states._phase2);
+        } else {
+            this._setData('state', this._states._phase3);
+        }
+    }
+
+    /**
+     * Activate boss
+     */
+    _activate()
+    {
+        this._isActivated = true;
+        this._setData('state', this._states._phase1);
+    }
+
+    /**
+     * Check if activated
+     */
+    _getIsActivated()
+    {
+        return this._isActivated;
     }
 
     /**
@@ -187,8 +217,17 @@ class Boss extends AbstractCharacter
 
         super.preUpdate(time, delta);
 
-        if (this.getData('state') === this._states._idle) {
-            // @todo
+        const state = this.getData('state');
+        if (state === this._states._phase1) {
+            this._attack._execute('default');
+            this._attack._execute('rain');
+        } else if (state === this._states._phase2) {
+            this._attack._execute('default');
+            this._attack._execute('bounce');
+        } else if (state === this._states._phase3) {
+            this._attack._execute('default');
+            this._attack._execute('bounce');
+            this._attack._execute('rain');
         }
 
         if (time > this._animations._torso._nextAnimTime) {
@@ -268,10 +307,6 @@ class Boss extends AbstractCharacter
                 }
             }
         }
-
-        // this._attack._execute('default');
-        // this._attack._execute('bounce');
-        this._attack._execute('rain');
     }
 }
 
