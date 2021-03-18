@@ -1,5 +1,6 @@
 # IMPORTANT
-The project is using Licensed assets. **It is prohibided to reuse assets from this project**.
+## The project is using Licensed assets!
+## It is prohibided to reuse assets from this project!
 You can find the assets on the assets creator page: https://ansimuz.itch.io/
 
 
@@ -8,23 +9,30 @@ Futuristic action platformer written using Phaser3 + React.js + GraphQL + MySQL 
 The project is ment for learning purposes.
 
 # Local setup
+```
 cd /www
 git clone git@github.com:Vlad314Dev/CyberTraveler.git
 cd CyberTraveler
 npm install
+```
 
 Open new terminal window for backend server process:
+```
 cd /www/CyberTraveler
 npm run start-dev-be
+```
 
 Open new terminal window for frontend application process:
+```
 cd /www/CyberTraveler
 npm run start-dev-fe
+```
 
 The project should be available at http://localhost:5314
 
 
 # NGINX configuration sample for socket.io
+```
 server {
   listen 80;
   listen 443 ssl;
@@ -44,4 +52,5 @@ server {
     proxy_pass http://localhost:5314;
   }
 }
+```
 
