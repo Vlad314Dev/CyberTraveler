@@ -20,7 +20,7 @@ const isLoggedIn = () => {
     const nickname = localStorage.getItem('nickname');
     const token = localStorage.getItem('token');
 
-    return nickname && token && nickname !== '' && token !== '';
+    return Boolean(nickname && token && nickname !== '' && token !== '');
 }
 
 export const AccountReducer = (

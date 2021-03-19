@@ -38,7 +38,7 @@ class Boss extends AbstractCharacter
             _phase2: 'phase2',
             _phase3: 'phase3'
         };
-        this._maxHealth = 100;
+        this._maxHealth = 3;
         this._health = this._maxHealth;
         this._animations = {
             _arms: {
@@ -142,8 +142,15 @@ class Boss extends AbstractCharacter
         this._health -= damage;
         
         if (this._health <= 0) {
-            this._scene.cameras.main.shake(2000, 0.01);
+            const cameraShakeDuration = 2000;
+            this._scene.cameras.main.shake(cameraShakeDuration, 0.01);
             this._deactivate();
+            this._scene.time.addEvent({
+                delay: cameraShakeDuration,
+                callback: () => {
+                    this._scene._gameOver();
+                }
+            });
             return;
         }
 

@@ -196,12 +196,7 @@ class Player1 extends AbstractCharacter
 
         // Reset player to active checkpoint
         this.on('animationcomplete-player1/death', () => {
-            if (this._lives < 1) {
-                // @todo death screen with options
-                this._resurrect();
-            } else {
-                this._resurrect();
-            }
+            this._resurrect();
         }, this);
 
         // Add mobile actions for buttons
@@ -333,11 +328,13 @@ class Player1 extends AbstractCharacter
      */
     _addScore(score)
     {
-        this._score += score;
-        if (this._score < 0) {
-            this._score = 0;
+        if (!this._scene._isGameOver) {
+            this._score += score;
+            if (this._score < 0) {
+                this._score = 0;
+            }
+            P1Emitter.emit(SET_SCORE, this._score);
         }
-        P1Emitter.emit(SET_SCORE, this._score);
     }
 
     /**

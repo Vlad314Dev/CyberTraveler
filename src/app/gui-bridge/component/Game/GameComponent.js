@@ -3,6 +3,7 @@ import './GameStyle';
 import { IonPhaser } from '@ion-phaser/react';
 import { PropTypes } from 'prop-types';
 import React, { PureComponent } from 'react';
+import GameOver from 'UIComponent/GameOver';
 import Hud from 'UIComponent/Hud';
 import MainMenu from 'UIComponent/MainMenu';
 import {
@@ -15,19 +16,25 @@ class GameComponent extends PureComponent
     static propTypes = {
         initialize: PropTypes.bool.isRequired,
         game: PropTypes.object.isRequired,
-        currentScene: PropTypes.string.isRequired
+        currentScene: PropTypes.string.isRequired,
+        isGameOver: PropTypes.bool.isRequired
     };
 
     renderUI()
     {
         const {
-            currentScene
+            currentScene,
+            isGameOver
         } = this.props;
 
-        if (currentScene === MAIN_MENU_SCENE) {
-            return <MainMenu />
-        } else if (currentScene === GAME_SCENE) {
-            return <Hud />;
+        if (!isGameOver) {
+            if (currentScene === MAIN_MENU_SCENE) {
+                return <MainMenu />
+            } else if (currentScene === GAME_SCENE) {
+                return <Hud />;
+            }
+        } else {
+            return <GameOver />;
         }
     }
 

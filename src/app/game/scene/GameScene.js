@@ -5,9 +5,11 @@ import Boss from 'GameObject/Npc/Boss';
 import Enemy from 'GameObject/Npc/Enemy';
 import EnemyTurret from 'GameObject/Npc/EnemyTurret';
 import Player1 from 'GameObject/Player1';
+import GameEmitter from 'GUIBridgeEmitter/GameEmitter';
 import Phaser from 'phaser';
 import VirtualJoyStick from 'phaser3-rex-plugins/plugins/virtualjoystick.js';
 import { isMobile } from 'react-device-detect';
+import { SET_GAME_OVER } from 'UIStore/Game/GameAction';
 
 class GameScene extends Phaser.Scene
 {
@@ -18,6 +20,7 @@ class GameScene extends Phaser.Scene
         this._player1;
         this._enemies;
         this._turrets;
+        this._canSpawnEnemies;
         this._enemySpawnDelay;
         this._nextEnemySpawnTime;
         this._bg1;
@@ -31,6 +34,7 @@ class GameScene extends Phaser.Scene
             _switchWeapon: undefined,
             _fire: undefined
         }
+        this._isGameOver = false;
     }
 
     preload()
@@ -228,6 +232,8 @@ class GameScene extends Phaser.Scene
         this.physics.add.collider(this._boss._attack._type._rain._bullets, this._mainLayer, this._bulletWorldCollision, null, this);
 
         this.cameras.main.startFollow(this._player1);
+
+        this._canSpawnEnemies = true;
     }
 
     _parallaxBackground()
@@ -265,12 +271,19 @@ class GameScene extends Phaser.Scene
         player._onHit(enemy._damage);
     }
 
+    _gameOver()
+    {
+        this._isGameOver = true;
+        this._player1._disableControls();
+        GameEmitter.emit(SET_GAME_OVER, true);
+    }
+
     update(time, delta)
     {
         super.update(time, delta);
 
         // Spawn enemies
-        if (this._player1.x > 1500) {
+        if (this._player1.x > 1500 && this._canSpawnEnemies) {
             const enemy = this._enemies.getFirst();
             if (enemy && time > this._nextEnemySpawnTime) {
                 enemy._spawn();
@@ -284,6 +297,7 @@ class GameScene extends Phaser.Scene
             const cameraWidth = this.cameras.main.width;
             if (p1BossDistance <= (cameraWidth - this._player1.width - this._boss.width)) {
                 const cameraAnimationTime = 2000;
+                this._canSpawnEnemies = false;
                 this._player1._disableControls();
                 this.cameras.main.stopFollow();
                 this.cameras.main.pan(this._player1.x + cameraWidth / 2 - this._player1.width / 2, this._player1.y, cameraAnimationTime);
@@ -295,6 +309,7 @@ class GameScene extends Phaser.Scene
                     y: this._player1.y
                 });
                 this._player1._activeCheckpoint = this._player1._checkpoint.length - 1;
+                // Wait for pan to be finished
                 this.time.addEvent({
                     delay: cameraAnimationTime + 1000,
                     callback: () => {

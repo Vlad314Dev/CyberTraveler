@@ -8,7 +8,8 @@ import GameComponent from './GameComponent';
 
 const mapStateToProps = (state) => ({
     userSettings: state.GameReducer.userSettings,
-    currentScene: state.GameReducer.currentScene
+    currentScene: state.GameReducer.currentScene,
+    isGameOver: state.GameReducer.isGameOver
 });
 
 class GameContainer extends PureComponent

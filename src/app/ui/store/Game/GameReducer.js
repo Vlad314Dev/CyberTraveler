@@ -6,6 +6,7 @@ import {
 
 import { 
     SAVE_SETTINGS,
+    SET_GAME_OVER,
     SET_SCENE
 } from './GameAction';
 import { 
@@ -40,6 +41,15 @@ export const setScene = (action, state) => {
     }
 };
 
+export const setGameOver = (action, state) => {
+    const { isGameOver } = action;
+
+    return {
+        ...state,
+        isGameOver
+    }
+};
+
 export const GameReducer = (
     state = {
         currentScene: MAIN_MENU_SCENE,
@@ -48,7 +58,8 @@ export const GameReducer = (
                 disableWebAudio: false,
                 noAudio: false
             }
-        }
+        },
+        isGameOver: false
     },
     action
  ) => {
@@ -59,6 +70,8 @@ export const GameReducer = (
             return saveSettings(action, state);
         case SET_SCENE:
             return setScene(action, state);
+        case SET_GAME_OVER:
+            return setGameOver(action, state);
         default:
             return state;
     }
