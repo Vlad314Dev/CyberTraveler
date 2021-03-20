@@ -1,7 +1,7 @@
 # IMPORTANT
-## The project is using Licensed assets!
-## It is prohibided to reuse assets from this project!
-You can find the assets on the assets creator page: https://ansimuz.itch.io/
+## The project is using Licensed art!
+## It is prohibided to reuse images from this project!
+You can find the assets on the artist page: https://ansimuz.itch.io/
 
 
 # Description
