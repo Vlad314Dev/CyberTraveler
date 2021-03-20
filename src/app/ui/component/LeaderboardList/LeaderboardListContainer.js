@@ -40,7 +40,7 @@ class LeaderboardListContainer extends PureComponent
                 }
             );
         } catch (err) {
-            console.log(err);
+            alert('Cannot load leaderboard.');
         }
     }
 

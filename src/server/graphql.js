@@ -3,6 +3,7 @@ import { RedisCache } from 'apollo-server-cache-redis';
 import { ApolloServer } from 'apollo-server-express';
 
 import DBConnection, {
+    addToLeaderboard,
     getLeaderboard,
     getUserInfo,
     getUsers,
@@ -31,11 +32,12 @@ const gqlSchema = gql`
         getUsers: [User],
         getUserInfo(id: Int): User,
         getLeaderboard: [Player],
-        logIn(nickname: String, password: String): Boolean
+        logIn(nickname: String, password: String): Int
     }
 
     type Mutation {
-        signUp(nickname: String, password: String): Boolean
+        signUp(nickname: String, password: String): Boolean,
+        addToLeaderboard(score: Int, userId: Int, nickname: String): Boolean,
     }
 `;
 
@@ -46,12 +48,15 @@ const resolvers = {
         getLeaderboard: getLeaderboard,
         logIn: async (_, args, context) => {
             const result = await logIn(_, args, context);
-            return result && result.id;
+            return result ? result.id : 0;
         }
     },
     Mutation: {
         signUp: async (_, args, context) => {
             return await signUp(_, args, context);
+        },
+        addToLeaderboard: async (_, args, context) => {
+            return await addToLeaderboard(_, args, context);
         }
     }
 };

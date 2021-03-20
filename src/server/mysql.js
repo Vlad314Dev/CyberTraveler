@@ -37,14 +37,20 @@ export const getLeaderboard = (parent, args, context, info) => {
         .then((result) => result);
 };
 
+export const logIn = (parent, args, context, info) => {
+    return queryDB(context, "SELECT id FROM user WHERE nickname = ? AND password = ?;", [args.nickname, args.password])
+        .then((result) => result[0]);
+};
+
 export const signUp = (parent, args, context, info) => {
     return queryDB(context, "INSERT INTO user (nickname, password) VALUES (?, ?);", [args.nickname, args.password])
         .then((result) => result);
 };
 
-export const logIn = (parent, args, context, info) => {
-    return queryDB(context, "SELECT id FROM user WHERE nickname = ? AND password = ?;", [args.nickname, args.password])
-        .then((result) => result[0]);
+export const addToLeaderboard = (parent, args, context, info) => {
+    const userId = args.userId ? args.userId : null;
+    return queryDB(context, "INSERT INTO leaderboard (user_id, score, nickname) VALUES (?, ?, ?);", [userId, args.score, args.nickname])
+        .then((result) => result);
 };
 
 export default DBConnection;
