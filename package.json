@@ -1,12 +1,14 @@
 {
     "scripts": {
         "clean": "rm -rf build",
-        "build": "npm run build-clean && npm run build-sw && webpack --config webpack.app.config.prod.js",
-        "build-sw": "webpack --config webpack.sw.config.js",
-        "start": "npm run build && node ./build/server.bundle.js",
+        "build-sw": "webpack --config webpack.sw.config.prod.js",
+        "build-be": "webpack --config webpack.server.config.prod.js",
+        "build-fe": "webpack --config webpack.app.config.prod.js",
+        "build": "npm run clean && npm run build-sw && npm run build-be && npm run build-fe",
+        "start": "npm run build && node ./build/server.js",
         "start-dev-be": "webpack --config webpack.server.config.dev.js",
-        "start-dev-fe": "npm run build-sw && webpack --config webpack.app.config.dev.js",
-        "start-dev-sw": "webpack --config webpack.sw.config.js --watch"
+        "start-dev-fe": "webpack --config webpack.sw.config.dev.js && webpack --config webpack.app.config.dev.js",
+        "start-dev-sw": "webpack --config webpack.sw.config.dev.js --watch"
     },
     "dependencies": {
         "@apollo/client": "^3.3.9",
@@ -51,6 +53,7 @@
         "babel-eslint": "^10.1.0",
         "babel-loader": "^8.2.2",
         "babel-plugin-transform-rebem-jsx": "^0.3.3",
+        "copy-webpack-plugin": "^8.0.0",
         "css-loader": "^5.0.2",
         "eslint": "^7.19.0",
         "eslint-plugin-import": "^2.22.1",
@@ -64,6 +67,7 @@
         "node-sass": "^5.0.0",
         "nodemon-webpack-plugin": "^4.4.4",
         "postcss": "^8.2.5",
+        "progress-bar-webpack-plugin": "^2.1.0",
         "sass-loader": "^10.1.1",
         "style-loader": "^2.0.0",
         "stylelint": "^13.9.0",

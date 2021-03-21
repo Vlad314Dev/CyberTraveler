@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = {
     mode: 'production',
     entry: {
-        app: './server/src/express.prod.js',
+        app: './src/server/express.js',
     },
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -40,6 +40,6 @@ module.exports = {
             template: './src/public/index.html',
             filename: './index.html',
             excludeChunks: ['app']
-        })
+        }),
     ]
 };

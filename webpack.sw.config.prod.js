@@ -1,9 +1,9 @@
 const path = require('path');
-const LiveReloadPlugin = require('@kooneko/livereload-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: {
         app: './src/sw/index.js',
     },
@@ -13,7 +13,6 @@ module.exports = {
         filename: 'sw.js'
     },
     target: 'web',
-    devtool: 'source-map',
     resolve: {
         extensions: ['.js', '*']
     },
@@ -30,7 +29,6 @@ module.exports = {
     },
     watch: false,
     plugins: [
-        new LiveReloadPlugin(),
         new ESLintPlugin({
             exclude: [
                 'node_modules',
@@ -38,6 +36,7 @@ module.exports = {
             ],
             fix: false,
             emitError: true
-        })
+        }),
+        new ProgressBarPlugin()
     ]
 };

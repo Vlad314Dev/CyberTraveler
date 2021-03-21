@@ -23,6 +23,27 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 /**
+ * Helper function to get all files with relative paths from the build folder
+ */
+const getAllFiles = (absDirPath, dirPath, arrayOfFiles) => {
+    const files = fs.readdirSync(absDirPath)
+  
+    arrayOfFiles = arrayOfFiles || []
+  
+    files.forEach((file) => {
+        if (fs.statSync(`${ absDirPath }/${ file }`).isDirectory()) {
+            // eslint-disable-next-line no-unused-vars
+            arrayOfFiles = getAllFiles(`${ absDirPath }/${ file }`, dirPath, arrayOfFiles)
+        } else {
+            const fileAbsPath = `${ absDirPath }/${ file }`;
+            arrayOfFiles.push(fileAbsPath.replace(`${ dirPath }/`, ''));
+        }
+    });
+  
+    return arrayOfFiles
+}
+
+/**
  * Middlewares
  * 
  * The sequence of middlewares use is necessary
@@ -39,7 +60,7 @@ app.get('/sw.js', (req, res) => {
 });
 
 app.get('/precache-paths', (req, res) => {
-    const filesToCache = fs.readdirSync(BUILD_DIR);
+    const filesToCache = getAllFiles(BUILD_DIR, BUILD_DIR, []);
 
     // Remove unnecessary files
     if (filesToCache.includes('server.js')) {
@@ -54,7 +75,6 @@ app.get('/precache-paths', (req, res) => {
     // File paths that are not included to the build
     filesToCache.push('/');
     filesToCache.push('/favicon.ico');
-    filesToCache.push('/socket.io.js');
 
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(filesToCache));

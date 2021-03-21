@@ -2,11 +2,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const nodeExternals = require('webpack-node-externals');
 const NodemonPlugin = require('nodemon-webpack-plugin');
 const path = require('path');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 module.exports = {
     mode: 'development',
     entry: {
-        app: './src/server/express.dev.js',
+        app: './src/server/express.js',
     },
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -38,7 +39,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/public/index.html',
+            template: './src/public/index-dev.html',
             filename: './index.html',
             excludeChunks: ['app']
         }),
@@ -47,7 +48,8 @@ module.exports = {
                 '**/node_modules/',
                 '*.js.map'
             ]
-        })
+        }),
+        new ProgressBarPlugin()
     ],
     watch: true
 };

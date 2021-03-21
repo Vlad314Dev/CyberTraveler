@@ -5,6 +5,8 @@ const LiveReloadPlugin = require('@kooneko/livereload-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -57,19 +59,25 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|svg|jpg|gif|ico)$/,
-                use: ['file-loader']
+                test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]'
+                        }
+                    }
+                ]
             },
             {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
                 use: [
-                  {
-                    loader: 'file-loader',
-                    options: {
-                      name: '[name].[ext]',
-                      outputPath: 'fonts/'
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]'
+                        }
                     }
-                  }
                 ]
               }
         ]
@@ -118,7 +126,16 @@ module.exports = {
                 size: '1024x1024',
                 purpose: 'maskable'
               }
-            ]
-          })
+            ],
+            orientation: 'landscape'
+        }),
+        new ProgressBarPlugin(),
+        new CopyWebpackPlugin(
+            {
+                patterns: [
+                    { from: 'src/app/game/assets', to: 'game/assets' }
+                ]
+            }
+        )
     ]
 };
