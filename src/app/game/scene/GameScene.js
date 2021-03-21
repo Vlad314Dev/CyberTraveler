@@ -35,6 +35,7 @@ class GameScene extends Phaser.Scene
             _fire: undefined
         }
         this._isGameOver = false;
+        this._music;
     }
 
     preload()
@@ -66,6 +67,13 @@ class GameScene extends Phaser.Scene
             frameWidth: 48,
             frameHeight: 48
         });
+
+        // Music
+        this.load.audio('level_music', ['/game/assets/audio/level_music.mp3']);
+        this.load.audio('boss_fight_music', ['/game/assets/audio/boss_fight.mp3']);
+        this.load.audio('game_over_music', ['/game/assets/audio/game_over.mp3']);
+        this.load.audio('laser_shot', ['/game/assets/audio/laser_shot.mp3']);
+        this.load.audio('boss_dead', ['/game/assets/audio/boss_dead.mp3']);
     }
 
     _createBackgrounds()
@@ -160,11 +168,26 @@ class GameScene extends Phaser.Scene
         }
     }
 
+    _addMusicAndSfx()
+    {
+        this._music = {
+            _level: this.sound.add('level_music', { loop: true }),
+            _bossFight: this.sound.add('boss_fight_music', { loop: true }),
+            _gameOver: this.sound.add('game_over_music', { loop: true })
+        };
+
+        this._sfx = {
+            _laserShot: this.sound.add('laser_shot', { loop: false, volume: 0.5 }),
+            _bossDead: this.sound.add('boss_dead')
+        };
+    }
+
     create()
     {
         this._createBackgrounds();
         this._createMap();
         this._createMobileControls();
+        this._addMusicAndSfx();
 
         // Set the world size
         // world physics are bounded to the world size
@@ -234,6 +257,9 @@ class GameScene extends Phaser.Scene
         this.cameras.main.startFollow(this._player1);
 
         this._canSpawnEnemies = true;
+
+        // Play level music
+        this._music._level.play();
     }
 
     _parallaxBackground()
@@ -275,6 +301,10 @@ class GameScene extends Phaser.Scene
     {
         this._isGameOver = true;
         this._player1._disableControls();
+
+        this._music._bossFight.stop();
+        this._music._gameOver.play();
+
         GameEmitter.emit(SET_GAME_OVER, true);
     }
 
@@ -296,6 +326,9 @@ class GameScene extends Phaser.Scene
             const p1BossDistance = Math.abs(this._player1.x  - this._boss.x) + this._boss.width + this._player1.width;
             const cameraWidth = this.cameras.main.width;
             if (p1BossDistance <= (cameraWidth - this._player1.width - this._boss.width)) {
+                this._music._bossFight.play();
+                this._music._level.stop();
+
                 const cameraAnimationTime = 2000;
                 this._canSpawnEnemies = false;
                 this._player1._disableControls();

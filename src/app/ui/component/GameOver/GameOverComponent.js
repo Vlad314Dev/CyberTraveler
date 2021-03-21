@@ -29,8 +29,9 @@ class GameOverComponent extends PureComponent
                             <p>Luis Zuno (www.ansimuz.com)</p>
                         </div>
                         <div block="GameOver" elem="Section">
-                            <h2>Music</h2>
-                            <p>Luis Zuno (www.ansimuz.com)</p>
+                            <h2>Music & SFX</h2>
+                            <p>Mysic by Karl Casey @ White Bat Audio</p>
+                            <p>Sound from Zapsplat.com</p>
                         </div>
                     </div>
                 </div>

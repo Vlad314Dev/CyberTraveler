@@ -84,6 +84,8 @@ class MissileBullet extends DefaultBullet
         this.setActive(true);
         this.setVisible(true);
         this.play(this._animKey.fire, true);
+        
+        this._scene._sfx._laserShot.play();
     }
 
     /**

@@ -57,7 +57,7 @@ registerRoute(
 
 // Retrieve cache via CacheFirst strategy for precache/cached files
 registerRoute(
-    new RegExp(/.*\.(gif|jpe?g|bmp|png|ico|css|js|map|eot|svg|ttf|woff|woff2|ogg)/),
+    new RegExp(/.*\.(gif|jpe?g|bmp|png|ico|css|js|map|eot|svg|ttf|woff|woff2|ogg|mp3)/),
     new CacheFirst({
         cacheName: self.CACHE_NAME,
         plugins: [

@@ -20,7 +20,7 @@ class MainMenuScene extends Phaser.Scene
     {
         this.load.image('bg-1', '/game/assets/background/bg-1.png');
         this.load.image('bg-2', '/game/assets/background/bg-2.png');
-        this.load.audio('music', ['/game/assets/audio/sci_fi_platformer02.ogg']);
+        this.load.audio('menu_music', ['/game/assets/audio/menu_music.mp3']);
     }
 
     create()
@@ -30,12 +30,11 @@ class MainMenuScene extends Phaser.Scene
         this._bg1 = this.add.tileSprite(0, this.game.scale.height / 2, gameWidth, gameHeight, 'bg-1').setScale(3);
         this._bg2 = this.add.tileSprite(0, this.game.scale.height / 2, gameWidth, gameHeight, 'bg-2').setScale(3);
         this.scene.add('GameScene', GameScene, false);
-        const music = this.sound.add('music');
-        music.loop = true;
-        music.play();
+        const menu_music = this.sound.add('menu_music', { loop: true });
 
         GameEmitter.on(PLAY_GAME, (flag) => {
             if (flag) {
+                menu_music.stop();
                 this.scene.start('GameScene');
             } else {
                 this.scene.start('MenuScene');
@@ -45,6 +44,8 @@ class MainMenuScene extends Phaser.Scene
         GameEmitter.on(TOGGLE_SOUND, () => {
             this.sound.mute = !this.sound.mute;
         });
+
+        menu_music.play();
     }
 
     update(time, delta)

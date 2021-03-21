@@ -10,6 +10,8 @@ class DefaultBullet extends Phaser.Physics.Arcade.Sprite
         super(scene, x, y, key, frame);
 
         scene.physics.world.enable(this);
+
+        this._scene = scene;
         
         // Time when an object will dissapear from the world
         this._lifeTime;
@@ -102,6 +104,7 @@ class DefaultBullet extends Phaser.Physics.Arcade.Sprite
         this.setActive(true);
         this.setVisible(true);
         this.play(this._animKey.fire, true);
+        this._scene._sfx._laserShot.play();
     }
 
     /**

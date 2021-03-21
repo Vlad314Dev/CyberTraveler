@@ -142,6 +142,8 @@ class Boss extends AbstractCharacter
         this._health -= damage;
         
         if (this._health <= 0) {
+            this._scene._sfx._bossDead.play();
+            
             const cameraShakeDuration = 2000;
             this._scene.cameras.main.shake(cameraShakeDuration, 0.01);
             this._deactivate();
