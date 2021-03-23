@@ -38,7 +38,7 @@ class Boss extends AbstractCharacter
             _phase2: 'phase2',
             _phase3: 'phase3'
         };
-        this._maxHealth = 3;
+        this._maxHealth = 1000;
         this._health = this._maxHealth;
         this._animations = {
             _arms: {

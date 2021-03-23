@@ -355,9 +355,9 @@ class Player1 extends AbstractCharacter
             if (timeNow > this._nextHitTime) {
                 this._nextHitTime = timeNow + this._hitDelay;
                 this.clearTint();
-                // this._health -= damage;
+                this._health -= damage;
     
-                // P1Emitter.emit(REDUCE_HEALTH, damage);
+                P1Emitter.emit(REDUCE_HEALTH, damage);
 
                 if (this._health <= 0) {
                     this._setData('state', this._states._death);

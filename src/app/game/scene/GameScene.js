@@ -191,7 +191,7 @@ class GameScene extends Phaser.Scene
 
         // Set the world size
         // world physics are bounded to the world size
-        this.physics.world.setBounds(0, 0, 10000, 3500);
+        this.physics.world.setBounds(0, 0, 16000, 3500);
 
         this._misc = {
             _hitExplosion: this.add.group({
@@ -217,7 +217,8 @@ class GameScene extends Phaser.Scene
             }),
         };
 
-        this._player1 = new Player1({ scene: this, x: 100, y: 750 + (117 * 16) / 2, key: 'player1' });
+        // x: 100 - start
+        this._player1 = new Player1({ scene: this, x: 15000, y: 750 + 117 * 8, key: 'player1' });
         this._enemies = this.add.group({
             classType: Enemy,
             key: 'enemy',
@@ -231,7 +232,7 @@ class GameScene extends Phaser.Scene
         this._enemySpawnDelay = 1000;
         this._nextEnemySpawnTime = 0;
 
-        this._boss = new Boss(this, 1200, 1540, 'boss');
+        this._boss = new Boss(this, 15800, 1540, 'boss');
 
         Object.keys(this._boss._attack._type).forEach((attack) => {
             const bossAttack = this._boss._attack._type[attack];
@@ -323,36 +324,41 @@ class GameScene extends Phaser.Scene
 
         // Start boss fight
         if (!this._boss._getIsActivated()) {
-            // const p1BossDistance = Math.abs(this._player1.x  - this._boss.x) + this._boss.width + this._player1.width;
-            // const cameraWidth = this.cameras.main.width;
-            // if (p1BossDistance <= (cameraWidth - this._player1.width - this._boss.width)) {
-            //     this._music._bossFight.play();
-            //     this._music._level.stop();
+            const p1BossDistance = Math.abs(this._player1.x  - this._boss.x) + this._boss.width + this._player1.width;
+            const cameraWidth = this.cameras.main.width;
+            if (p1BossDistance <= (cameraWidth - this._player1.width - this._boss.width)) {
+                this._music._bossFight.play();
+                this._music._level.stop();
 
-            //     const cameraAnimationTime = 2000;
-            //     this._canSpawnEnemies = false;
-            //     this._player1._disableControls();
-            //     this.cameras.main.stopFollow();
-            //     this.cameras.main.pan(this._player1.x + cameraWidth / 2 - this._player1.width / 2, this._player1.y, cameraAnimationTime);
-            //     this.physics.world.setBounds(this._player1.x - this._player1.width / 2, 0, this.cameras.main.width, 3500);
-            //     this._player1.body.setCollideWorldBounds(true);
-            //     this._player1.body.onWorldBounds = true;
-            //     this._player1._checkpoint.push({
-            //         x: this._player1.x,
-            //         y: this._player1.y
-            //     });
-            //     this._player1._activeCheckpoint = this._player1._checkpoint.length - 1;
-            //     // Wait for pan to be finished
-            //     this.time.addEvent({
-            //         delay: cameraAnimationTime + 1000,
-            //         callback: () => {
-            //             this._player1._enableControls();
-            //             this._boss._activate();
-            //         }
-            //     });
-            // } else {
+                // Hide turrets
+                this._enemies.children.each((enemy) => {
+                    enemy._deactivate();
+                });
+
+                const cameraAnimationTime = 2000;
+                this._canSpawnEnemies = false;
+                this._player1._disableControls();
+                this.cameras.main.stopFollow();
+                this.cameras.main.pan(this._player1.x + cameraWidth / 2 - this._player1.width / 2, this._player1.y, cameraAnimationTime);
+                this.physics.world.setBounds(this._player1.x - this._player1.width / 2, 0, this.cameras.main.width, 3500);
+                this._player1.body.setCollideWorldBounds(true);
+                this._player1.body.onWorldBounds = true;
+                this._player1._checkpoint.push({
+                    x: this._player1.x,
+                    y: this._player1.y
+                });
+                this._player1._activeCheckpoint = this._player1._checkpoint.length - 1;
+                // Wait for pan to be finished
+                this.time.addEvent({
+                    delay: cameraAnimationTime + 1000,
+                    callback: () => {
+                        this._player1._enableControls();
+                        this._boss._activate();
+                    }
+                });
+            } else {
                 this._parallaxBackground();
-            // }
+            }
         }
     }
 }
