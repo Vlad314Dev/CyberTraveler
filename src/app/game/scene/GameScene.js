@@ -217,8 +217,7 @@ class GameScene extends Phaser.Scene
             }),
         };
 
-        // x: 100 - start
-        this._player1 = new Player1({ scene: this, x: 15000, y: 750 + 117 * 8, key: 'player1' });
+        this._player1 = new Player1({ scene: this, x: 100, y: 750 + 117 * 8, key: 'player1' });
         this._enemies = this.add.group({
             classType: Enemy,
             key: 'enemy',
@@ -331,12 +330,12 @@ class GameScene extends Phaser.Scene
                 this._music._level.stop();
 
                 // Hide turrets
+                this._canSpawnEnemies = false;
                 this._enemies.children.each((enemy) => {
-                    enemy._deactivate();
+                    enemy.destroy();
                 });
 
                 const cameraAnimationTime = 2000;
-                this._canSpawnEnemies = false;
                 this._player1._disableControls();
                 this.cameras.main.stopFollow();
                 this.cameras.main.pan(this._player1.x + cameraWidth / 2 - this._player1.width / 2, this._player1.y, cameraAnimationTime);

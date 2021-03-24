@@ -125,6 +125,7 @@ class EnemyTurret extends AbstractCharacter
             enemyExplosion._activate(this.body.x, this.body.y);
         }
         this._isDead = true;
+        this.body.reset();
         this.destroy();
     }
 
