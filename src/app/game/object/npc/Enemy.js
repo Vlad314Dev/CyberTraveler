@@ -295,8 +295,8 @@ class Enemy extends AbstractCharacter
 
         // Deactivate if fall or too far away
         if (this.y >= 2000
-            || (p1DistanceX >= 0 && p1DistanceX >= this._activeDistance * 2) // NPC went far away to left
-            || (p1DistanceX <= 0 && p1DistanceX <= -this._activeDistance * 2) // NPC went far away to right
+            || (p1DistanceX >= 0 && p1DistanceX >= this._activeDistance * 2 && this._directionX == -1) // NPC went far away to left
+            || (p1DistanceX <= 0 && p1DistanceX <= -this._activeDistance * 2 && this._directionX == 1) // NPC went far away to right
         ) {
             this._deactivate();
         }

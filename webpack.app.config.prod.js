@@ -125,6 +125,7 @@ module.exports = {
             description: 'CyberTraveler Progressive Web Game',
             background_color: '#ffffff',
             crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
+            start_url: '/',
             icons: [
               {
                 src: path.resolve(__dirname, 'src/public/assets/icon.png'),

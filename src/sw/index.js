@@ -7,7 +7,7 @@ import {
     StaleWhileRevalidate
 } from 'workbox-strategies';
 
-self.CACHE_NAME = 'offline-cache-v1';
+self.CACHE_NAME = 'offline-cache-v4';
 
 self.addEventListener('install', (event) => {
     // Skip the waiting step and activate now
