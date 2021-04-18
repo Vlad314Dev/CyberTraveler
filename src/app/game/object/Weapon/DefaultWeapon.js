@@ -5,7 +5,6 @@ class DefaultWeapon
     constructor(abstractCharacter, fireRate, bulletsCount = 1)
     {
         this._scene = abstractCharacter._scene;
-        this._character = abstractCharacter;
         this._fireRate = fireRate;
         this._setBullet({
             classType: DefaultBullet,

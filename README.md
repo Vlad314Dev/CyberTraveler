@@ -54,3 +54,7 @@ server {
 }
 ```
 
+# Tests
+```
+npm run test src/tests/
+```

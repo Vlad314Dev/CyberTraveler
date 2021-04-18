@@ -6,6 +6,7 @@ import {
 } from '@apollo/client';
 import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
 import { sha256 } from 'crypto-hash';
+import fetch from 'node-fetch';
 
 export const GET_LEADERBOARD = gql`{
     getLeaderboard {
@@ -33,7 +34,7 @@ export const ADD_TO_LEADERBOARD = gql`
     }
 `;
 
-const httpLink = new HttpLink({ uri: '/graphql' });
+const httpLink = new HttpLink({ uri: '/graphql', fetch });
 const persistedQueriesLink = createPersistedQueryLink({ 
     sha256,
     useGETForHashedQueries: true

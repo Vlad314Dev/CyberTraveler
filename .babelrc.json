@@ -21,6 +21,12 @@
         "@babel/plugin-syntax-dynamic-import",
         "@babel/plugin-transform-arrow-functions",
         "@babel/plugin-transform-runtime",
-        "transform-rebem-jsx"
-    ]
+        "transform-rebem-jsx",
+        "syntax-dynamic-import"
+    ],
+    "env": {
+        "test": {
+          "plugins": ["dynamic-import-node"]
+        }
+    }
 }

@@ -6,12 +6,11 @@ import DBConnection, {
     addToLeaderboard,
     getLeaderboard,
     getUserInfo,
-    getUsers,
     logIn,
     signUp
 } from './mysql.js';
 
-// getUsers: [User] @cacheControl(maxAge: 45),
+// getLeaderboard: [Player] @cacheControl(maxAge: 45),
 // Schema
 const gqlSchema = gql`
     type User {
@@ -28,8 +27,6 @@ const gqlSchema = gql`
     }
 
     type Query {
-        test: String,
-        getUsers: [User],
         getUserInfo(id: Int): User,
         getLeaderboard: [Player],
         logIn(nickname: String, password: String): Int
@@ -43,7 +40,6 @@ const gqlSchema = gql`
 
 const resolvers = {
     Query: {
-        getUsers: getUsers,
         getUserInfo: getUserInfo,
         getLeaderboard: getLeaderboard,
         logIn: async (_, args, context) => {

@@ -8,7 +8,31 @@
         "start": "npm run build && node ./build/server.js",
         "start-dev-be": "npm run clean && webpack --config webpack.server.config.dev.js",
         "start-dev-fe": "webpack --config webpack.sw.config.dev.js && webpack --config webpack.app.config.dev.js",
-        "start-dev-sw": "webpack --config webpack.sw.config.dev.js --watch"
+        "start-dev-sw": "webpack --config webpack.sw.config.dev.js --watch",
+        "test": "jest"
+    },
+    "jest": {
+        "transform": {
+            "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+        },
+        "moduleNameMapper": {
+            "^GameAssets(.*)$": "<rootDir>/src/app/game/assets$1",
+            "^GameScene(.*)$": "<rootDir>/src/app/game/scene$1",
+            "^GameObject(.*)$": "<rootDir>/src/app/game/object$1",
+            "^UIComponent(.*)$": "<rootDir>/src/app/ui/component$1",
+            "^UIStore(.*)$": "<rootDir>/src/app/ui/store$1",
+            "^UIQuery(.*)$": "<rootDir>/src/app/ui/query$1",
+            "^UIAssets(.*)$": "<rootDir>/src/app/ui/assets$1",
+            "^GUIBridgeComponent(.*)$": "<rootDir>/src/app/gui-bridge/component$1",
+            "^GUIBridgeEmitter(.*)$": "<rootDir>/src/app/gui-bridge/emitter$1",
+            "^IOWrapper(.*)$": "<rootDir>/src/app/io/IOWrapper$1",
+            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/tests/__mocks__/fileMock.js",
+            "\\.(css|scss|less)$": "identity-obj-proxy",
+            "^(.*)Style$": "identity-obj-proxy"
+        },
+        "setupFiles": [
+            "<rootDir>/src/tests/setup.js"
+        ]
     },
     "dependencies": {
         "@apollo/client": "^3.3.9",
@@ -45,16 +69,20 @@
         "@babel/plugin-syntax-dynamic-import": "^7.8.3",
         "@babel/plugin-transform-arrow-functions": "^7.12.13",
         "@babel/plugin-transform-runtime": "^7.12.15",
-        "@babel/preset-env": "^7.12.13",
-        "@babel/preset-react": "^7.12.13",
+        "@babel/preset-env": "^7.13.15",
+        "@babel/preset-react": "^7.13.13",
         "@babel/runtime": "^7.12.13",
         "@ion-phaser/react": "^1.2.2",
         "@kooneko/livereload-webpack-plugin": "^1.2.1",
         "babel-eslint": "^10.1.0",
+        "babel-jest": "^26.6.3",
         "babel-loader": "^8.2.2",
+        "babel-plugin-syntax-dynamic-import": "^6.18.0",
         "babel-plugin-transform-rebem-jsx": "^0.3.3",
         "copy-webpack-plugin": "^8.0.0",
         "css-loader": "^5.0.2",
+        "enzyme": "^3.11.0",
+        "enzyme-adapter-react-16": "^1.15.6",
         "eslint": "^7.19.0",
         "eslint-plugin-import": "^2.22.1",
         "eslint-plugin-react": "^7.22.0",
@@ -64,10 +92,14 @@
         "file-loader": "^6.2.0",
         "html-loader": "^1.3.2",
         "html-webpack-plugin": "^4.5.1",
+        "identity-obj-proxy": "^3.0.0",
+        "jest": "^26.6.3",
         "node-sass": "^5.0.0",
         "nodemon-webpack-plugin": "^4.4.4",
         "postcss": "^8.2.5",
         "progress-bar-webpack-plugin": "^2.1.0",
+        "react-test-renderer": "^17.0.2",
+        "redux-mock-store": "^1.5.4",
         "sass-loader": "^10.1.1",
         "style-loader": "^2.0.0",
         "stylelint": "^13.9.0",
