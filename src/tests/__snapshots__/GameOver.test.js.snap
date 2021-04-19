@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GameOver Should render layout 1`] = `
+Array [
+  <div
+    className="GameOver"
+  >
+    <div
+      className="GameOver__Main"
+    >
+      <h1>
+        Congratulations, you have completed the game!
+      </h1>
+      <h2>
+        Your score: 0
+      </h2>
+    </div>
+    <div
+      className="GameOver__CreditsWrapper"
+    >
+      <h1>
+        Credits
+      </h1>
+      <div
+        className="GameOver__Credits"
+      >
+        <div
+          className="GameOver__Section"
+        >
+          <h2>
+            Art
+          </h2>
+          <p>
+            Luis Zuno (www.ansimuz.com)
+          </p>
+        </div>
+        <div
+          className="GameOver__Section"
+        >
+          <h2>
+            Music & SFX
+          </h2>
+          <p>
+            Mysic by Karl Casey @ White Bat Audio
+          </p>
+          <p>
+            Sound from Zapsplat.com
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;

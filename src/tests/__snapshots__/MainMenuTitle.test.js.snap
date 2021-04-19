@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainMenuTitle Should render layout 1`] = `
+Array [
+  <div
+    className="MainMenuTitle"
+  >
+    <div
+      className="MainMenuTitle__General"
+    >
+      <span
+        className="MainMenuTitle__Value"
+      >
+        Cyber Traveler
+      </span>
+    </div>
+  </div>,
+]
+`;

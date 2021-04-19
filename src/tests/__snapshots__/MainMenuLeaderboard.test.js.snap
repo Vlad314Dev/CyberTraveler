@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainMenuLeaderboard Should render layout 1`] = `
+Array [
+  <React.Fragment>
+    <Memo(Connect(LeaderboardContainer)) />
+    <div
+      className="MainMenuOption__List"
+    >
+      <div
+        className="MainMenuOption__Wrapper"
+      >
+        <span
+          className="MainMenuOption__Value"
+          onClick={[Function]}
+        >
+          Back
+        </span>
+      </div>
+    </div>
+  </React.Fragment>,
+]
+`;

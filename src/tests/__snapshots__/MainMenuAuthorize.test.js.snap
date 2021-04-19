@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainMenuAuthorize Should render layout 1`] = `
+Array [
+  <div
+    className="MainMenuOption__List"
+  >
+    <span
+      className="MainMenuOption__ActiveLabel"
+    >
+      Authorize
+    </span>
+    <div
+      className="MainMenuOption__Wrapper"
+    >
+      <span
+        className="MainMenuOption__Value"
+        onClick={[Function]}
+      >
+        Login
+      </span>
+    </div>
+    <div
+      className="MainMenuOption__Wrapper"
+    >
+      <span
+        className="MainMenuOption__Value"
+        onClick={[Function]}
+      >
+        Sign Up
+      </span>
+    </div>
+    <div
+      className="MainMenuOption__Wrapper"
+    >
+      <span
+        className="MainMenuOption__Value"
+        onClick={[Function]}
+      >
+        Back
+      </span>
+    </div>
+  </div>,
+]
+`;

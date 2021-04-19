@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainMenuTitle Should render layout 1`] = `
+Array [
+  <div
+    className="Score__Wrapper"
+  >
+    <span
+      className="Score__Value"
+    >
+      Score 0
+    </span>
+  </div>,
+]
+`;

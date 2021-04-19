@@ -89,8 +89,6 @@ class EnemyTurret extends AbstractCharacter
     {
         const weaponBullets = this._selectedWeapon._bullets;
         // Fire when all bulets are available
-        // eslint-disable-next-line no-unused-vars
-        const test = [weaponBullets.countActive(false), weaponBullets.countActive(true), weaponBullets.countActive(false)];
         if (weaponBullets.countActive(false) === (weaponBullets.countActive(true) + weaponBullets.countActive(false))) {
             const offsetX = (this.width / 2 + 10) * this._directionX;
             const offsetY = -10;

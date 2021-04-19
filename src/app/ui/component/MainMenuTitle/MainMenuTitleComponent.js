@@ -7,7 +7,7 @@ class MainMenuTitleComponent extends PureComponent
 {
     static propTypes = {
         isLoggedIn: PropTypes.bool.isRequired,
-        nickname: PropTypes.string,
+        nickname: PropTypes.string
     }
 
     static defaultProps = {

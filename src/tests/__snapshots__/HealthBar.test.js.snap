@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HealthBar Should render layout 1`] = `
+Array [
+  <div
+    className="P1HealthBar__Wrapper"
+  >
+    <span
+      className="P1HealthBar__HealthElem"
+    />
+    <span
+      className="P1HealthBar__HealthElem"
+    />
+    <span
+      className="P1HealthBar__HealthElem"
+    />
+    <span
+      className="P1HealthBar__HealthElem"
+    />
+    <span
+      className="P1HealthBar__HealthElem"
+    />
+  </div>,
+]
+`;

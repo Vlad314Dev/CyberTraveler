@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Hud Should render layout 1`] = `
+Array [
+  <div
+    className="Hud"
+  >
+    <Memo(Connect(HealthBarContainer)) />
+    <Memo(Connect(WeaponsContainer)) />
+    <Memo(Connect(ScoreContainer)) />
+  </div>,
+]
+`;

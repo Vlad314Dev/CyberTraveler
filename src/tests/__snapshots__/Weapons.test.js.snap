@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainMenuTitle Should render layout 1`] = `
+Array [
+  <div
+    className="Weapon__Wrapper"
+  >
+    <div
+      className="Weapon__List"
+    >
+      <div
+        className="Weapon Weapon_type_default"
+      >
+        <span
+          className="Weapon__Availability"
+        />
+      </div>
+      <div
+        className="Weapon Weapon_type_pierce"
+      >
+        <span
+          className="Weapon__Availability"
+        />
+      </div>
+      <div
+        className="Weapon Weapon_type_missile"
+      >
+        <span
+          className="Weapon__Availability"
+        />
+      </div>
+    </div>
+  </div>,
+]
+`;

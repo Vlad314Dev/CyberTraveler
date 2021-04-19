@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthorizeLogin Should render layout 1`] = `
+Array [
+  <Unknown
+    color="#fff"
+    component="div"
+    loaded={true}
+    loadedClassName="loadedContent"
+    parentClassName="loader"
+  >
+    <div
+      className="AuthorizeSignup"
+    >
+      <form
+        className="Form"
+        onSubmit={[Function]}
+      >
+        <div
+          className="Form__Field"
+        >
+          <label
+            htmlFor="nickname"
+          >
+            Nickname:
+          </label>
+          <input
+            id="nickname"
+            name="nickname"
+            onChange={[Function]}
+            type="text"
+          />
+        </div>
+        <div
+          className="Form__Field"
+        >
+          <label
+            htmlFor="password"
+          >
+            Password:
+          </label>
+          <input
+            id="password"
+            name="password"
+            onChange={[Function]}
+            type="password"
+          />
+        </div>
+        <div
+          className="Form__Submit"
+        >
+          <button
+            onSubmit={[Function]}
+            type="submit"
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
+  </Unknown>,
+]
+`;

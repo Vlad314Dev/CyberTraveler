@@ -1,22 +1,34 @@
 /* eslint-disable no-undef */
-// eslint-disable-next-line no-unused-vars
 import { shallow } from 'enzyme';
 import React from 'react';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
 
-import LeaderboardList from '../app/ui/component/LeaderboardList';
+import LeaderboardListComponent from '../app/ui/component/LeaderboardList/LeaderboardListComponent';
 
-const mockStore = configureMockStore();
-const store = mockStore({});
-
-describe('LeaderboardListComponent', () => {
-    it('Should render leaderboard list', () => {
+describe('LeaderboardList', () => {
+    it('Should render', () => {
         // eslint-disable-next-line no-unused-vars
         const component = shallow(
-            <Provider store={ store }>
-                <LeaderboardList/>
-            </Provider>
+            <LeaderboardListComponent 
+                loading={ false }
+                data={ {
+                    getLeaderboard: []
+                } }
+                error={ '' }
+            />
         );
-    })
+    });
+
+    it('Should render layout', () => {
+        const component = shallow(
+            <LeaderboardListComponent 
+                loading={ false }
+                data={ {
+                    getLeaderboard: []
+                } }
+                error={ '' }
+            />
+        );
+
+        expect(component.getElements()).toMatchSnapshot();
+    });
 });

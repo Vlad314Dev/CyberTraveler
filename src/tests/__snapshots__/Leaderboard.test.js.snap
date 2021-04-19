@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Leaderboard Should render layout 1`] = `
+Array [
+  <div
+    className="Leaderboard"
+  >
+    <div
+      className="Leaderboard__Title"
+    >
+      TOP 10
+    </div>
+    <Memo(Connect(LeaderboardListContainer)) />
+  </div>,
+]
+`;

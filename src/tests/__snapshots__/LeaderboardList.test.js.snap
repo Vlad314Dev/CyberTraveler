@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LeaderboardList Should render layout 1`] = `
+Array [
+  <div
+    className="LeaderboardList"
+  >
+    <div
+      className="LeaderboardList__Content"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th>
+              #
+            </th>
+            <th>
+              Player
+            </th>
+            <th>
+              Score
+            </th>
+            <th>
+              Date
+            </th>
+          </tr>
+        </thead>
+        <tbody />
+      </table>
+    </div>
+  </div>,
+]
+`;

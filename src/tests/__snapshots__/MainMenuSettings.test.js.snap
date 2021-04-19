@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainMenuSettings Should render layout 1`] = `
+Array [
+  <div
+    className="MainMenuOption__List"
+  >
+    <span
+      className="MainMenuOption__ActiveLabel"
+    >
+      Settings
+    </span>
+    <div
+      className="MainMenuOption__Wrapper"
+    >
+      <span
+        className="MainMenuOption__Value"
+        onClick={[Function]}
+      >
+        Keyboard Controls
+      </span>
+    </div>
+    <div
+      className="MainMenuOption__Wrapper"
+    >
+      <span
+        className="MainMenuOption__Value"
+        onClick={[Function]}
+      >
+        Mobile Controls
+      </span>
+    </div>
+    <div
+      className="MainMenuOption__Wrapper"
+    >
+      <span
+        className="MainMenuOption__Value"
+        onClick={[Function]}
+      >
+        Audio - On
+      </span>
+    </div>
+    <div
+      className="MainMenuOption__Wrapper"
+    >
+      <span
+        className="MainMenuOption__Value"
+        onClick={[Function]}
+      >
+        Back
+      </span>
+    </div>
+  </div>,
+]
+`;
