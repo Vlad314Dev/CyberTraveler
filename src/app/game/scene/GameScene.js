@@ -349,7 +349,7 @@ class GameScene extends Phaser.Scene
                 this._player1._activeCheckpoint = this._player1._checkpoint.length - 1;
                 // Wait for pan to be finished
                 this.time.addEvent({
-                    delay: cameraAnimationTime + 1000,
+                    delay: cameraAnimationTime + 2000,
                     callback: () => {
                         this._player1._enableControls();
                         this._boss._activate();
