@@ -30,7 +30,7 @@ class GameOverComponent extends PureComponent
                         </div>
                         <div block="GameOver" elem="Section">
                             <h2>Music & SFX</h2>
-                            <p>Mysic by Karl Casey @ White Bat Audio</p>
+                            <p>Music by Karl Casey @ White Bat Audio</p>
                             <p>Sound from Zapsplat.com</p>
                         </div>
                     </div>
