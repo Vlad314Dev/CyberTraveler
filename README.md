@@ -1,12 +1,13 @@
-# IMPORTANT
-## The project is using Licensed art!
-## It is prohibided to reuse images from this project!
+# The project is using Licensed art. It is prohibided to reuse images from this project!
 You can find the assets on the artist page: https://ansimuz.itch.io/
 
 
 # Description
-Futuristic action platformer written using Phaser3 + React.js + GraphQL + MySQL (dev-setup tag has also socket.io usage example)
+Futuristic action platformer written using Phaser3 + React.js + GraphQL + MySQL (dev-setup tag has also socket.io usage example).
 The project is ment for learning purposes.
+
+# Demo
+https://www.youtube.com/watch?v=NARsbB3R7Cs
 
 # Local setup
 ```
