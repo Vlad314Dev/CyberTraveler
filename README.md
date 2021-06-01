@@ -10,6 +10,9 @@ The project is ment for learning purposes.
 https://www.youtube.com/watch?v=NARsbB3R7Cs
 
 # Local setup
+
+**Tech stack requirements**: node 14^, npm 6^, nginx 1.19, mysql 5.7
+
 ```
 cd /www
 git clone git@github.com:Vlad314Dev/CyberTraveler.git
